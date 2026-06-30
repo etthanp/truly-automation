@@ -15,7 +15,7 @@ export default function Hero() {
       <div className="relative mx-auto max-w-5xl text-center">
         <Reveal>
           <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-sky">
-            AI agents, built for small business
+            AI agents, built for efficiency
           </span>
         </Reveal>
 
