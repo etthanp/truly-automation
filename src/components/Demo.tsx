@@ -12,7 +12,7 @@ export default function Demo() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! 👋 I'm the virtual receptionist for Blue Ridge Dental Care. How can I help you today?",
+      content: "Hi! 👋 I'm Maya, the virtual receptionist for Blue Ridge Dental Care. I can answer questions or book you an appointment right now — what can I help you with?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -123,7 +123,7 @@ export default function Demo() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKey}
-                placeholder="Ask about hours, services, appointments…"
+                placeholder="e.g. I need a cleaning, what's available?"
                 disabled={loading}
                 className="flex-1 rounded-full bg-navy/5 px-4 py-2.5 text-sm text-navy outline-none placeholder:text-navy/40 focus:ring-2 focus:ring-royal/30 disabled:opacity-50"
               />
