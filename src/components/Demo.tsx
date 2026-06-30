@@ -17,10 +17,11 @@ export default function Demo() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = chatContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
 
   async function sendMessage() {
@@ -85,7 +86,7 @@ export default function Demo() {
             </div>
 
             {/* Messages */}
-            <div className="flex h-96 flex-col gap-3 overflow-y-auto bg-background p-5">
+            <div ref={chatContainerRef} className="flex h-96 flex-col gap-3 overflow-y-auto bg-background p-5">
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -113,7 +114,6 @@ export default function Demo() {
                   </div>
                 </div>
               )}
-              <div ref={bottomRef} />
             </div>
 
             {/* Input */}
