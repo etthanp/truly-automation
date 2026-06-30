@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 const tiers = [
   {
     name: "Starter",
-    price: "$297",
+    price: "$175",
     description: "Perfect for shops just getting started with automation.",
     features: [
       "1 AI agent (booking or chatbot)",
@@ -15,7 +15,7 @@ const tiers = [
   },
   {
     name: "Growth",
-    price: "$597",
+    price: "$250",
     description: "Our most popular plan for growing local businesses.",
     features: [
       "2 AI agents of your choice",
@@ -28,7 +28,7 @@ const tiers = [
   },
   {
     name: "Pro",
-    price: "$997",
+    price: "$400",
     description: "Full automation suite for businesses ready to scale.",
     features: [
       "All 3 AI agents included",

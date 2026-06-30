@@ -1,18 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Reveal from "./Reveal";
 
-const conversation = [
-  { from: "bot", text: "Hi there! 👋 I'm the Truly Automation assistant. How can I help your business today?" },
-  { from: "user", text: "Do you have any openings this Friday afternoon?" },
-  { from: "bot", text: "Yes! I have 2:00 PM and 4:30 PM available this Friday. Want me to book one for you?" },
-  { from: "user", text: "4:30 works great." },
-  { from: "bot", text: "Booked! ✅ You're all set for Friday at 4:30 PM. I'll send a reminder the day before." },
-];
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
 
 export default function Demo() {
-  const [visibleCount, setVisibleCount] = useState(conversation.length);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      content: "Hi! 👋 I'm the virtual receptionist for Blue Ridge Dental Care. How can I help you today?",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
+
+  async function sendMessage() {
+    const text = input.trim();
+    if (!text || loading) return;
+
+    const newMessages: Message[] = [...messages, { role: "user", content: text }];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+      const data = await res.json();
+      setMessages([...newMessages, { role: "assistant", content: data.reply || "Sorry, I didn't get that." }]);
+    } catch {
+      setMessages([...newMessages, { role: "assistant", content: "Something went wrong. Please try again." }]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
 
   return (
     <section id="demo" className="px-6 py-24 lg:px-8">
@@ -22,61 +62,78 @@ export default function Demo() {
             See an agent in action
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            This is a preview of how your customers would chat with your AI
-            agent right on your website.
+            Chat live with a real AI receptionist built for{" "}
+            <span className="font-semibold text-navy">Blue Ridge Dental Care</span>.
+            This is exactly what we&apos;d build for your business.
           </p>
         </Reveal>
 
         <Reveal delay={150}>
           <div className="mx-auto mt-12 max-w-md overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-xl">
+            {/* Header */}
             <div className="flex items-center gap-3 bg-navy px-5 py-4 text-white">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-royal to-sky text-sm font-bold">
-                T
+                🦷
               </span>
               <div>
-                <p className="text-sm font-semibold">Truly Automation Assistant</p>
+                <p className="text-sm font-semibold">Blue Ridge Dental Care</p>
                 <p className="flex items-center gap-1.5 text-xs text-white/60">
                   <span className="h-2 w-2 rounded-full bg-green-400" />
-                  Online now
+                  Virtual Receptionist · Online now
                 </p>
               </div>
             </div>
 
+            {/* Messages */}
             <div className="flex h-96 flex-col gap-3 overflow-y-auto bg-background p-5">
-              {conversation.slice(0, visibleCount).map((message, i) => (
+              {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`flex ${
-                    message.from === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                      message.from === "user"
+                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                      msg.role === "user"
                         ? "bg-royal text-white"
                         : "bg-white text-navy shadow-sm"
                     }`}
                   >
-                    {message.text}
+                    {msg.content}
                   </div>
                 </div>
               ))}
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="rounded-2xl bg-white px-4 py-3 text-sm text-navy shadow-sm">
+                    <span className="flex gap-1">
+                      <span className="animate-bounce">•</span>
+                      <span className="animate-bounce [animation-delay:0.15s]">•</span>
+                      <span className="animate-bounce [animation-delay:0.3s]">•</span>
+                    </span>
+                  </div>
+                </div>
+              )}
+              <div ref={bottomRef} />
             </div>
 
+            {/* Input */}
             <div className="flex items-center gap-2 border-t border-navy/10 p-4">
-              <div className="flex-1 rounded-full bg-navy/5 px-4 py-2.5 text-sm text-navy/40">
-                Type your message…
-              </div>
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKey}
+                placeholder="Ask about hours, services, appointments…"
+                disabled={loading}
+                className="flex-1 rounded-full bg-navy/5 px-4 py-2.5 text-sm text-navy outline-none placeholder:text-navy/40 focus:ring-2 focus:ring-royal/30 disabled:opacity-50"
+              />
               <button
-                onClick={() =>
-                  setVisibleCount((c) =>
-                    c >= conversation.length ? 0 : c + 1
-                  )
-                }
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-royal text-white transition hover:bg-navy"
-                aria-label="Replay demo"
+                onClick={sendMessage}
+                disabled={loading || !input.trim()}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-royal text-white transition hover:bg-navy disabled:opacity-40"
+                aria-label="Send"
               >
-                ↻
+                ↑
               </button>
             </div>
           </div>
