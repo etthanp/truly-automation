@@ -15,24 +15,24 @@ export default function Hero() {
       <div className="relative mx-auto max-w-5xl text-center">
         <Reveal>
           <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-sky">
-            AI agents, built for efficiency
+            AI automation &amp; websites for small businesses
           </span>
         </Reveal>
 
         <Reveal delay={100}>
           <h1 className="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            Your business, working{" "}
+            Grow your business with{" "}
             <span className="bg-gradient-to-r from-sky to-white bg-clip-text text-transparent">
-              while you sleep.
+              smarter tools.
             </span>
           </h1>
         </Reveal>
 
         <Reveal delay={200}>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80">
-            Truly Automation builds custom AI agents that book appointments,
-            answer customer questions, and run your marketing — so you can
-            focus on running your business, not chasing it.
+            Truly Automation builds professional websites and custom AI agents
+            that book appointments, answer customers, and run your marketing —
+            so you can focus on your business, not chasing it.
           </p>
         </Reveal>
 

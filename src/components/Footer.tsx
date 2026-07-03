@@ -42,7 +42,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm sm:flex-row">
           <p>&copy; {new Date().getFullYear()} Truly Automation. All rights reserved.</p>
-          <p>Built by Ethan Presley, Founder & Automation Consultant</p>
+          <p>Built by Ethan, Founder &amp; Automation Consultant</p>
         </div>
       </div>
     </footer>

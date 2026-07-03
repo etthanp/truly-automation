@@ -1,6 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Reveal from "./Reveal";
 
-const tiers = [
+const automationTiers = [
   {
     name: "Starter",
     price: "$175",
@@ -41,7 +44,52 @@ const tiers = [
   },
 ];
 
+const websiteTiers = [
+  {
+    name: "Starter Site",
+    price: "$500–$800",
+    description: "A clean, professional web presence to get you found online.",
+    features: [
+      "Single landing page",
+      "Mobile friendly",
+      "Contact form",
+      "Basic SEO setup",
+    ],
+    highlight: false,
+    oneTime: true,
+  },
+  {
+    name: "Business Site",
+    price: "$1,200–$2,000",
+    description: "Everything you need to look like the best option in town.",
+    features: [
+      "5–7 page website",
+      "Contact form & social links",
+      "Google Analytics",
+      "SEO optimized",
+    ],
+    highlight: true,
+    oneTime: true,
+  },
+  {
+    name: "Premium Site",
+    price: "$2,500–$4,000",
+    description: "A fully custom site with automation built right in.",
+    features: [
+      "Full custom design",
+      "Blog included",
+      "Booking integration",
+      "AI automation built in",
+    ],
+    highlight: false,
+    oneTime: true,
+  },
+];
+
 export default function Pricing() {
+  const [tab, setTab] = useState<"automation" | "websites">("automation");
+  const tiers = tab === "automation" ? automationTiers : websiteTiers;
+
   return (
     <section id="pricing" className="px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -55,7 +103,33 @@ export default function Pricing() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-3">
+        {/* Tab toggle */}
+        <Reveal delay={80}>
+          <div className="mx-auto mt-10 flex w-fit rounded-full border border-navy/15 bg-white p-1">
+            <button
+              onClick={() => setTab("automation")}
+              className={`rounded-full px-6 py-2 text-sm font-semibold transition ${
+                tab === "automation"
+                  ? "bg-navy text-white shadow-sm"
+                  : "text-navy/60 hover:text-navy"
+              }`}
+            >
+              AI Automation
+            </button>
+            <button
+              onClick={() => setTab("websites")}
+              className={`rounded-full px-6 py-2 text-sm font-semibold transition ${
+                tab === "websites"
+                  ? "bg-navy text-white shadow-sm"
+                  : "text-navy/60 hover:text-navy"
+              }`}
+            >
+              Website Builds
+            </button>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {tiers.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 120}>
               <div
@@ -85,11 +159,11 @@ export default function Pricing() {
                   {tier.description}
                 </p>
                 <div className="mt-6 flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold">{tier.price}</span>
+                  <span className="text-3xl font-extrabold">{tier.price}</span>
                   <span
-                    className={tier.highlight ? "text-white/70" : "text-navy/60"}
+                    className={`text-sm ${tier.highlight ? "text-white/70" : "text-navy/60"}`}
                   >
-                    /mo
+                    {"oneTime" in tier && tier.oneTime ? " one-time" : "/mo"}
                   </span>
                 </div>
 
