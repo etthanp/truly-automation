@@ -18,16 +18,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-navy/5 bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <a href="#" className="flex items-center gap-3">
-          <svg width="44" height="38" viewBox="0 0 110 95" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* A blue (behind) */}
-            <polygon points="52,0 65,0 98,95 84,95 58.5,18 33,95 19,95" fill="#2563eb"/>
-            {/* A crossbar in dark */}
-            <polygon points="36,62 44,62 50,78 42,78" fill="#111318"/>
-            {/* T crossbar */}
-            <rect x="0" y="0" width="68" height="15" rx="2" fill="#111318"/>
-            {/* T stem */}
-            <rect x="20" y="0" width="17" height="80" rx="2" fill="#111318"/>
-          </svg>
+          <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
           <span className="text-lg font-bold text-navy">Truly Automation</span>
         </a>
 

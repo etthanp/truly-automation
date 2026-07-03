@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 200" fill="none">
+  <!-- A (blue, drawn first so T overlaps it) -->
+  <polygon points="110,8 128,8 200,192 178,192 110,28 42,192 20,192" fill="#2563eb"/>
+  <!-- A crossbar (dark parallelogram) -->
+  <polygon points="72,132 92,132 102,158 82,158" fill="#1a1d24"/>
+  <!-- T crossbar -->
+  <rect x="10" y="8" width="130" height="28" rx="4" fill="#1a1d24"/>
+  <!-- T stem -->
+  <rect x="52" y="8" width="32" height="150" rx="4" fill="#1a1d24"/>
+</svg>
