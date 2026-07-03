@@ -12,7 +12,9 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center justify-between gap-8 border-b border-white/10 pb-10 sm:flex-row">
           <a href="#" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Truly Automation" className="h-9 w-9 rounded-xl object-contain brightness-0 invert" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white p-1">
+              <img src="/logo.png" alt="Truly Automation" className="h-full w-full object-contain" />
+            </span>
             <span className="text-lg font-bold text-white">
               Truly Automation
             </span>

@@ -14,7 +14,15 @@ export default function Hero() {
 
       <div className="relative mx-auto max-w-5xl text-center">
         <Reveal>
-          <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-sky">
+          <div className="flex justify-center">
+            <div className="rounded-2xl bg-white p-3 shadow-2xl shadow-black/30">
+              <img src="/logo.png" alt="Truly Automation" className="h-28 w-28 object-contain" />
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={60}>
+          <span className="mt-8 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-sky">
             AI automation &amp; websites for small businesses
           </span>
         </Reveal>
