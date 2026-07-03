@@ -38,11 +38,12 @@ export default function Contact() {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Let&apos;s build your AI agent
+            Let&apos;s build something great together
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Tell us a bit about your business and we&apos;ll reach out within
-            one business day. Or email us directly at{" "}
+            Whether you need a new website, an AI agent, or both — tell us
+            about your business and we&apos;ll reach out within one business day.
+            Or email us directly at{" "}
             <a
               href="mailto:ethan@trulyautomation.com"
               className="text-sky underline underline-offset-2 hover:text-white"
@@ -131,7 +132,7 @@ export default function Contact() {
                   name="need"
                   rows={4}
                   required
-                  placeholder="Tell us about your business and what you'd like to automate…"
+                  placeholder="Tell us about your business — need a website, an AI agent, or both?"
                   className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
                 />
               </div>
