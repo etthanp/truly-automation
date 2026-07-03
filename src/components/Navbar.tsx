@@ -22,11 +22,11 @@ export default function Navbar() {
             {/* A blue (behind) */}
             <polygon points="52,0 65,0 98,95 84,95 58.5,18 33,95 19,95" fill="#2563eb"/>
             {/* A crossbar in dark */}
-            <polygon points="36,62 44,62 50,78 42,78" fill="#1e2128"/>
+            <polygon points="36,62 44,62 50,78 42,78" fill="#111318"/>
             {/* T crossbar */}
-            <rect x="0" y="0" width="68" height="15" rx="2" fill="#1e2128"/>
+            <rect x="0" y="0" width="68" height="15" rx="2" fill="#111318"/>
             {/* T stem */}
-            <rect x="20" y="0" width="17" height="80" rx="2" fill="#1e2128"/>
+            <rect x="20" y="0" width="17" height="80" rx="2" fill="#111318"/>
           </svg>
           <span className="text-lg font-bold text-navy">Truly Automation</span>
         </a>
