@@ -10,25 +10,11 @@ export interface Lead {
 // Add your leads here — name, industry, city, email, website (optional)
 export const leads: Lead[] = [
   {
-    businessName: "Sunrise Dental",
-    ownerName: "Dr. Patel",
-    industry: "dental office",
-    city: "Nashville, TN",
-    email: "info@sunrisedental.com",
-    website: "sunrisedental.com",
-  },
-  {
-    businessName: "Green Thumb Landscaping",
-    industry: "landscaping company",
-    city: "Franklin, TN",
-    email: "hello@greenthumb.com",
-  },
-  {
-    businessName: "The Rustic Fork",
-    ownerName: "Sarah",
-    industry: "restaurant",
-    city: "Brentwood, TN",
-    email: "contact@therusticfork.com",
-    website: "therusticfork.com",
+    businessName: "Palmetto Benefit Solutions",
+    ownerName: "Will",
+    industry: "insurance agency",
+    city: "Rock Hill, SC",
+    email: "will@palmettobenefits.net",
+    website: "palmettobenefitsolutions.com",
   },
 ];
