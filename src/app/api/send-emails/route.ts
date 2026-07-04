@@ -35,11 +35,6 @@ Do not use subject line or any labels. Just write the email body.`,
 }
 
 export async function POST(req: NextRequest) {
-  // Verify this is coming from our cron job or a manual trigger
-  const authHeader = req.headers.get("authorization");
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const results = [];
