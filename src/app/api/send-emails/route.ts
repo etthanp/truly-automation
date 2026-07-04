@@ -8,7 +8,7 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 async function writeEmail(lead: typeof leads[0]): Promise<string> {
   const response = await anthropic.messages.create({
-    model: "claude-opus-4-8",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 400,
     messages: [
       {
@@ -45,54 +45,64 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const redis = Redis.fromEnv();
 
-    const results: { business: string; status: string }[] = [];
-    const errors: { business: string; error: string }[] = [];
-    const skipped: { business: string; reason: string }[] = [];
+    // Filter out already contacted leads first
+    const contactedChecks = await Promise.all(
+      leads.map((lead) => redis.sismember("contacted_emails", lead.email))
+    );
 
-    for (const lead of leads) {
-      const alreadyContacted = await redis.sismember("contacted_emails", lead.email);
+    const newLeads = leads.filter((_, i) => !contactedChecks[i]);
+    const skippedCount = leads.length - newLeads.length;
 
-      if (alreadyContacted) {
-        console.log(`⏭️ Skipping ${lead.businessName} — already contacted`);
-        skipped.push({ business: lead.businessName, reason: "already contacted" });
-        continue;
-      }
+    if (newLeads.length === 0) {
+      return NextResponse.json({
+        sent: 0,
+        skipped: skippedCount,
+        failed: 0,
+        message: "No new leads to contact — add more leads to leads.ts",
+      });
+    }
 
-      try {
-        const emailBody = await writeEmail(lead);
-        const subject = `Quick idea for ${lead.businessName}`;
+    // Write all emails in parallel (fast!)
+    const emailBodies = await Promise.all(newLeads.map((lead) => writeEmail(lead)));
 
-        await resend.emails.send({
+    // Send all emails in parallel
+    const sendResults = await Promise.allSettled(
+      newLeads.map(async (lead, i) => {
+        const result = await resend.emails.send({
           from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
           to: lead.email,
-          subject,
-          text: emailBody,
+          subject: `Quick idea for ${lead.businessName}`,
+          text: emailBodies[i],
         });
 
-        // Mark as contacted so we never email them again
+        // Mark as contacted
         await redis.sadd("contacted_emails", lead.email);
         await redis.hset(`contact:${lead.email}`, {
           business: lead.businessName,
           sentAt: new Date().toISOString(),
         });
 
-        console.log(`✅ Sent to ${lead.businessName} (${lead.email})`);
-        results.push({ business: lead.businessName, status: "sent" });
+        return { business: lead.businessName, email: lead.email, result };
+      })
+    );
 
-        await new Promise((r) => setTimeout(r, 1000));
-      } catch (err) {
-        console.error(`❌ Failed for ${lead.businessName}:`, err);
-        errors.push({ business: lead.businessName, error: String(err) });
-      }
-    }
+    const sent = sendResults.filter((r) => r.status === "fulfilled").map((r) =>
+      r.status === "fulfilled" ? { business: r.value.business, status: "sent" } : null
+    ).filter(Boolean);
+
+    const failed = sendResults.filter((r) => r.status === "rejected").map((r, i) => ({
+      business: newLeads[i].businessName,
+      error: r.status === "rejected" ? String(r.reason) : "",
+    }));
+
+    console.log(`✅ Sent: ${sent.length} | ⏭️ Skipped: ${skippedCount} | ❌ Failed: ${failed.length}`);
 
     return NextResponse.json({
-      sent: results.length,
-      skipped: skipped.length,
-      failed: errors.length,
-      results,
-      skipped,
-      errors,
+      sent: sent.length,
+      skipped: skippedCount,
+      failed: failed.length,
+      results: sent,
+      errors: failed,
     });
   } catch (err) {
     console.error("Top-level error:", err);
