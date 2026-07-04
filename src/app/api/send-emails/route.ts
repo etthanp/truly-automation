@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { leads } from "@/lib/leads";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 const CRON_SECRET = process.env.CRON_SECRET;
 
@@ -42,6 +41,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const results = [];
   const errors = [];
 
