@@ -35,41 +35,45 @@ Do not use subject line or any labels. Just write the email body.`,
 }
 
 export async function POST(req: NextRequest) {
-
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  const results = [];
-  const errors = [];
-
-  for (const lead of leads) {
-    try {
-      const emailBody = await writeEmail(lead);
-
-      const subject = `Quick idea for ${lead.businessName}`;
-
-      await resend.emails.send({
-        from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
-        to: lead.email,
-        subject,
-        text: emailBody,
-      });
-
-      results.push({ business: lead.businessName, status: "sent" });
-      console.log(`✅ Sent to ${lead.businessName} (${lead.email})`);
-
-      // Small delay between sends to avoid rate limits
-      await new Promise((r) => setTimeout(r, 1000));
-    } catch (err) {
-      console.error(`❌ Failed for ${lead.businessName}:`, err);
-      errors.push({ business: lead.businessName, error: String(err) });
+  try {
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json({ error: "RESEND_API_KEY not set" }, { status: 500 });
     }
-  }
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json({ error: "ANTHROPIC_API_KEY not set" }, { status: 500 });
+    }
 
-  return NextResponse.json({
-    sent: results.length,
-    failed: errors.length,
-    results,
-    errors,
-  });
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const results: { business: string; status: string }[] = [];
+    const errors: { business: string; error: string }[] = [];
+
+    for (const lead of leads) {
+      try {
+        const emailBody = await writeEmail(lead);
+        const subject = `Quick idea for ${lead.businessName}`;
+
+        const sendResult = await resend.emails.send({
+          from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
+          to: lead.email,
+          subject,
+          text: emailBody,
+        });
+
+        console.log(`✅ Sent to ${lead.businessName}`, sendResult);
+        results.push({ business: lead.businessName, status: "sent" });
+
+        await new Promise((r) => setTimeout(r, 1000));
+      } catch (err) {
+        console.error(`❌ Failed for ${lead.businessName}:`, err);
+        errors.push({ business: lead.businessName, error: String(err) });
+      }
+    }
+
+    return NextResponse.json({ sent: results.length, failed: errors.length, results, errors });
+  } catch (err) {
+    console.error("Top-level error:", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
 }
 
 // Also allow GET for easy manual testing
