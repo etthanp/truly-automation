@@ -17,4 +17,12 @@ export const leads: Lead[] = [
     email: "will@palmettobenefits.net",
     website: "palmettobenefitsolutions.com",
   },
+  {
+    businessName: "Allied Benefit Systems",
+    ownerName: "Susie",
+    industry: "insurance agency",
+    city: "Rock Hill, SC",
+    email: "sleary-belk@alliedbenefit.com",
+    website: "alliedbenefit.com",
+  },
 ];
