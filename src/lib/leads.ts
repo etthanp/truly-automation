@@ -10,6 +10,13 @@ export interface Lead {
 // Add your leads here — name, industry, city, email, website (optional)
 export const leads: Lead[] = [
   {
+    businessName: "Test Business",
+    ownerName: "Ethan",
+    industry: "dental office",
+    city: "Rock Hill, SC",
+    email: "ethan@trulyautomation.com",
+  },
+  {
     businessName: "Palmetto Benefit Solutions",
     ownerName: "Will",
     industry: "insurance agency",
