@@ -1,11 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { Resend } from "resend";
+import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
 import { leads } from "@/lib/leads";
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-const CRON_SECRET = process.env.CRON_SECRET;
 
 async function writeEmail(lead: typeof leads[0]): Promise<string> {
   const response = await anthropic.messages.create({
@@ -44,22 +43,40 @@ export async function POST(req: NextRequest) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
+    const redis = Redis.fromEnv();
+
     const results: { business: string; status: string }[] = [];
     const errors: { business: string; error: string }[] = [];
+    const skipped: { business: string; reason: string }[] = [];
 
     for (const lead of leads) {
+      const alreadyContacted = await redis.sismember("contacted_emails", lead.email);
+
+      if (alreadyContacted) {
+        console.log(`⏭️ Skipping ${lead.businessName} — already contacted`);
+        skipped.push({ business: lead.businessName, reason: "already contacted" });
+        continue;
+      }
+
       try {
         const emailBody = await writeEmail(lead);
         const subject = `Quick idea for ${lead.businessName}`;
 
-        const sendResult = await resend.emails.send({
+        await resend.emails.send({
           from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
           to: lead.email,
           subject,
           text: emailBody,
         });
 
-        console.log(`✅ Sent to ${lead.businessName}`, sendResult);
+        // Mark as contacted so we never email them again
+        await redis.sadd("contacted_emails", lead.email);
+        await redis.hset(`contact:${lead.email}`, {
+          business: lead.businessName,
+          sentAt: new Date().toISOString(),
+        });
+
+        console.log(`✅ Sent to ${lead.businessName} (${lead.email})`);
         results.push({ business: lead.businessName, status: "sent" });
 
         await new Promise((r) => setTimeout(r, 1000));
@@ -69,14 +86,20 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ sent: results.length, failed: errors.length, results, errors });
+    return NextResponse.json({
+      sent: results.length,
+      skipped: skipped.length,
+      failed: errors.length,
+      results,
+      skipped,
+      errors,
+    });
   } catch (err) {
     console.error("Top-level error:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
 
-// Also allow GET for easy manual testing
 export async function GET(req: NextRequest) {
   return POST(req);
 }
