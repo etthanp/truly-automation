@@ -13,9 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Truly Automation | AI Agents for Small Businesses",
+  title: "Truly Automation | Never Lose Another HVAC Job to a Missed Call",
   description:
-    "Truly Automation builds AI agents that book appointments, answer customer questions, and run your marketing — so small businesses and local shops can grow without growing their headcount.",
+    "When an HVAC contractor misses a call, the customer calls a competitor. Truly Automation's AI receptionist instantly texts back every missed call, qualifies the customer, and books the job — 24/7, nights and weekends. Setup in days.",
+  openGraph: {
+    title: "Never lose another HVAC job to a missed call",
+    description:
+      "Your AI receptionist texts back every missed call in seconds, qualifies the customer, and books the job — 24/7. Built for HVAC contractors by Truly Automation.",
+    url: "https://trulyautomation.com",
+    siteName: "Truly Automation",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
