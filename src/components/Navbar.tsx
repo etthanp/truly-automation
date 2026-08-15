@@ -3,12 +3,10 @@
 import { useState } from "react";
 
 const links = [
-  { href: "#services", label: "Services" },
+  { href: "#demo", label: "Live Demo" },
   { href: "#how-it-works", label: "How It Works" },
   { href: "#pricing", label: "Pricing" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#demo", label: "Demo" },
-  { href: "#contact", label: "Contact" },
+  { href: "#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
@@ -38,7 +36,7 @@ export default function Navbar() {
           href="#contact"
           className="hidden rounded-full bg-royal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:inline-block"
         >
-          Get Started
+          Get started
         </a>
 
         <button
@@ -70,7 +68,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="rounded-full bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Get Started
+              Get started
             </a>
           </div>
         </div>

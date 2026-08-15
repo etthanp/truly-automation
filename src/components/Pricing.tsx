@@ -1,204 +1,94 @@
-"use client";
-
-import { useState } from "react";
 import Reveal from "./Reveal";
 
-const automationTiers = [
-  {
-    name: "Starter",
-    price: "$175",
-    description: "Perfect for shops just getting started with automation.",
-    features: [
-      "1 AI agent (booking or chatbot)",
-      "Up to 500 conversations/mo",
-      "Website chat widget",
-      "Email support",
-    ],
-    highlight: false,
-  },
-  {
-    name: "Growth",
-    price: "$250",
-    description: "Our most popular plan for growing local businesses.",
-    features: [
-      "2 AI agents of your choice",
-      "Up to 2,000 conversations/mo",
-      "SMS + website integration",
-      "Monthly performance reports",
-      "Priority support",
-    ],
-    highlight: true,
-  },
-  {
-    name: "Pro",
-    price: "$400",
-    description: "Full automation suite for businesses ready to scale.",
-    features: [
-      "All 3 AI agents included",
-      "Unlimited conversations",
-      "Custom integrations",
-      "Dedicated account manager",
-      "Quarterly strategy calls",
-    ],
-    highlight: false,
-  },
-];
-
-const websiteTiers = [
-  {
-    name: "Starter Site",
-    price: "$500–$800",
-    description: "A clean, professional web presence to get you found online.",
-    features: [
-      "Single landing page",
-      "Mobile friendly",
-      "Contact form",
-      "Basic SEO setup",
-    ],
-    highlight: false,
-    oneTime: true,
-  },
-  {
-    name: "Business Site",
-    price: "$1,200–$2,000",
-    description: "Everything you need to look like the best option in town.",
-    features: [
-      "5–7 page website",
-      "Contact form & social links",
-      "Google Analytics",
-      "SEO optimized",
-    ],
-    highlight: true,
-    oneTime: true,
-  },
-  {
-    name: "Premium Site",
-    price: "$2,500–$4,000",
-    description: "A fully custom site with automation built right in.",
-    features: [
-      "Full custom design",
-      "Blog included",
-      "Booking integration",
-      "AI automation built in",
-    ],
-    highlight: false,
-    oneTime: true,
-  },
+const included = [
+  "AI receptionist running on your existing number",
+  "Instant missed-call text-back, 24/7",
+  "Qualifies customers & books them into your schedule",
+  "Trained on your services, pricing & service area",
+  "Answers common questions automatically",
+  "Booked jobs & leads sent straight to you",
+  "Monthly performance recap",
+  "Cancel anytime — no long-term contract",
 ];
 
 export default function Pricing() {
-  const [tab, setTab] = useState<"automation" | "websites">("automation");
-  const tiers = tab === "automation" ? automationTiers : websiteTiers;
-
   return (
-    <section id="pricing" className="px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section id="pricing" className="bg-gradient-to-b from-royal/5 to-background px-6 py-24 lg:px-8">
+      <div className="mx-auto max-w-3xl">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Simple, transparent pricing
+          <span className="text-sm font-bold uppercase tracking-wide text-ember">
+            Pricing
+          </span>
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+            Simple pricing. One saved job pays for it.
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Pick the plan that fits your business today — upgrade anytime as
-            you grow.
+            The average missed call is worth around $300. Catch a single one a
+            month and this covers itself — everything after that is money you
+            were leaving on the table.
           </p>
         </Reveal>
 
-        {/* Tab toggle */}
-        <Reveal delay={80}>
-          <div className="mx-auto mt-10 flex w-fit rounded-full border border-navy/15 bg-white p-1">
-            <button
-              onClick={() => setTab("automation")}
-              className={`rounded-full px-6 py-2 text-sm font-semibold transition ${
-                tab === "automation"
-                  ? "bg-navy text-white shadow-sm"
-                  : "text-navy/60 hover:text-navy"
-              }`}
-            >
-              AI Automation
-            </button>
-            <button
-              onClick={() => setTab("websites")}
-              className={`rounded-full px-6 py-2 text-sm font-semibold transition ${
-                tab === "websites"
-                  ? "bg-navy text-white shadow-sm"
-                  : "text-navy/60 hover:text-navy"
-              }`}
-            >
-              Website Builds
-            </button>
-          </div>
-        </Reveal>
+        <Reveal delay={120}>
+          <div className="relative mt-14 overflow-hidden rounded-3xl border border-royal/20 bg-white shadow-xl shadow-royal/10">
+            <div className="absolute right-0 top-0 rounded-bl-2xl bg-ember px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+              Founding partner pricing
+            </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
-          {tiers.map((tier, i) => (
-            <Reveal key={tier.name} delay={i * 120}>
-              <div
-                className={`flex h-full flex-col rounded-2xl border p-8 ${
-                  tier.highlight
-                    ? "relative border-royal bg-gradient-to-b from-royal to-navy text-white shadow-xl shadow-royal/20 lg:-translate-y-3"
-                    : "border-navy/10 bg-white"
-                }`}
-              >
-                {tier.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sky px-4 py-1 text-xs font-bold text-navy">
-                    MOST POPULAR
-                  </span>
-                )}
-                <h3
-                  className={`text-lg font-bold ${
-                    tier.highlight ? "text-white" : "text-navy"
-                  }`}
-                >
-                  {tier.name}
-                </h3>
-                <p
-                  className={`mt-2 text-sm ${
-                    tier.highlight ? "text-white/70" : "text-navy/60"
-                  }`}
-                >
-                  {tier.description}
+            <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-2">
+              {/* Price side */}
+              <div className="flex flex-col justify-center border-b border-navy/10 pb-8 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
+                <p className="text-sm font-semibold uppercase tracking-wide text-navy/50">
+                  Missed-Call Rescue
                 </p>
-                <div className="mt-6 flex items-baseline gap-1">
-                  <span className="text-3xl font-extrabold">{tier.price}</span>
-                  <span
-                    className={`text-sm ${tier.highlight ? "text-white/70" : "text-navy/60"}`}
-                  >
-                    {"oneTime" in tier && tier.oneTime ? " one-time" : "/mo"}
-                  </span>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="text-5xl font-extrabold text-navy">$500</span>
+                  <span className="text-navy/60">one-time setup</span>
                 </div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-royal">$300</span>
+                  <span className="text-navy/60">/ month</span>
+                </div>
+                <p className="mt-6 rounded-xl bg-royal/5 p-4 text-sm text-navy/70">
+                  We&apos;re taking on our first few HVAC partners at founding
+                  rates in exchange for a little feedback. Get in now and lock
+                  this pricing in.
+                </p>
+                <a
+                  href="#contact"
+                  className="mt-6 block rounded-full bg-ember px-6 py-3.5 text-center text-base font-semibold text-white shadow-lg shadow-ember/30 transition hover:scale-105"
+                >
+                  Get started
+                </a>
+              </div>
 
-                <ul className="mt-8 flex-1 space-y-3">
-                  {tier.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className={`flex items-start gap-2 text-sm ${
-                        tier.highlight ? "text-white/90" : "text-navy/70"
-                      }`}
-                    >
-                      <span
-                        className={tier.highlight ? "text-sky" : "text-royal"}
-                      >
-                        ✓
-                      </span>
-                      {feature}
+              {/* Included side */}
+              <div className="flex flex-col justify-center">
+                <p className="text-sm font-semibold uppercase tracking-wide text-navy/50">
+                  Everything included
+                </p>
+                <ul className="mt-4 space-y-3">
+                  {included.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-navy/80">
+                      <span className="mt-0.5 text-ember">✓</span>
+                      {item}
                     </li>
                   ))}
                 </ul>
-
-                <a
-                  href="#contact"
-                  className={`mt-8 block rounded-full px-6 py-3 text-center text-sm font-semibold transition ${
-                    tier.highlight
-                      ? "bg-white text-navy hover:bg-sky"
-                      : "bg-navy text-white hover:bg-royal"
-                  }`}
-                >
-                  Get Started
-                </a>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={200}>
+          <p className="mt-8 text-center text-sm text-navy/50">
+            Also build websites for contractors? We do that too —{" "}
+            <a href="#contact" className="font-medium text-royal underline underline-offset-2">
+              just ask
+            </a>
+            .
+          </p>
+        </Reveal>
       </div>
     </section>
   );

@@ -13,19 +13,22 @@ async function writeEmail(lead: typeof leads[0]): Promise<string> {
     messages: [
       {
         role: "user",
-        content: `Write a short, friendly cold email to a ${lead.industry} called "${lead.businessName}" in ${lead.city}${lead.ownerName ? `, addressed to ${lead.ownerName}` : ""}.
+        content: `Write a short, friendly cold email to ${lead.ownerName ? `${lead.ownerName} at ` : ""}"${lead.businessName}", ${lead.industry ? `a ${lead.industry}` : "an HVAC company"} in ${lead.city}.
 
-You are Ethan from Truly Automation (trulyautomation.com). You build AI agents and professional websites for local businesses.
+You are Ethan, founder of Truly Automation (trulyautomation.com). You help HVAC companies stop losing jobs to missed calls. You set up an AI receptionist that instantly TEXTS BACK any missed call, answers the customer, and books the job — 24/7, including nights and weekends — all on their existing phone number.
 
-The email should:
-- Be 4-5 sentences max, conversational, not salesy
-- Mention one specific pain point relevant to their industry (e.g. missed calls, no-shows, manual scheduling)
-- Briefly mention you build AI agents that handle bookings/customer questions automatically, and professional websites
-- End with a simple question like "Would it be worth a quick 10-minute call?"
-- Sign off as Ethan from Truly Automation
-${lead.website ? `- Reference their website ${lead.website} naturally if possible` : ""}
+Write the email so it:
+- Is 4-5 short sentences, conversational and human — like a real person wrote it, NOT a marketing blast. No buzzwords, no "I hope this email finds you well."
+- Opens with a specific, relatable hook about missed calls: when the crew is out on jobs the phone goes to voicemail, and most callers don't leave one — they just call the next company.
+- Briefly explains the fix: an AI receptionist that texts them back in seconds and books the job automatically.
+- Mentions there's a quick live demo on the site (trulyautomation.com) they can try themselves — text it and watch it book a job.
+- Ends with a low-pressure question like "Worth a quick 10-minute look?"
+- Signs off simply as "Ethan — Truly Automation" followed by trulyautomation.com on the next line.
 
-Do not use subject line or any labels. Just write the email body.`,
+Rules:
+- Do NOT include a subject line or any labels. Just the email body text.
+- Do NOT invent statistics, customer names, or fake specifics about their company or website. Keep every claim honest.
+- Keep it under 120 words.`,
       },
     ],
   });
@@ -71,7 +74,9 @@ export async function POST(req: NextRequest) {
         const result = await resend.emails.send({
           from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
           to: lead.email,
-          subject: `Quick idea for ${lead.businessName}`,
+          subject: lead.ownerName
+            ? `Quick question, ${lead.ownerName}`
+            : `The calls ${lead.businessName} is missing`,
           text: emailBodies[i],
         });
 

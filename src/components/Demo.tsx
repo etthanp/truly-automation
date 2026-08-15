@@ -1,83 +1,79 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Reveal from "./Reveal";
 
-interface Message {
+interface Msg {
   role: "user" | "assistant";
   content: string;
 }
 
-type BotKey = "dental" | "restaurant" | "landscaping";
+const BUSINESS = "Summit Comfort Heating & Air";
+const CALLER = "(910) 555-0148";
+const GREETING =
+  "Hi, this is Ava — the virtual receptionist at Summit Comfort Heating & Air 👋 So sorry we missed your call! I can help you right here by text. What's going on with your system?";
 
-const BOTS: {
-  key: BotKey;
-  label: string;
-  emoji: string;
-  name: string;
-  agent: string;
-  placeholder: string;
-  greeting: string;
-}[] = [
-  {
-    key: "dental",
-    label: "Dental",
-    emoji: "🦷",
-    name: "Blue Ridge Dental Care",
-    agent: "Maya · Virtual Receptionist",
-    placeholder: "e.g. I need a cleaning, what's available?",
-    greeting: "Hi! 👋 I'm Maya, the virtual receptionist for Blue Ridge Dental Care. I can answer questions or book you an appointment right now — what can I help you with?",
-  },
-  {
-    key: "restaurant",
-    label: "Restaurant",
-    emoji: "🍽️",
-    name: "Harvest Table Kitchen",
-    agent: "Lily · Reservations Host",
-    placeholder: "e.g. Do you have a table for 2 on Friday?",
-    greeting: "Hey there! 👋 I'm Lily from Harvest Table Kitchen. I'd love to help you grab a table or tell you about our menu — what are you thinking?",
-  },
-  {
-    key: "landscaping",
-    label: "Landscaping",
-    emoji: "🌿",
-    name: "Green Valley Landscaping",
-    agent: "Jake · Scheduling Assistant",
-    placeholder: "e.g. I need my lawn mowed this week",
-    greeting: "Hey! 👋 I'm Jake with Green Valley Landscaping. Looking to get something scheduled or just have a question? I'm here to help!",
-  },
+const CHIPS = [
+  "My AC stopped cooling 😰",
+  "No heat and it's freezing in here",
+  "What do you charge for a tune-up?",
 ];
 
 export default function Demo() {
-  const [activeBot, setActiveBot] = useState<BotKey>("dental");
-  const [conversations, setConversations] = useState<Record<BotKey, Message[]>>({
-    dental: [{ role: "assistant", content: BOTS[0].greeting }],
-    restaurant: [{ role: "assistant", content: BOTS[1].greeting }],
-    landscaping: [{ role: "assistant", content: BOTS[2].greeting }],
-  });
+  const [phase, setPhase] = useState<"ringing" | "chat">("ringing");
+  const [ringMissed, setRingMissed] = useState(false);
+  const [messages, setMessages] = useState<Msg[]>([]);
+  const [aiTyping, setAiTyping] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const bot = BOTS.find((b) => b.key === activeBot)!;
-  const messages = conversations[activeBot];
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const clearTimers = useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }, []);
+
+  const start = useCallback(() => {
+    clearTimers();
+    setMessages([]);
+    setInput("");
+    setLoading(false);
+    setAiTyping(false);
+    setRingMissed(false);
+    setPhase("ringing");
+    timers.current.push(setTimeout(() => setRingMissed(true), 1100));
+    timers.current.push(
+      setTimeout(() => {
+        setPhase("chat");
+        setAiTyping(true);
+      }, 1800)
+    );
+    timers.current.push(
+      setTimeout(() => {
+        setAiTyping(false);
+        setMessages([{ role: "assistant", content: GREETING }]);
+      }, 2900)
+    );
+  }, [clearTimers]);
 
   useEffect(() => {
-    const el = chatContainerRef.current;
+    start();
+    return clearTimers;
+  }, [start, clearTimers]);
+
+  useEffect(() => {
+    const el = bodyRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [conversations, loading, activeBot]);
+  }, [messages, aiTyping, loading, phase]);
 
-  function switchBot(key: BotKey) {
-    setActiveBot(key);
-    setInput("");
-  }
+  async function send(text: string) {
+    const t = text.trim();
+    if (!t || loading || aiTyping || phase !== "chat") return;
 
-  async function sendMessage() {
-    const text = input.trim();
-    if (!text || loading) return;
-
-    const newMessages: Message[] = [...messages, { role: "user", content: text }];
-    setConversations((prev) => ({ ...prev, [activeBot]: newMessages }));
+    const next: Msg[] = [...messages, { role: "user", content: t }];
+    setMessages(next);
     setInput("");
     setLoading(true);
 
@@ -85,18 +81,24 @@ export default function Demo() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages, bot: activeBot }),
+        body: JSON.stringify({ messages: next, bot: "hvac" }),
       });
       const data = await res.json();
-      setConversations((prev) => ({
-        ...prev,
-        [activeBot]: [...newMessages, { role: "assistant", content: data.reply || "Sorry, I didn't catch that." }],
-      }));
+      setMessages((p) => [
+        ...p,
+        {
+          role: "assistant",
+          content: data.reply || "Sorry, I didn't catch that — say that again?",
+        },
+      ]);
     } catch {
-      setConversations((prev) => ({
-        ...prev,
-        [activeBot]: [...newMessages, { role: "assistant", content: "Something went wrong. Please try again." }],
-      }));
+      setMessages((p) => [
+        ...p,
+        {
+          role: "assistant",
+          content: "Sorry, I had trouble sending that. Mind trying again?",
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -105,108 +107,213 @@ export default function Demo() {
   function handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage();
+      send(input);
     }
   }
 
+  const showChips = phase === "chat" && messages.length === 1 && !loading && !aiTyping;
+
   return (
-    <section id="demo" className="px-6 py-24 lg:px-8">
+    <section id="demo" className="bg-gradient-to-b from-background to-royal/5 px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            See an agent in action
+          <span className="text-sm font-bold uppercase tracking-wide text-ember">
+            See it live
+          </span>
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+            Watch a missed call turn into a booked job
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            These are real AI agents — pick an industry and chat live. This is
-            exactly what we&apos;d build for your business.
+            This is a real AI, answering live. A customer calls, you can&apos;t
+            pick up — so it texts them back in seconds and books the job.{" "}
+            <strong className="font-semibold text-navy">
+              You&apos;re the customer — text it and see.
+            </strong>
           </p>
         </Reveal>
 
         <Reveal delay={150}>
-          <div className="mx-auto mt-12 max-w-md overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-xl">
+          <div className="mt-14 flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:justify-center">
+            {/* Phone */}
+            <div className="relative w-full max-w-[22rem] shrink-0">
+              <div className="overflow-hidden rounded-[2.75rem] border-[10px] border-navy bg-navy shadow-2xl">
+                {/* Notch */}
+                <div className="relative flex h-7 items-center justify-center bg-navy">
+                  <div className="h-1.5 w-24 rounded-full bg-white/20" />
+                </div>
 
-            {/* Tabs */}
-            <div className="flex border-b border-navy/10">
-              {BOTS.map((b) => (
-                <button
-                  key={b.key}
-                  onClick={() => switchBot(b.key)}
-                  className={`flex flex-1 items-center justify-center gap-1.5 py-3 text-xs font-semibold transition ${
-                    activeBot === b.key
-                      ? "border-b-2 border-royal text-royal"
-                      : "text-navy/50 hover:text-navy"
-                  }`}
-                >
-                  <span>{b.emoji}</span>
-                  {b.label}
-                </button>
-              ))}
-            </div>
+                {/* Screen */}
+                <div className="bg-[#eceff4]">
+                  {/* Status + header */}
+                  <div className="flex items-center justify-between bg-white px-5 pt-2 text-[11px] font-semibold text-navy/60">
+                    <span>7:42</span>
+                    <span className="flex items-center gap-1">▂▄▆ · 5G · 87%</span>
+                  </div>
 
-            {/* Header */}
-            <div className="flex items-center gap-3 bg-navy px-5 py-4 text-white">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-royal to-sky text-lg">
-                {bot.emoji}
-              </span>
-              <div>
-                <p className="text-sm font-semibold">{bot.name}</p>
-                <p className="flex items-center gap-1.5 text-xs text-white/60">
-                  <span className="h-2 w-2 rounded-full bg-green-400" />
-                  {bot.agent} · Online now
-                </p>
+                  <div className="flex items-center gap-3 border-b border-navy/10 bg-white px-4 py-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-ember to-sky text-sm font-bold text-white">
+                      A
+                    </span>
+                    <div className="leading-tight">
+                      <p className="text-sm font-semibold text-navy">{BUSINESS}</p>
+                      <p className="text-[11px] text-navy/50">
+                        Virtual receptionist · replies in seconds
+                      </p>
+                    </div>
+                    <button
+                      onClick={start}
+                      className="ml-auto rounded-full px-2 py-1 text-[11px] font-semibold text-royal transition hover:bg-royal/10"
+                      title="Replay the demo"
+                    >
+                      ↻ Replay
+                    </button>
+                  </div>
+
+                  {/* Ringing overlay */}
+                  {phase === "ringing" ? (
+                    <div className="flex h-[24rem] flex-col items-center justify-center gap-5 bg-navy px-6 text-center text-white">
+                      <span
+                        className={`flex h-20 w-20 items-center justify-center rounded-full text-3xl ${
+                          ringMissed ? "bg-red-500/90" : "animate-ring bg-white/15"
+                        }`}
+                      >
+                        📞
+                      </span>
+                      <div>
+                        <p className="text-lg font-semibold">
+                          {ringMissed ? "Missed call" : "Incoming call…"}
+                        </p>
+                        <p className="mt-1 text-sm text-white/60">{CALLER}</p>
+                      </div>
+                      <p className="text-xs text-white/40">
+                        {ringMissed
+                          ? "Nobody free to pick up…"
+                          : "Your crew is out on a job"}
+                      </p>
+                    </div>
+                  ) : (
+                    /* Chat thread */
+                    <div
+                      ref={bodyRef}
+                      className="flex h-[24rem] flex-col gap-2.5 overflow-y-auto px-4 py-4"
+                    >
+                      {/* Missed call system chip */}
+                      <div className="mx-auto mb-1 flex items-center gap-1.5 rounded-full bg-navy/10 px-3 py-1 text-[11px] font-medium text-navy/60">
+                        <span className="text-red-500">📵</span>
+                        Missed call · {CALLER} · just now
+                      </div>
+
+                      {messages.map((m, i) => (
+                        <div
+                          key={i}
+                          className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`bubble-in max-w-[82%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${
+                              m.role === "user"
+                                ? "rounded-br-md bg-royal text-white"
+                                : "rounded-bl-md bg-white text-navy shadow-sm"
+                            }`}
+                          >
+                            {m.content}
+                          </div>
+                        </div>
+                      ))}
+
+                      {(aiTyping || loading) && (
+                        <div className="flex justify-start">
+                          <div className="rounded-2xl rounded-bl-md bg-white px-4 py-3 shadow-sm">
+                            <span className="flex gap-1 text-navy/40">
+                              <span className="animate-bounce">•</span>
+                              <span className="animate-bounce [animation-delay:0.15s]">•</span>
+                              <span className="animate-bounce [animation-delay:0.3s]">•</span>
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Chips */}
+                  {showChips && (
+                    <div className="flex flex-wrap gap-2 bg-white px-4 pt-3">
+                      {CHIPS.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => send(c)}
+                          className="rounded-full border border-royal/30 bg-royal/5 px-3 py-1.5 text-[12px] font-medium text-royal transition hover:bg-royal/10"
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Input */}
+                  <div className="flex items-center gap-2 bg-white px-3 py-3">
+                    <input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={handleKey}
+                      placeholder={
+                        phase === "ringing" ? "Ringing…" : "Text your reply…"
+                      }
+                      disabled={phase !== "chat" || loading || aiTyping}
+                      className="flex-1 rounded-full bg-navy/5 px-4 py-2.5 text-[13px] text-navy outline-none placeholder:text-navy/40 focus:ring-2 focus:ring-royal/30 disabled:opacity-50"
+                    />
+                    <button
+                      onClick={() => send(input)}
+                      disabled={phase !== "chat" || loading || aiTyping || !input.trim()}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-royal text-white transition hover:bg-navy disabled:opacity-40"
+                      aria-label="Send"
+                    >
+                      ↑
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Messages */}
-            <div ref={chatContainerRef} className="flex h-80 flex-col gap-3 overflow-y-auto bg-background p-5">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                      msg.role === "user"
-                        ? "bg-royal text-white"
-                        : "bg-white text-navy shadow-sm"
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="rounded-2xl bg-white px-4 py-3 text-sm text-navy shadow-sm">
-                    <span className="flex gap-1">
-                      <span className="animate-bounce">•</span>
-                      <span className="animate-bounce [animation-delay:0.15s]">•</span>
-                      <span className="animate-bounce [animation-delay:0.3s]">•</span>
+            {/* Side explainer */}
+            <div className="max-w-sm lg:pt-6">
+              <ol className="space-y-6">
+                {[
+                  {
+                    n: "1",
+                    t: "The call comes in",
+                    d: "A homeowner with a dead AC calls. Your team is on a roof — nobody can grab it.",
+                  },
+                  {
+                    n: "2",
+                    t: "It texts back in seconds",
+                    d: "Instead of hitting voicemail, they get a friendly text before they can dial the next company.",
+                  },
+                  {
+                    n: "3",
+                    t: "It books the job",
+                    d: "Ava asks what's wrong, gets their address, and locks in a time slot — then hands you the details.",
+                  },
+                ].map((s) => (
+                  <li key={s.n} className="flex gap-4">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ember text-sm font-bold text-white">
+                      {s.n}
                     </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Input */}
-            <div className="flex items-center gap-2 border-t border-navy/10 p-4">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKey}
-                placeholder={bot.placeholder}
-                disabled={loading}
-                className="flex-1 rounded-full bg-navy/5 px-4 py-2.5 text-sm text-navy outline-none placeholder:text-navy/40 focus:ring-2 focus:ring-royal/30 disabled:opacity-50"
-              />
-              <button
-                onClick={sendMessage}
-                disabled={loading || !input.trim()}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-royal text-white transition hover:bg-navy disabled:opacity-40"
-                aria-label="Send"
-              >
-                ↑
-              </button>
+                    <div>
+                      <p className="font-bold text-navy">{s.t}</p>
+                      <p className="mt-0.5 text-sm text-navy/70">{s.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-8 rounded-xl border border-navy/10 bg-white p-4 text-sm text-navy/70 shadow-sm">
+                No app for your customer to download — it&apos;s just a text.
+                This same receptionist runs on{" "}
+                <span className="font-semibold text-navy">your</span> business
+                number, trained on{" "}
+                <span className="font-semibold text-navy">your</span> services,
+                pricing, and service area.
+              </p>
             </div>
           </div>
         </Reveal>

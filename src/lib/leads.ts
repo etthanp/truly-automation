@@ -7,29 +7,31 @@ export interface Lead {
   website?: string;
 }
 
-// Add your leads here — name, industry, city, email, website (optional)
+// ──────────────────────────────────────────────────────────────────────
+// YOUR HVAC LEADS
+//
+// Every morning at 9am, the system emails everyone in this list a
+// personalized cold email (written fresh by AI) pitching the missed-call
+// AI receptionist — then marks them contacted so they're never emailed twice.
+//
+// HOW TO ADD LEADS:
+//   1. In Apollo.io, filter for HVAC companies in a city/region you want.
+//   2. Grab the verified email + (if shown) the owner's first name.
+//   3. Add an entry below following the example shape.
+//   4. Push to GitHub — they'll get emailed the next morning at 9am.
+//
+// Required: businessName, industry, city, email.
+// Optional but recommended: ownerName, website (make the email more personal).
+// ──────────────────────────────────────────────────────────────────────
+
 export const leads: Lead[] = [
-  {
-    businessName: "Test Business",
-    ownerName: "Ethan",
-    industry: "dental office",
-    city: "Rock Hill, SC",
-    email: "ethan@trulyautomation.com",
-  },
-  {
-    businessName: "Palmetto Benefit Solutions",
-    ownerName: "Will",
-    industry: "insurance agency",
-    city: "Rock Hill, SC",
-    email: "will@palmettobenefits.net",
-    website: "palmettobenefitsolutions.com",
-  },
-  {
-    businessName: "Allied Benefit Systems",
-    ownerName: "Susie",
-    industry: "insurance agency",
-    city: "Rock Hill, SC",
-    email: "sleary-belk@alliedbenefit.com",
-    website: "alliedbenefit.com",
-  },
+  // ↓ Example. Copy this shape for each real lead, then delete this one.
+  // {
+  //   businessName: "Summit Comfort Heating & Air",
+  //   ownerName: "Dave",
+  //   industry: "HVAC contractor",
+  //   city: "Fayetteville, NC",
+  //   email: "dave@summitcomfortair.com",
+  //   website: "summitcomfortair.com",
+  // },
 ];

@@ -6,6 +6,7 @@
   --navy: #0b1f3a;
   --royal: #2c5fe0;
   --sky: #5ec3f0;
+  --ember: #f97316;
 }
 
 @theme inline {
@@ -14,6 +15,7 @@
   --color-navy: var(--navy);
   --color-royal: var(--royal);
   --color-sky: var(--sky);
+  --color-ember: var(--ember);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -41,4 +43,37 @@ body {
 
 .reveal.is-visible {
   animation: fade-up 0.7s ease-out forwards;
+}
+
+/* Incoming-call ring pulse for the live demo */
+@keyframes ring-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+.animate-ring {
+  animation: ring-pulse 1s ease-in-out infinite;
+}
+
+/* Message bubble pop-in for the SMS demo */
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bubble-in {
+  animation: bubble-in 0.35s ease-out both;
 }

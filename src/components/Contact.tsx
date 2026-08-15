@@ -38,12 +38,13 @@ export default function Contact() {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Let&apos;s build something great together
+            See your missed calls turn into booked jobs
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Whether you need a new website, an AI agent, or both — tell us
-            about your business and we&apos;ll reach out within one business day.
-            Or email us directly at{" "}
+            Tell us about your shop and we&apos;ll show you exactly what
+            your customers would experience — and how many jobs you could be
+            catching. We&apos;ll reach out within one business day. Or email
+            us directly at{" "}
             <a
               href="mailto:ethan@trulyautomation.com"
               className="text-sky underline underline-offset-2 hover:text-white"
@@ -68,6 +69,11 @@ export default function Contact() {
               onSubmit={handleSubmit}
               className="mt-10 grid gap-5 rounded-2xl border border-white/10 bg-white/5 p-8"
             >
+              <input
+                type="hidden"
+                name="_subject"
+                value="New HVAC lead — trulyautomation.com"
+              />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label
@@ -115,7 +121,7 @@ export default function Contact() {
                   name="business"
                   type="text"
                   required
-                  placeholder="Bloom Hair Studio"
+                  placeholder="Summit Comfort Heating & Air"
                   className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
                 />
               </div>
@@ -125,14 +131,14 @@ export default function Contact() {
                   htmlFor="need"
                   className="block text-sm font-medium text-white/80"
                 >
-                  What do you need help with?
+                  How many calls do you figure you miss in a week?
                 </label>
                 <textarea
                   id="need"
                   name="need"
                   rows={4}
                   required
-                  placeholder="Tell us about your business — need a website, an AI agent, or both?"
+                  placeholder="A rough guess is fine — plus anything else you'd like to know. (e.g. 'Probably 5-10 a week, mostly when we're on jobs.')"
                   className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
                 />
               </div>
@@ -149,7 +155,7 @@ export default function Contact() {
                 disabled={status === "submitting"}
                 className="mt-2 rounded-full bg-sky px-8 py-3.5 text-base font-semibold text-navy transition hover:bg-white disabled:opacity-50"
               >
-                {status === "submitting" ? "Sending…" : "Submit Request"}
+                {status === "submitting" ? "Sending…" : "Get started"}
               </button>
             </form>
           )}
