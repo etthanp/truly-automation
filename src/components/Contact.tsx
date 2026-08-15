@@ -41,7 +41,7 @@ export default function Contact() {
             See your missed calls turn into booked jobs
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Book a quick 10-minute demo and we&apos;ll show you exactly what
+            Tell us about your shop and we&apos;ll show you exactly what
             your customers would experience — and how many jobs you could be
             catching. We&apos;ll reach out within one business day. Or email
             us directly at{" "}
@@ -72,7 +72,7 @@ export default function Contact() {
               <input
                 type="hidden"
                 name="_subject"
-                value="New HVAC demo request — trulyautomation.com"
+                value="New HVAC lead — trulyautomation.com"
               />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -155,7 +155,7 @@ export default function Contact() {
                 disabled={status === "submitting"}
                 className="mt-2 rounded-full bg-sky px-8 py-3.5 text-base font-semibold text-navy transition hover:bg-white disabled:opacity-50"
               >
-                {status === "submitting" ? "Sending…" : "Request my demo"}
+                {status === "submitting" ? "Sending…" : "Get started"}
               </button>
             </form>
           )}

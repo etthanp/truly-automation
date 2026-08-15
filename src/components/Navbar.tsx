@@ -36,7 +36,7 @@ export default function Navbar() {
           href="#contact"
           className="hidden rounded-full bg-royal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:inline-block"
         >
-          Book a demo
+          Get started
         </a>
 
         <button
@@ -68,7 +68,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="rounded-full bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Book a demo
+              Get started
             </a>
           </div>
         </div>

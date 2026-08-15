@@ -39,10 +39,10 @@ export default function Hero() {
           <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80">
             When your techs are on a job, calls go to voicemail — and most
             callers never leave one. They just call the next company. Truly
-            Automation gives you an <strong className="font-semibold text-white">AI
-            receptionist</strong> that instantly texts back every missed call,
-            answers questions, and books the job — 24/7, nights and weekends
-            included.
+            Automation gives you an <strong className="font-semibold text-white">automatic
+            receptionist you don&apos;t have to touch</strong> — it instantly texts
+            back every missed call, answers questions, and books the job, 24/7,
+            nights and weekends included.
           </p>
         </Reveal>
 
@@ -58,7 +58,7 @@ export default function Hero() {
               href="#contact"
               className="w-full rounded-full border border-white/30 bg-white/5 px-8 py-3.5 text-base font-semibold text-white transition hover:bg-white/15 sm:w-auto"
             >
-              Book a 10-min demo
+              Get started
             </a>
           </div>
         </Reveal>

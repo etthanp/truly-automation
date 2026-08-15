@@ -58,7 +58,7 @@ export default function Pricing() {
                   href="#contact"
                   className="mt-6 block rounded-full bg-ember px-6 py-3.5 text-center text-base font-semibold text-white shadow-lg shadow-ember/30 transition hover:scale-105"
                 >
-                  Book a 10-min demo
+                  Get started
                 </a>
               </div>
 

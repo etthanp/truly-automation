@@ -126,7 +126,7 @@ export default function Calculator() {
               href="#contact"
               className="inline-block rounded-full bg-ember px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-ember/30 transition hover:scale-105"
             >
-              Stop the leak — book a demo
+              Stop the leak — get started
             </a>
           </div>
         </Reveal>
