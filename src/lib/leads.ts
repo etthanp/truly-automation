@@ -25,13 +25,13 @@ export interface Lead {
 // ──────────────────────────────────────────────────────────────────────
 
 export const leads: Lead[] = [
-  // ↓ Example. Copy this shape for each real lead, then delete this one.
-  // {
-  //   businessName: "Summit Comfort Heating & Air",
-  //   ownerName: "Dave",
-  //   industry: "HVAC contractor",
-  //   city: "Fayetteville, NC",
-  //   email: "dave@summitcomfortair.com",
-  //   website: "summitcomfortair.com",
-  // },
+  // TEMP test lead — sends one email to Ethan's own inbox to confirm the system works.
+  // Safe to delete after the test (Upstash marks it contacted, so it won't resend).
+  {
+    businessName: "Test Run HVAC",
+    ownerName: "Ethan",
+    industry: "HVAC contractor",
+    city: "Pembroke, NC",
+    email: "ethan.b.pres@gmail.com",
+  },
 ];
