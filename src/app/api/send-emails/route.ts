@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     // Send all emails in parallel
     const sendResults = await Promise.allSettled(
       newLeads.map(async (lead, i) => {
-        const result = await resend.emails.send({
+        const { data, error } = await resend.emails.send({
           from: "Ethan at Truly Automation <ethan@trulyautomation.com>",
           to: lead.email,
           subject: lead.ownerName
@@ -80,25 +80,38 @@ export async function POST(req: NextRequest) {
           text: emailBodies[i],
         });
 
-        // Mark as contacted
+        // Resend returns failures in `error` instead of throwing — surface them
+        // so we never report a false "sent".
+        if (error) {
+          throw new Error(
+            `${error.name || "ResendError"}: ${error.message || JSON.stringify(error)}`
+          );
+        }
+
+        // Mark as contacted ONLY after a genuinely successful send.
         await redis.sadd("contacted_emails", lead.email);
         await redis.hset(`contact:${lead.email}`, {
           business: lead.businessName,
           sentAt: new Date().toISOString(),
+          emailId: data?.id ?? "",
         });
 
-        return { business: lead.businessName, email: lead.email, result };
+        return { business: lead.businessName, email: lead.email, id: data?.id };
       })
     );
 
-    const sent = sendResults.filter((r) => r.status === "fulfilled").map((r) =>
-      r.status === "fulfilled" ? { business: r.value.business, status: "sent" } : null
-    ).filter(Boolean);
-
-    const failed = sendResults.filter((r) => r.status === "rejected").map((r, i) => ({
-      business: newLeads[i].businessName,
-      error: r.status === "rejected" ? String(r.reason) : "",
-    }));
+    const sent: { business: string; status: string; id?: string }[] = [];
+    const failed: { business: string; error: string }[] = [];
+    sendResults.forEach((r, i) => {
+      if (r.status === "fulfilled") {
+        sent.push({ business: r.value.business, status: "sent", id: r.value.id });
+      } else {
+        failed.push({
+          business: newLeads[i].businessName,
+          error: String(r.reason?.message ?? r.reason),
+        });
+      }
+    });
 
     console.log(`✅ Sent: ${sent.length} | ⏭️ Skipped: ${skippedCount} | ❌ Failed: ${failed.length}`);
 
