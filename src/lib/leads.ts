@@ -32,6 +32,6 @@ export const leads: Lead[] = [
     ownerName: "Ethan",
     industry: "HVAC contractor",
     city: "Pembroke, NC",
-    email: "ethan.b.pres+demo2@gmail.com",
+    email: "ethan.b.pres+demo3@gmail.com",
   },
 ];
