@@ -2,20 +2,24 @@
 
 import { useState } from "react";
 
-const links = [
-  { href: "#demo", label: "Live Demo" },
+type NavLink = { href: string; label: string };
+
+const homeLinks: NavLink[] = [
+  { href: "#services", label: "Services" },
   { href: "#how-it-works", label: "How It Works" },
+  { href: "#demo", label: "Live Demo" },
   { href: "#pricing", label: "Pricing" },
+  { href: "#about", label: "About" },
   { href: "#faq", label: "FAQ" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
   const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-navy/5 bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
           <span className="text-lg font-bold text-navy">Truly Automation</span>
         </a>

@@ -1,12 +1,12 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Problem from "@/components/Problem";
-import Calculator from "@/components/Calculator";
+import AgencyHero from "@/components/AgencyHero";
+import Services from "@/components/Services";
+import Acquisition from "@/components/Acquisition";
+import WhoItsFor from "@/components/WhoItsFor";
 import Demo from "@/components/Demo";
-import HowItWorks from "@/components/HowItWorks";
-import Features from "@/components/Features";
-import Pricing from "@/components/Pricing";
-import FAQ from "@/components/FAQ";
+import AgencyPricing from "@/components/AgencyPricing";
+import Founder from "@/components/Founder";
+import FAQ, { agencyFaqs } from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -15,15 +15,15 @@ export default function Home() {
     <>
       <Navbar />
       <main className="flex-1">
-        <Hero />
-        <Problem />
-        <Calculator />
+        <AgencyHero />
+        <Services />
+        <Acquisition />
+        <WhoItsFor />
         <Demo />
-        <HowItWorks />
-        <Features />
-        <Pricing />
-        <FAQ />
-        <Contact />
+        <AgencyPricing />
+        <Founder />
+        <FAQ items={agencyFaqs} />
+        <Contact variant="agency" />
       </main>
       <Footer />
     </>

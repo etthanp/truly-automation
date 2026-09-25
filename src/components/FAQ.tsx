@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 
-const faqs = [
+type Faq = { q: string; a: string };
+
+const hvacFaqs: Faq[] = [
   {
     q: "Will it sound like a robot?",
     a: "No. It texts like a warm, capable front-desk person — trained on your company, your services, and your pricing. To the customer it just feels like they got a fast, helpful reply. You saw it yourself in the demo above.",
@@ -30,7 +32,34 @@ const faqs = [
   },
 ];
 
-export default function FAQ() {
+export const agencyFaqs: Faq[] = [
+  {
+    q: "What counts as a \"qualified meeting\"?",
+    a: "A call with a decision-maker at a business that fits the target profile we agree on together — industry, size, location, and need. If they don't fit the profile or don't show up, it doesn't count and you don't pay for it.",
+  },
+  {
+    q: "How is this different from buying a lead list?",
+    a: "A lead list is a spreadsheet of cold names — you still have to do all the outreach. We do the outreach, the follow-up, and the back-and-forth, and only hand you people who've agreed to talk. You just show up and close.",
+  },
+  {
+    q: "Does the outreach go out under my name?",
+    a: "Usually, yes — prospects respond far better to a business owner than to an agency. We set up separate sending addresses so your main email and reputation stay protected, and you approve the messaging before anything goes out.",
+  },
+  {
+    q: "How long until I see meetings?",
+    a: "Setup takes about two weeks — strategy call, list building, and getting the sending set up properly. Replies typically start coming in the first few weeks after launch. Results depend on your offer and market, which is exactly why the pilot is pay-per-meeting: if we don't book, you don't pay.",
+  },
+  {
+    q: "Do I have to sign a long-term contract?",
+    a: "No. Everything is month-to-month. We'd rather earn your business every month than lock you in.",
+  },
+  {
+    q: "What does the AI receptionist have to do with getting clients?",
+    a: "Winning new business is half the battle — responding fast is the other half. The AI receptionist instantly answers every missed call and inquiry, 24/7, so the leads you worked hard for never go cold. Add it on, or use it on its own.",
+  },
+];
+
+export default function FAQ({ items = hvacFaqs }: { items?: Faq[] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -46,7 +75,7 @@ export default function FAQ() {
         </Reveal>
 
         <div className="mt-12 space-y-3">
-          {faqs.map((faq, i) => {
+          {items.map((faq, i) => {
             const isOpen = open === i;
             return (
               <Reveal key={faq.q} delay={i * 60}>

@@ -5,7 +5,31 @@ import Reveal from "./Reveal";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkolvvzy";
 
-export default function Contact() {
+const copy = {
+  agency: {
+    title: "Let's fill your calendar",
+    intro:
+      "Tell us what you sell and who your ideal client is. We'll get back to you within one business day with a quick, no-pressure plan for reaching them.",
+    subject: "New agency lead — trulyautomation.com",
+    businessPlaceholder: "Acme Commercial Cleaning",
+    needLabel: "What do you sell, and who's your ideal client?",
+    needPlaceholder:
+      "e.g. 'Commercial cleaning in Fayetteville — we want more medical offices and property managers.'",
+  },
+  hvac: {
+    title: "See your missed calls turn into booked jobs",
+    intro:
+      "Tell us about your shop and we'll show you exactly what your customers would experience — and how many jobs you could be catching. We'll reach out within one business day.",
+    subject: "New HVAC lead — trulyautomation.com",
+    businessPlaceholder: "Summit Comfort Heating & Air",
+    needLabel: "How many calls do you figure you miss in a week?",
+    needPlaceholder:
+      "A rough guess is fine — plus anything else you'd like to know. (e.g. 'Probably 5-10 a week, mostly when we're on jobs.')",
+  },
+};
+
+export default function Contact({ variant = "agency" }: { variant?: keyof typeof copy }) {
+  const c = copy[variant];
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -38,13 +62,10 @@ export default function Contact() {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            See your missed calls turn into booked jobs
+            {c.title}
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Tell us about your shop and we&apos;ll show you exactly what
-            your customers would experience — and how many jobs you could be
-            catching. We&apos;ll reach out within one business day. Or email
-            us directly at{" "}
+            {c.intro} Or email us directly at{" "}
             <a
               href="mailto:ethan@trulyautomation.com"
               className="text-sky underline underline-offset-2 hover:text-white"
@@ -72,7 +93,7 @@ export default function Contact() {
               <input
                 type="hidden"
                 name="_subject"
-                value="New HVAC lead — trulyautomation.com"
+                value={c.subject}
               />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -121,24 +142,45 @@ export default function Contact() {
                   name="business"
                   type="text"
                   required
-                  placeholder="Summit Comfort Heating & Air"
+                  placeholder={c.businessPlaceholder}
                   className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
                 />
               </div>
+
+              {variant === "agency" && (
+                <div>
+                  <label
+                    htmlFor="service"
+                    className="block text-sm font-medium text-white/80"
+                  >
+                    What are you interested in?
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    defaultValue="Client acquisition"
+                    className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-sky [&>option]:text-navy"
+                  >
+                    <option>Client acquisition</option>
+                    <option>AI receptionist</option>
+                    <option>Both</option>
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label
                   htmlFor="need"
                   className="block text-sm font-medium text-white/80"
                 >
-                  How many calls do you figure you miss in a week?
+                  {c.needLabel}
                 </label>
                 <textarea
                   id="need"
                   name="need"
                   rows={4}
                   required
-                  placeholder="A rough guess is fine — plus anything else you'd like to know. (e.g. 'Probably 5-10 a week, mostly when we're on jobs.')"
+                  placeholder={c.needPlaceholder}
                   className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
                 />
               </div>

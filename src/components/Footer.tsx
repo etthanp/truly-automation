@@ -1,17 +1,20 @@
-const links = [
-  { href: "#demo", label: "Live Demo" },
+type FooterLink = { href: string; label: string };
+
+const homeLinks: FooterLink[] = [
+  { href: "#services", label: "Services" },
   { href: "#how-it-works", label: "How It Works" },
   { href: "#pricing", label: "Pricing" },
+  { href: "/hvac", label: "For HVAC" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
 
-export default function Footer() {
+export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) {
   return (
     <footer className="bg-navy px-6 py-12 text-white/70 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col items-center justify-between gap-8 border-b border-white/10 pb-10 sm:flex-row">
-          <a href="#" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <img src="/logo.svg" alt="Truly Automation" className="h-9 w-auto brightness-0 invert" />
             <span className="text-lg font-bold text-white">
               Truly Automation
@@ -40,7 +43,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm sm:flex-row">
           <p>&copy; {new Date().getFullYear()} Truly Automation. All rights reserved.</p>
-          <p>Built by Ethan, Founder &amp; Automation Consultant</p>
+          <p>Built by Ethan, Founder &middot; North Carolina</p>
         </div>
       </div>
     </footer>
