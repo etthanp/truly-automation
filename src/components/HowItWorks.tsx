@@ -1,23 +1,30 @@
 import Reveal from "./Reveal";
+import Link from "next/link";
 
 const steps = [
   {
     number: "01",
-    title: "We set it up for you",
+    title: "Free marketing checkup",
     description:
-      "One quick call so we learn your services, pricing, service area, and hours. You don't touch anything technical — we build and train the whole thing.",
+      "We look at where you show up on Google Maps, your website on a phone, your reviews next to your competitors, and how your calls get answered. You get a one-page report.",
   },
   {
     number: "02",
-    title: "We connect it to your number",
+    title: "Pick your plan",
     description:
-      "Missed calls to your existing business line now trigger an instant text-back. No new hardware, no app, nothing for your customers to install.",
+      "A 15-minute call to walk through the report and choose the package that fits. No pressure. The report is yours either way.",
   },
   {
     number: "03",
-    title: "You start catching jobs",
+    title: "We build everything",
     description:
-      "Every missed call gets worked automatically, day or night. Booked appointments and customer details land straight in your inbox. Live in days.",
+      "Website, Google listing, review requests, AI receptionist, social pages, ads. Most clients are fully live in about two weeks. You don't touch anything technical.",
+  },
+  {
+    number: "04",
+    title: "We run it every month",
+    description:
+      "Posts go out, reviews come in, ads get tuned, and every missed call gets answered. Each month you get a simple report of what it brought in.",
   },
 ];
 
@@ -30,32 +37,38 @@ export default function HowItWorks() {
             How it works
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            You run the trucks. We&apos;ll catch the calls.
+            You run the jobs. We&apos;ll keep the phone ringing.
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Getting set up takes almost nothing on your end — three steps and
-            zero technical headaches.
+            Four steps from &ldquo;we should do something about
+            marketing&rdquo; to a system that runs without you.
           </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => (
             <Reveal key={step.number} delay={i * 120}>
-              <div className="relative rounded-2xl border border-white/10 bg-white/5 p-8">
+              <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-7">
                 <span className="text-5xl font-extrabold text-ember/50">
                   {step.number}
                 </span>
                 <h3 className="mt-4 text-xl font-bold">{step.title}</h3>
                 <p className="mt-3 text-white/70">{step.description}</p>
-                {i < steps.length - 1 && (
-                  <span className="absolute top-1/2 -right-5 hidden -translate-y-1/2 text-2xl text-ember/50 lg:block">
-                    →
-                  </span>
-                )}
               </div>
             </Reveal>
           ))}
         </div>
+
+        <Reveal delay={200}>
+          <p className="mt-10 text-center">
+            <Link
+              href="/checkup/example-plumbing"
+              className="text-sm font-semibold text-sky underline underline-offset-4 hover:text-white"
+            >
+              See a sample marketing checkup →
+            </Link>
+          </p>
+        </Reveal>
       </div>
     </section>
   );

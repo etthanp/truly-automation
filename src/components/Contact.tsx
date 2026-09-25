@@ -5,6 +5,26 @@ import Reveal from "./Reveal";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkolvvzy";
 
+const TRADES = [
+  "HVAC",
+  "Plumbing",
+  "Electrical",
+  "Roofing",
+  "Concrete",
+  "Landscaping / lawn care",
+  "Fencing",
+  "Pressure washing",
+  "Painting",
+  "Tree service",
+  "Pest control",
+  "Garage doors",
+  "Other",
+];
+
+const inputClass =
+  "mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky";
+const labelClass = "block text-sm font-medium text-white/80";
+
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
@@ -38,13 +58,12 @@ export default function Contact() {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            See your missed calls turn into booked jobs
+            Get your free marketing checkup
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Tell us about your shop and we&apos;ll show you exactly what
-            your customers would experience — and how many jobs you could be
-            catching. We&apos;ll reach out within one business day. Or email
-            us directly at{" "}
+            We&apos;ll look at your Google ranking, website, reviews and calls,
+            and send you a one-page report with the three things to fix first.
+            Free, no strings attached. Or email us directly at{" "}
             <a
               href="mailto:ethan@trulyautomation.com"
               className="text-sky underline underline-offset-2 hover:text-white"
@@ -58,10 +77,9 @@ export default function Contact() {
           {status === "success" ? (
             <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
               <p className="text-2xl">🎉</p>
-              <h3 className="mt-3 text-xl font-bold">Thanks — message sent!</h3>
+              <h3 className="mt-3 text-xl font-bold">Got it — your checkup is on the way!</h3>
               <p className="mt-2 text-white/70">
-                We&apos;ll be in touch at the email you provided within one
-                business day.
+                We&apos;ll reach out within one business day with your report.
               </p>
             </div>
           ) : (
@@ -72,80 +90,68 @@ export default function Contact() {
               <input
                 type="hidden"
                 name="_subject"
-                value="New HVAC lead — trulyautomation.com"
+                value="New checkup request — trulyautomation.com"
               />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-white/80"
-                  >
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    placeholder="Jane Smith"
-                    className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
-                  />
+                  <label htmlFor="name" className={labelClass}>Name</label>
+                  <input id="name" name="name" type="text" required placeholder="Mike Johnson" className={inputClass} />
                 </div>
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-white/80"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
+                  <label htmlFor="phone" className={labelClass}>Phone</label>
+                  <input id="phone" name="phone" type="tel" required placeholder="(910) 555-0123" className={inputClass} />
+                </div>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="business" className={labelClass}>Business name</label>
+                  <input id="business" name="business" type="text" required placeholder="Johnson Plumbing & Drain" className={inputClass} />
+                </div>
+                <div>
+                  <label htmlFor="email" className={labelClass}>Email</label>
+                  <input id="email" name="email" type="email" required placeholder="mike@johnsonplumbing.com" className={inputClass} />
+                </div>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="trade" className={labelClass}>Your trade</label>
+                  <select
+                    id="trade"
+                    name="trade"
                     required
-                    placeholder="jane@business.com"
-                    className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
-                  />
+                    defaultValue=""
+                    className={`${inputClass} [&>option]:text-navy`}
+                  >
+                    <option value="" disabled>Choose one</option>
+                    {TRADES.map((t) => (
+                      <option key={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="area" className={labelClass}>City / service area</label>
+                  <input id="area" name="area" type="text" required placeholder="Fayetteville & Hope Mills" className={inputClass} />
                 </div>
               </div>
 
               <div>
-                <label
-                  htmlFor="business"
-                  className="block text-sm font-medium text-white/80"
-                >
-                  Business name
-                </label>
-                <input
-                  id="business"
-                  name="business"
-                  type="text"
-                  required
-                  placeholder="Summit Comfort Heating & Air"
-                  className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="need"
-                  className="block text-sm font-medium text-white/80"
-                >
-                  How many calls do you figure you miss in a week?
+                <label htmlFor="need" className={labelClass}>
+                  Anything we should know? <span className="text-white/40">(optional)</span>
                 </label>
                 <textarea
                   id="need"
                   name="need"
-                  rows={4}
-                  required
-                  placeholder="A rough guess is fine — plus anything else you'd like to know. (e.g. 'Probably 5-10 a week, mostly when we're on jobs.')"
-                  className="mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky"
+                  rows={3}
+                  placeholder="e.g. 'We don't have a website and most work comes from referrals.'"
+                  className={inputClass}
                 />
               </div>
 
               {status === "error" && (
                 <p className="text-sm text-red-400">
-                  Something went wrong — please try again or email us directly
+                  Something went wrong. Please try again or email us directly
                   at ethan@trulyautomation.com.
                 </p>
               )}
@@ -153,9 +159,9 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="mt-2 rounded-full bg-sky px-8 py-3.5 text-base font-semibold text-navy transition hover:bg-white disabled:opacity-50"
+                className="mt-2 rounded-full bg-ember px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-ember/30 transition hover:scale-[1.02] disabled:opacity-50"
               >
-                {status === "submitting" ? "Sending…" : "Get started"}
+                {status === "submitting" ? "Sending…" : "Get my free checkup"}
               </button>
             </form>
           )}

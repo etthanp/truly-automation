@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Truly Automation | Never Lose Another HVAC Job to a Missed Call",
+  title: "Truly Automation | The Marketing Team for Home & Outdoor Service Companies",
   description:
-    "When an HVAC contractor misses a call, the customer calls a competitor. Truly Automation's AI receptionist instantly texts back every missed call, qualifies the customer, and books the job — 24/7, nights and weekends. Setup in days.",
+    "Truly Automation is the marketing team for HVAC, plumbing, electrical, roofing, concrete, landscaping and other trade businesses: websites, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
   openGraph: {
-    title: "Never lose another HVAC job to a missed call",
+    title: "Your marketing team, without the payroll",
     description:
-      "Your AI receptionist texts back every missed call in seconds, qualifies the customer, and books the job — 24/7. Built for HVAC contractors by Truly Automation.",
+      "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for trade businesses. Get a free marketing checkup.",
     url: "https://trulyautomation.com",
     siteName: "Truly Automation",
     type: "website",

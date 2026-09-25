@@ -1,21 +1,21 @@
 import Reveal from "./Reveal";
 
-const facts = [
+const problems = [
   {
-    stat: "Up to 62%",
-    text: "of calls to small home-services businesses go unanswered — because the crew is on a job, not by the phone.",
+    title: "Invisible on Google Maps",
+    text: "When someone searches “plumber near me,” most call one of the first few companies Google shows. If that isn’t you, you never even hear about the job.",
   },
   {
-    stat: "60%",
-    text: "of after-hours HVAC calls never get answered. And 68% of those after-hours calls are urgent — no heat, no AC, water everywhere.",
+    title: "A website that hurts you",
+    text: "No website, or one that’s slow and broken on a phone, tells customers you might not be around next year. They move on to the next result.",
   },
   {
-    stat: "85%",
-    text: "of people who hit your voicemail hang up and never leave a message. You never even know they called.",
+    title: "Not enough reviews",
+    text: "Customers compare stars before they call. The company with 180 reviews beats the one with 12, even when your work is better.",
   },
   {
-    stat: "67%",
-    text: "of callers who can't reach you simply call the next company on Google — and book with them instead.",
+    title: "Calls you can’t answer",
+    text: "Up to 62% of calls to small home-services businesses go unanswered because the crew is on a job. Most of those callers just call someone else.",
   },
 ];
 
@@ -28,24 +28,20 @@ export default function Problem() {
             The problem
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            A missed call isn&apos;t a missed call. It&apos;s a booked job — for
-            your competitor.
+            Good work isn&apos;t enough if customers can&apos;t find you.
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Every ring you can&apos;t get to is a customer with a broken system
-            and a credit card in hand. If you don&apos;t pick up, someone else
-            will.
+            Most trade businesses grow on word of mouth, and lose jobs every
+            week to competitors who simply show up first online.
           </p>
         </Reveal>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2">
-          {facts.map((f, i) => (
-            <Reveal key={f.stat} delay={i * 100}>
-              <div className="flex h-full gap-5 rounded-2xl border border-navy/10 bg-white p-7 shadow-sm">
-                <div className="shrink-0">
-                  <p className="text-4xl font-extrabold text-ember">{f.stat}</p>
-                </div>
-                <p className="text-navy/75">{f.text}</p>
+          {problems.map((p, i) => (
+            <Reveal key={p.title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-navy/10 bg-white p-7 shadow-sm">
+                <h3 className="text-xl font-bold text-navy">{p.title}</h3>
+                <p className="mt-2 text-navy/75">{p.text}</p>
               </div>
             </Reveal>
           ))}
@@ -54,13 +50,12 @@ export default function Problem() {
         <Reveal delay={200}>
           <div className="mt-10 rounded-2xl border border-royal/20 bg-gradient-to-r from-royal/5 to-sky/10 p-8 text-center">
             <p className="text-lg font-semibold text-navy sm:text-xl">
-              But reply within 5 minutes and you&apos;re up to{" "}
-              <span className="text-royal">100× more likely</span> to win that
-              job.
+              You don&apos;t need to learn marketing.{" "}
+              <span className="text-royal">You need someone to handle it.</span>
             </p>
             <p className="mt-2 text-navy/70">
-              The problem was never the lead. It was the speed. That&apos;s
-              exactly what we fix.
+              That&apos;s us. You run the jobs; we make sure the phone keeps
+              ringing.
             </p>
           </div>
         </Reveal>
