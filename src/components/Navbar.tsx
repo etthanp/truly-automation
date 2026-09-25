@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 type NavLink = { href: string; label: string };
 
@@ -8,7 +9,7 @@ const homeLinks: NavLink[] = [
   { href: "#services", label: "Services" },
   { href: "#how-it-works", label: "How It Works" },
   { href: "#demo", label: "Live Demo" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "#packages", label: "Packages" },
   { href: "#about", label: "About" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -19,10 +20,10 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
   return (
     <header className="sticky top-0 z-50 border-b border-navy/5 bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
           <span className="text-lg font-bold text-navy">Truly Automation</span>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-8 lg:flex">
           {links.map((link) => (
@@ -36,12 +37,12 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
           ))}
         </div>
 
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className="hidden rounded-full bg-royal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:inline-block"
         >
-          Get started
-        </a>
+          Free checkup
+        </Link>
 
         <button
           onClick={() => setOpen(!open)}
@@ -67,13 +68,13 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
                 {link.label}
               </a>
             ))}
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               onClick={() => setOpen(false)}
               className="rounded-full bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Get started
-            </a>
+              Free checkup
+            </Link>
           </div>
         </div>
       )}

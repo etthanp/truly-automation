@@ -13,13 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Truly Automation | We Fill Your Calendar With Qualified Sales Meetings",
+  title: "Truly Automation | The Marketing Team for Home & Outdoor Service Companies",
   description:
-    "Done-for-you client acquisition for B2B service companies. Truly Automation finds your ideal clients, reaches out by email, LinkedIn and phone, and books qualified meetings on your calendar — plus an AI receptionist so no lead goes cold.",
+    "Truly Automation is the marketing team for HVAC, plumbing, electrical, roofing, concrete, landscaping and other trade businesses: websites, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
   openGraph: {
-    title: "We fill your calendar with qualified sales meetings",
+    title: "Your marketing team, without the payroll",
     description:
-      "Done-for-you client acquisition for B2B service companies — plus an AI receptionist so no lead ever goes cold. Pay-per-meeting pilot, no long-term contract.",
+      "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for trade businesses. Get a free marketing checkup.",
     url: "https://trulyautomation.com",
     siteName: "Truly Automation",
     type: "website",

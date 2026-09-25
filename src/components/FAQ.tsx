@@ -3,63 +3,38 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 
-type Faq = { q: string; a: string };
-
-const hvacFaqs: Faq[] = [
+const faqs = [
   {
-    q: "Will it sound like a robot?",
-    a: "No. It texts like a warm, capable front-desk person — trained on your company, your services, and your pricing. To the customer it just feels like they got a fast, helpful reply. You saw it yourself in the demo above.",
+    q: "I've never done any marketing. Do I need to know anything?",
+    a: "No. That's the whole point. We handle the website, Google listing, reviews, social media, ads and the AI receptionist. You'll spend about 30 minutes on a setup call telling us about your business, then you just keep doing the work.",
   },
   {
-    q: "I already have voicemail / an answering service. Why do I need this?",
-    a: "85% of people who hit voicemail hang up without leaving a message — you never even know they called. Answering services are slower, charge per call, and still can't book into your schedule. This replies in seconds, 24/7, and actually locks in the job — for one flat monthly rate.",
+    q: "What's in the free marketing checkup?",
+    a: "We check where you show up on Google Maps for your main services, how your website looks and works on a phone, how your reviews stack up against your top competitors, and how your calls get answered. You get a one-page report with the three things to fix first, whether you hire us or not.",
   },
   {
-    q: "Does it work with my current phone number?",
-    a: "Yes. It works alongside your existing business line — no porting, no new hardware, and nothing for your customers to download. They just get a text back after a missed call, like normal.",
+    q: "How soon will I see more calls?",
+    a: "The AI receptionist and automatic review requests start working the week they go live. Google Maps rankings and ads build over the first 60 to 90 days, which is why plans start with a 3-month term.",
   },
   {
-    q: "What if a customer wants to talk to a real person?",
-    a: "You stay in control. It can hand the conversation to you at any point and always passes along the full details, so you or your team can jump in whenever you want.",
+    q: "Who pays for the ads?",
+    a: "You pay Google or Facebook directly for ad spend, on your own card, so you always see exactly where the money goes. Our monthly fee covers setting up and managing the ads. We'll recommend a starting budget that fits your area and goals.",
   },
   {
-    q: "How fast can I be up and running?",
-    a: "Usually within a few days. We do one short call to learn your business, we build and connect everything, and then it starts catching missed calls for you. You don't touch anything technical.",
+    q: "Do I own my website and pages?",
+    a: "Yes. Your domain, Google Business Profile and social pages are set up in your business's name. If you ever leave, they stay yours and we'll help you move the website.",
   },
   {
-    q: "What if it's not for me?",
-    a: "It's month-to-month — cancel anytime, no long-term contract. Founding partners lock in the current rate for as long as they stay. Really the only risk is keeping things the way they are and letting calls keep slipping.",
-  },
-];
-
-export const agencyFaqs: Faq[] = [
-  {
-    q: "What counts as a \"qualified meeting\"?",
-    a: "A call with a decision-maker at a business that fits the target profile we agree on together — industry, size, location, and need. If they don't fit the profile or don't show up, it doesn't count and you don't pay for it.",
+    q: "Will the AI receptionist sound like a robot?",
+    a: "No. It texts like a friendly, capable front-desk person trained on your services, pricing and service area. Try it yourself in the live demo above.",
   },
   {
-    q: "How is this different from buying a lead list?",
-    a: "A lead list is a spreadsheet of cold names — you still have to do all the outreach. We do the outreach, the follow-up, and the back-and-forth, and only hand you people who've agreed to talk. You just show up and close.",
-  },
-  {
-    q: "Does the outreach go out under my name?",
-    a: "Usually, yes — prospects respond far better to a business owner than to an agency. We set up separate sending addresses so your main email and reputation stay protected, and you approve the messaging before anything goes out.",
-  },
-  {
-    q: "How long until I see meetings?",
-    a: "Setup takes about two weeks — strategy call, list building, and getting the sending set up properly. Replies typically start coming in the first few weeks after launch. Results depend on your offer and market, which is exactly why the pilot is pay-per-meeting: if we don't book, you don't pay.",
-  },
-  {
-    q: "Do I have to sign a long-term contract?",
-    a: "No. Everything is month-to-month. We'd rather earn your business every month than lock you in.",
-  },
-  {
-    q: "What does the AI receptionist have to do with getting clients?",
-    a: "Winning new business is half the battle — responding fast is the other half. The AI receptionist instantly answers every missed call and inquiry, 24/7, so the leads you worked hard for never go cold. Add it on, or use it on its own.",
+    q: "Can I change plans later?",
+    a: "Anytime. Most clients start with Get Found or Get Calls and add more once they see what it brings in. After the first 3 months, everything is month-to-month.",
   },
 ];
 
-export default function FAQ({ items = hvacFaqs }: { items?: Faq[] }) {
+export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -75,7 +50,7 @@ export default function FAQ({ items = hvacFaqs }: { items?: Faq[] }) {
         </Reveal>
 
         <div className="mt-12 space-y-3">
-          {items.map((faq, i) => {
+          {faqs.map((faq, i) => {
             const isOpen = open === i;
             return (
               <Reveal key={faq.q} delay={i * 60}>

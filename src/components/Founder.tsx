@@ -20,23 +20,25 @@ export default function Founder() {
                 Hi, I&apos;m Ethan.
               </h2>
               <p className="mt-4 text-navy/75">
-                I started Truly Automation in North Carolina to help growing
-                companies do the one thing that always ends up on the back
-                burner: consistently bringing in new clients.
+                I started Truly Automation in North Carolina because the best
+                tradespeople I know are great at the work and have zero time
+                for marketing. Meanwhile, the company with the better website
+                and more reviews gets the call, even when their work isn&apos;t
+                as good.
               </p>
               <p className="mt-3 text-navy/75">
-                I pair old-school hustle — real outreach, real follow-up, real
-                phone calls — with AI that handles the busywork, so nothing slips
-                through the cracks. When you work with Truly Automation, you work
-                with me directly. No account-manager runaround, no long
-                contracts. I&apos;d rather earn your business every month.
+                We fix that. We build and run your whole online presence, and we
+                use AI to handle the busywork so nothing slips through the
+                cracks. When you work with Truly Automation, you have one
+                person to call: me. No runaround, no jargon. Just a clear report
+                every month showing what your marketing brought in.
               </p>
               <div className="mt-6 flex flex-wrap gap-4">
                 <a
                   href="#contact"
                   className="rounded-full bg-royal px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy"
                 >
-                  Book a strategy call
+                  Get your free checkup
                 </a>
                 {LINKEDIN_URL && (
                   <a
