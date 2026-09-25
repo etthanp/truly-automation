@@ -133,9 +133,9 @@ export const checkups: Checkup[] = [
         detail: "List every service and city, post job photos weekly, and give the website a mobile-friendly rebuild with a big tap-to-call button.",
       },
     ],
-    recommended: "Get Calls",
+    recommended: "Growth",
     recommendedWhy:
-      "Your biggest leaks are missed calls and low visibility on Google. Get Calls fixes both: the AI receptionist catches every call, and the website, Google profile, reviews and Local Services Ads push you up the map.",
+      "Your biggest leaks are missed calls and low visibility on Google. Growth fixes both: the AI receptionist catches every call, and the website, Google profile, reviews and Local Services Ads push you up the map.",
   },
 ];
 
