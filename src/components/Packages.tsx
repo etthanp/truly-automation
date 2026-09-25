@@ -4,7 +4,7 @@ import { packages, usd } from "@/lib/packages";
 export default function Packages() {
   return (
     <section id="packages" className="bg-gradient-to-b from-royal/5 to-background px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-5xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold uppercase tracking-wide text-ember">
             Packages
@@ -14,11 +14,11 @@ export default function Packages() {
           </h2>
           <p className="mt-4 text-lg text-navy/70">
             Clear monthly pricing with everything done for you. Most shops
-            start with Get Calls.
+            start with Growth.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-3">
+        <div className="mt-14 grid gap-8 md:grid-cols-2">
           {packages.map((p, i) => (
             <Reveal key={p.name} delay={i * 120}>
               <div

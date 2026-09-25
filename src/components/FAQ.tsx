@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     q: "Can I change plans later?",
-    a: "Anytime. Most clients start with Get Found or Get Calls and add more once they see what it brings in. After the first 3 months, everything is month-to-month.",
+    a: "Anytime. Most clients start with Growth and move up to the Full Marketing Team once they see what it brings in. After the first 3 months, everything is month-to-month.",
   },
 ];
 

@@ -1,4 +1,4 @@
-export type PackageName = "Get Found" | "Get Calls" | "Full Marketing Team";
+export type PackageName = "Growth" | "Full Marketing Team";
 
 export interface Package {
   name: PackageName;
@@ -13,27 +13,16 @@ export interface Package {
 // to Google / Meta and is never part of these numbers.
 export const packages: Package[] = [
   {
-    name: "Get Found",
-    monthly: 497,
-    setup: 500,
-    tagline: "Show up on Google and look like the obvious choice.",
-    features: [
-      "Professional website — built, hosted & kept updated",
-      "Google Business Profile optimized + weekly posts",
-      "Automatic review requests after every job",
-      "Missed-call text-back",
-      "Monthly check-in",
-    ],
-  },
-  {
-    name: "Get Calls",
-    monthly: 997,
-    setup: 750,
-    tagline: "Turn that visibility into a steady stream of booked jobs.",
+    name: "Growth",
+    monthly: 1799,
+    setup: 1500,
+    tagline: "Get found, get calls, and never miss a job. Your marketing, fully handled.",
     popular: true,
     features: [
-      "Everything in Get Found",
-      "24/7 AI receptionist that answers & books jobs",
+      "Professional website: built, hosted & kept updated",
+      "Google Business Profile optimized + weekly posts",
+      "Automatic review requests after every job",
+      "24/7 AI receptionist + missed-call text-back",
       "Facebook & Instagram managed (8–12 posts/mo)",
       "Google Local Services Ads setup & management",
       "Monthly results report",
@@ -41,15 +30,16 @@ export const packages: Package[] = [
   },
   {
     name: "Full Marketing Team",
-    monthly: 1997,
-    setup: 1000,
-    tagline: "Everything, including paid ads — your whole marketing department.",
+    monthly: 2999,
+    setup: 1500,
+    tagline: "Everything in Growth plus paid ads and campaigns. Your whole marketing department.",
     features: [
-      "Everything in Get Calls",
+      "Everything in Growth",
       "Google & Facebook ads management",
       "Past-customer email campaigns",
       "Seasonal promotions (tune-ups, spring cleanups…)",
       "Monthly strategy call",
+      "Priority support",
     ],
   },
 ];
