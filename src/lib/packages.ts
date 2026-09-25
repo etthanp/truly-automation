@@ -9,7 +9,7 @@ export interface Package {
   popular?: boolean;
 }
 
-// Founding-partner pricing. Ad spend is always paid by the client directly
+// Standard monthly pricing. Ad spend is always paid by the client directly
 // to Google / Meta and is never part of these numbers.
 export const packages: Package[] = [
   {

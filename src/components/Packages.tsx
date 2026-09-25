@@ -13,8 +13,8 @@ export default function Packages() {
             Pick how much you want off your plate
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Founding-partner pricing for our first few clients. Lock it in
-            now and keep it for as long as you stay.
+            Clear monthly pricing with everything done for you. Most shops
+            start with Get Calls.
           </p>
         </Reveal>
 
