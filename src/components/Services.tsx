@@ -31,6 +31,16 @@ const services = [
     title: "AI receptionist",
     text: "Texts back every missed call in seconds, answers questions, and books the job, 24/7. Try it live below.",
   },
+  {
+    icon: "📞",
+    title: "Outreach",
+    text: "We go find work for you: reaching out to property managers, builders, realtors and local businesses, and following up on estimates that never closed.",
+  },
+  {
+    icon: "📊",
+    title: "Monthly reporting",
+    text: "One simple report every month showing calls, messages, reviews and website visits, so you always know what your marketing is doing.",
+  },
 ];
 
 export default function Services() {
@@ -50,10 +60,10 @@ export default function Services() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 120}>
-              <div className="h-full rounded-2xl border border-navy/10 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-royal/10">
+            <Reveal key={s.title} delay={(i % 4) * 100}>
+              <div className="h-full rounded-2xl border border-navy/10 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-royal/10">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-ember/15 to-sky/20 text-2xl">
                   {s.icon}
                 </div>

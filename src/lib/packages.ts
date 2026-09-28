@@ -36,6 +36,7 @@ export const packages: Package[] = [
     features: [
       "Everything in Growth",
       "Google & Facebook ads management",
+      "Outreach to property managers, builders & local businesses",
       "Past-customer email campaigns",
       "Seasonal promotions (tune-ups, spring cleanups…)",
       "Monthly strategy call",
