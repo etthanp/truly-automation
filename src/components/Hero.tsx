@@ -49,7 +49,7 @@ export default function Hero() {
             You&apos;re great at the work. We handle everything that brings the
             work in: your{" "}
             <strong className="font-semibold text-white">
-              website, Google listing, reviews, social media, ads
+              website, Google listing, reviews, social media, ads, outreach
             </strong>
             , and an AI receptionist that answers every call you miss. One
             monthly plan, one point of contact, zero tech headaches.
