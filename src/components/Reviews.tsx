@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 const reviews = [
   {
     quote:
-      "We needed a website that could explain robotic layout to contractors who had never seen it before. Ethan took a brand-new idea and turned it into a site that makes it click in seconds. He was fast, easy to work with, and the site looks like we've been around for years.",
+      "Truly Automation became our whole marketing team. They built our website, set up our Google listing and reviews, run our social media and ads, and reach out to contractors for us. As a new company that was exactly what we needed. We went from nobody knowing what robotic layout is to having general contractors asking us about it.",
     name: "Owner",
     business: "ABT Automation",
     trade: "Robotic layout for construction",
@@ -13,7 +13,7 @@ const reviews = [
   },
   {
     quote:
-      "Ethan built us a website that finally shows everything we do, from clearing and grading to driveways and haul-off, and makes it easy for customers to call us. He handled all of it and kept it simple on our end. I'd recommend him to any small business.",
+      "Before Truly Automation, all our work came from word of mouth. Now we've got a website, a Google listing that brings in reviews, social media and ads running, and they're out finding us new customers. Ethan handles all of it so we can stay focused on clearing and grading. It's really expanded how many people know about us.",
     name: "Owner",
     business: "Southern Duo Land Solutions",
     trade: "Land clearing & grading, Carolinas",
@@ -31,7 +31,7 @@ export default function Reviews() {
             What our clients say
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Real businesses. Real websites. Live right now.
+            Real businesses. Real marketing, handled for them.
           </h2>
         </Reveal>
 
