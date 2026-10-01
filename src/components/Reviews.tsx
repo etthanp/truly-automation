@@ -4,7 +4,7 @@ import Reveal from "./Reveal";
 const reviews = [
   {
     quote:
-      "Truly Automation became our whole marketing team. They built our website, set up our Google listing and reviews, run our social media and ads, and reach out to contractors for us. As a new company that was exactly what we needed. We went from nobody knowing what robotic layout is to having general contractors asking us about it.",
+      "Great service from start to finish. Truly Automation took our marketing off our plate, and we're super satisfied.",
     name: "Owner",
     business: "ABT Automation",
     trade: "Robotic layout for construction",
@@ -13,7 +13,7 @@ const reviews = [
   },
   {
     quote:
-      "Before Truly Automation, all our work came from word of mouth. Now we've got a website, a Google listing that brings in reviews, social media and ads running, and they're out finding us new customers. Ethan handles all of it so we can stay focused on clearing and grading. It's really expanded how many people know about us.",
+      "Great service and easy to work with. They handle our marketing so we can focus on the job. We're very satisfied.",
     name: "Owner",
     business: "Southern Duo Land Solutions",
     trade: "Land clearing & grading, Carolinas",
