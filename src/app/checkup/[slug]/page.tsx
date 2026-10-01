@@ -222,7 +222,7 @@ export default async function CheckupPage({
               </div>
               <div className="flex flex-col">
                 <ul className="space-y-3">
-                  {pkg.features.map((f) => (
+                  {(c.planFeatures ?? pkg.features).map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-navy/80">
                       <span className="mt-0.5 text-ember">✓</span>
                       {f}
