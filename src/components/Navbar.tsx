@@ -6,6 +6,7 @@ import Link from "next/link";
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
+  { href: "#reviews", label: "Reviews" },
   { href: "#services", label: "Services" },
   { href: "#how-it-works", label: "How It Works" },
   { href: "#demo", label: "Live Demo" },
