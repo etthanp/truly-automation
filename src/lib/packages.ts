@@ -21,6 +21,7 @@ export const packages: Package[] = [
     features: [
       "Professional website: built, hosted & kept updated",
       "Google Business Profile optimized + weekly posts",
+      "Show up in ChatGPT & Google AI answers",
       "Automatic review requests after every job",
       "24/7 AI receptionist + missed-call text-back",
       "Facebook & Instagram managed (8–12 posts/mo)",

@@ -23,27 +23,29 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-3">
           <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
-          <span className="text-lg font-bold text-navy">Truly Automation</span>
+          <span className="hidden whitespace-nowrap text-lg font-bold text-navy sm:inline">Truly Automation</span>
         </Link>
 
-        <div className="hidden items-center gap-8 lg:flex">
+        <div className="hidden items-center gap-6 lg:flex xl:gap-8">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-navy/70 transition hover:text-royal"
+              className="whitespace-nowrap text-sm font-medium text-navy/70 transition hover:text-royal"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <Link
-          href="/#contact"
-          className="hidden rounded-full bg-royal px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:inline-block"
-        >
-          Free checkup
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/#contact"
+            className="whitespace-nowrap rounded-full bg-ember px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-ember/30 transition hover:bg-navy lg:px-5 lg:py-2.5"
+          >
+            <span className="xl:hidden">Free checkup</span>
+            <span className="hidden xl:inline">Free marketing checkup</span>
+          </Link>
 
         <button
           onClick={() => setOpen(!open)}
@@ -54,6 +56,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
           <span className="h-0.5 w-6 bg-navy" />
           <span className="h-0.5 w-6 bg-navy" />
         </button>
+        </div>
       </nav>
 
       {open && (
@@ -72,9 +75,9 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
             <Link
               href="/#contact"
               onClick={() => setOpen(false)}
-              className="rounded-full bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
+              className="rounded-full bg-ember px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Free checkup
+              Free marketing checkup
             </Link>
           </div>
         </div>
