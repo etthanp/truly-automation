@@ -3,8 +3,8 @@ import Reveal from "./Reveal";
 const services = [
   {
     icon: "🌐",
-    title: "Professional website",
-    text: "Fast, mobile-friendly, and built to turn visitors into calls. We build it, host it, and keep it updated.",
+    title: "Website & AI search",
+    text: "Fast, mobile-friendly, and built to turn visitors into calls. Set up so you show up when customers ask ChatGPT or Google's AI for a local pro.",
   },
   {
     icon: "📍",
@@ -52,11 +52,12 @@ export default function Services() {
             What we do
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Everything a marketing team does, handled for you
+            One team instead of five different vendors
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            No agencies to juggle, no logins to learn. One team runs the whole
-            thing and tells you what it&apos;s bringing in.
+            Stop juggling a web guy, an ads guy, and somebody&apos;s nephew
+            running your Facebook. We handle all of it and tell you what
+            it&apos;s bringing in.
           </p>
         </Reveal>
 
