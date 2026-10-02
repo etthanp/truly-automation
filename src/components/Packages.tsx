@@ -1,6 +1,8 @@
 import Reveal from "./Reveal";
 import { packages, usd } from "@/lib/packages";
 
+const startingPrice = Math.min(...packages.map((p) => p.monthly));
+
 export default function Packages() {
   return (
     <section id="packages" className="bg-gradient-to-b from-royal/5 to-background px-6 py-24 lg:px-8">
@@ -13,8 +15,10 @@ export default function Packages() {
             Pick how much you want off your plate
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Clear monthly pricing with everything done for you. Most shops
-            start with Growth.
+            Everything done for you. Most shops start with Growth.
+          </p>
+          <p className="mx-auto mt-6 inline-block rounded-full border border-ember/30 bg-ember/10 px-5 py-2 text-base font-semibold text-navy">
+            Plans start at {usd(startingPrice)}/month + setup fee
           </p>
         </Reveal>
 
@@ -36,15 +40,27 @@ export default function Packages() {
                 <p className="text-sm font-semibold uppercase tracking-wide text-royal">
                   {p.name}
                 </p>
-                <div className="mt-4 flex items-baseline gap-1.5">
-                  <span className="text-5xl font-extrabold text-navy">
-                    {usd(p.monthly)}
-                  </span>
-                  <span className="text-navy/60">/ month</span>
-                </div>
-                <p className="mt-1 text-sm text-navy/60">
-                  + {usd(p.setup)} one-time setup
-                </p>
+                {p.monthly === startingPrice ? (
+                  <>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="text-base font-semibold text-navy/60">From</span>
+                      <span className="text-5xl font-extrabold text-navy">
+                        {usd(p.monthly)}
+                      </span>
+                      <span className="text-navy/60">/ month</span>
+                    </div>
+                    <p className="mt-1 text-sm text-navy/60">+ one-time setup fee</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="text-5xl font-extrabold text-navy">Custom</span>
+                    </div>
+                    <p className="mt-1 text-sm text-navy/60">
+                      Priced on your free checkup call
+                    </p>
+                  </>
+                )}
                 <p className="mt-4 text-navy/75">{p.tagline}</p>
                 <ul className="mt-6 space-y-3">
                   {p.features.map((f) => (
