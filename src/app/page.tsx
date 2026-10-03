@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Approach from "@/components/Approach";
 import Reviews from "@/components/Reviews";
 import Problem from "@/components/Problem";
 import Services from "@/components/Services";
@@ -18,6 +19,8 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <Approach />
+        <Founder />
         <Reviews />
         <Problem />
         <Services />
@@ -25,7 +28,6 @@ export default function Home() {
         <Demo />
         <HowItWorks />
         <Packages />
-        <Founder />
         <FAQ />
         <Contact />
       </main>

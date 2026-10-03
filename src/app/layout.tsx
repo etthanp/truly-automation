@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anton, Caveat, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,12 +12,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Truly Automation | The Marketing Team for Home & Outdoor Service Companies",
+  title: "Truly Automation | A Marketing Team That Knows Your Name",
   description:
     "Truly Automation is the marketing team for HVAC, plumbing, electrical, roofing, concrete, landscaping and other trade businesses: websites, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
   openGraph: {
-    title: "Your marketing team, without the payroll",
+    title: "Your trade. Your goals. Our full attention.",
     description:
       "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for trade businesses. Get a free marketing checkup.",
     url: "https://trulyautomation.com",
@@ -34,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${caveat.variable} h-full antialiased`}
       style={{ scrollBehavior: "smooth" }}
     >
       <body className="min-h-full flex flex-col">
