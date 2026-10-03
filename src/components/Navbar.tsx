@@ -6,13 +6,12 @@ import Link from "next/link";
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
+  { href: "#approach", label: "Our approach" },
+  { href: "#services", label: "What we do" },
+  { href: "#trades", label: "Who we help" },
   { href: "#reviews", label: "Reviews" },
-  { href: "#services", label: "Services" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#demo", label: "Live Demo" },
   { href: "#packages", label: "Packages" },
-  { href: "#about", label: "About" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#about", label: "About us" },
 ];
 
 export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
@@ -41,10 +40,10 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
         <div className="flex items-center gap-2">
           <Link
             href="/#contact"
-            className="whitespace-nowrap rounded-full bg-ember px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-ember/30 transition hover:bg-navy lg:px-5 lg:py-2.5"
+            className="whitespace-nowrap rounded-md bg-royal px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:px-5 lg:py-2.5"
           >
             <span className="xl:hidden">Free checkup</span>
-            <span className="hidden xl:inline">Free marketing checkup</span>
+            <span className="hidden xl:inline">Free marketing checkup →</span>
           </Link>
 
         <button
@@ -75,7 +74,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
             <Link
               href="/#contact"
               onClick={() => setOpen(false)}
-              className="rounded-full bg-ember px-5 py-2.5 text-center text-sm font-semibold text-white"
+              className="rounded-md bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
               Free marketing checkup
             </Link>
