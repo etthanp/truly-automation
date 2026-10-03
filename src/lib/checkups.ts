@@ -36,9 +36,89 @@ export interface Checkup {
   priorities: { title: string; detail: string }[];
   recommended: PackageName;
   recommendedWhy: string;
+  /** Optional plan bullets tailored to this business (e.g. non-trades
+   *  clients). Falls back to the package's standard feature list. */
+  planFeatures?: string[];
 }
 
 export const checkups: Checkup[] = [
+  {
+    slug: "julian-t-pierce-health-center",
+    business: "Julian T. Pierce Health Center",
+    trade: "Community health center (Robeson Health Care Corporation)",
+    city: "Pembroke, NC",
+    date: "October 1, 2026",
+    summary:
+      "Julian T. Pierce offers exactly what Pembroke needs: primary care, women's health, behavioral health, a pharmacy, walk-ins, and discounted care for those who qualify. A new $11 million building is on the way. Online, that story is hard to find. The website doesn't mention the new center or the UNCP eye-care partnership, the only reviews we could find are 1-star, and when you move to Union Chapel Road every listing will need to be updated.",
+    snapshot: [
+      { label: "Online reviews found (Yelp + WebMD)", value: "2 \u00b7 1\u2605", status: "bad", note: "One complains about records requests" },
+      { label: "New building on your website", value: "Not mentioned", status: "bad", note: "$11M center opening 2026" },
+      { label: "Facebook & Instagram", value: "Facebook only", status: "warn", note: "Shared RHCC page, no Instagram" },
+      { label: "Patient portal", value: "MyChart", status: "good", note: "Linked from your page" },
+    ],
+    sections: [
+      {
+        title: "Website (rhcchealth.org/jtp)",
+        items: [
+          { label: "Hours, address and providers listed", status: "good", note: "Office hours, phone, and all four providers are on the page." },
+          { label: "Patient portal", status: "good", note: "MyChart is linked, which patients expect from a modern practice." },
+          { label: "New building and eye care", status: "bad", note: "Nothing on the page about the new 30,000 sq ft center at 700 Union Chapel Rd or optometry with UNCP's College of Optometric Medicine." },
+          { label: "Page content", status: "warn", note: "About 380 words and no search description, so Google has little to show people searching for care in Pembroke." },
+          { label: "Leftover duplicate pages", status: "warn", note: "Several old 'copy-of-' pages are still live, including a second Julian T. Pierce page. Duplicates can split your Google ranking." },
+          { label: "Image names", status: "warn", note: "Images are named things like 'Screen Shot 2021-06-28 at 9.17.21 PM.png' with no descriptions. Google and screen readers can't tell what they are." },
+          { label: "Spanish-language information", status: "warn", note: "No Spanish content on the page." },
+        ],
+      },
+      {
+        title: "Google & directory listings",
+        items: [
+          { label: "Consistent phone number", status: "warn", note: "Your page lists (910) 521-2816, but some directories show (910) 668-1173. Mismatched info hurts how Google ranks you." },
+          { label: "Ready for the move", status: "bad", note: "When the new building opens, Google, Yelp, WebMD, insurance directories and dozens of health listings all need the new address on day one, or patients go to the old building." },
+        ],
+      },
+      {
+        title: "Reviews & reputation",
+        items: [
+          { label: "Online reviews", status: "bad", note: "We found only two, on Yelp and WebMD, both 1 star. One says records requests and faxes never go through." },
+          { label: "Asking happy patients", status: "warn", note: "There's no system for satisfied patients to leave a review. The one kind comment we found ('very nice and respectful staff') is on a small clinic directory." },
+        ],
+      },
+      {
+        title: "Social media & community",
+        items: [
+          { label: "Social media", status: "warn", note: "Facebook only, through the shared RHCC page. No Instagram, and nothing aimed at Pembroke or UNCP students and staff." },
+          { label: "Selling points", status: "good", note: "Walk-ins welcome, Monday hours until 7pm, a pharmacy, and discounted care for those who qualify. These are strong reasons to choose you, and they're barely promoted." },
+        ],
+      },
+    ],
+    priorities: [
+      {
+        title: "Launch the new building the right way",
+        detail: "A grand-opening campaign, a dedicated page for the new center and UNCP eye care, and every listing moved to 700 Union Chapel Rd on opening day.",
+      },
+      {
+        title: "Build a reputation that matches your care",
+        detail: "Automatic review requests after visits and a reply to every review, so two old 1-star reviews stop being the first thing people see.",
+      },
+      {
+        title: "Reach the patients right next door",
+        detail: "Facebook and Instagram posts about walk-ins, the pharmacy and new services, outreach to UNCP, employers and churches, and Spanish-language information.",
+      },
+    ],
+    recommended: "Full Marketing Team",
+    recommendedWhy:
+      "A new building is a once-in-a-generation chance to introduce Julian T. Pierce to Pembroke. Full Marketing Team covers the whole launch: every listing moved, a grand-opening campaign, reviews, and outreach to UNCP and the community. The same plan can extend to every RHCC location.",
+    planFeatures: [
+      "New-center page + grand-opening landing page",
+      "Google profile & every directory moved to 700 Union Chapel Rd",
+      "Review requests after visits + replies to every review",
+      "Facebook & Instagram managed: services, walk-ins, health tips",
+      "Grand-opening & new-patient ads on Google and Facebook",
+      "Outreach to UNCP, local employers, churches & community groups",
+      "Spanish-language pages and posts",
+      "Monthly results report + strategy call",
+    ],
+  },
   {
     slug: "example-plumbing",
     business: "Example Plumbing Co.",
