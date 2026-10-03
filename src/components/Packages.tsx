@@ -17,8 +17,8 @@ export default function Packages() {
           <p className="mt-4 text-lg text-navy/70">
             Everything done for you. Most shops start with Growth.
           </p>
-          <p className="mx-auto mt-6 inline-block rounded-full border border-ember/30 bg-ember/10 px-5 py-2 text-base font-semibold text-navy">
-            Plans start at {usd(startingPrice)}/month + setup fee
+          <p className="mx-auto mt-5 inline-block rounded-full border border-ember/30 bg-ember/10 px-4 py-1.5 text-sm font-semibold text-navy">
+            From {usd(startingPrice)}/month + setup fee
           </p>
         </Reveal>
 
@@ -37,30 +37,9 @@ export default function Packages() {
                     Most popular
                   </span>
                 )}
-                <p className="text-sm font-semibold uppercase tracking-wide text-royal">
+                <h3 className="text-2xl font-extrabold tracking-tight text-navy">
                   {p.name}
-                </p>
-                {p.monthly === startingPrice ? (
-                  <>
-                    <div className="mt-4 flex items-baseline gap-1.5">
-                      <span className="text-base font-semibold text-navy/60">From</span>
-                      <span className="text-5xl font-extrabold text-navy">
-                        {usd(p.monthly)}
-                      </span>
-                      <span className="text-navy/60">/ month</span>
-                    </div>
-                    <p className="mt-1 text-sm text-navy/60">+ one-time setup fee</p>
-                  </>
-                ) : (
-                  <>
-                    <div className="mt-4 flex items-baseline gap-1.5">
-                      <span className="text-5xl font-extrabold text-navy">Custom</span>
-                    </div>
-                    <p className="mt-1 text-sm text-navy/60">
-                      Priced on your free checkup call
-                    </p>
-                  </>
-                )}
+                </h3>
                 <p className="mt-4 text-navy/75">{p.tagline}</p>
                 <ul className="mt-6 space-y-3">
                   {p.features.map((f) => (
