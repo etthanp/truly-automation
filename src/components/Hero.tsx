@@ -87,26 +87,12 @@ export default function Hero() {
 
         {/* Collage of real client work */}
         <Reveal delay={200}>
-          <div className="relative mx-auto aspect-[5/4.4] w-full max-w-[560px]">
-            <a
-              href="https://www.abtautomation.com/"
-              target="_blank"
-              rel="noopener"
-              className="absolute top-0 left-0 w-[72%] overflow-hidden border-[6px] border-white bg-white shadow-xl shadow-navy/15 transition hover:-translate-y-1"
-            >
-              <img
-                src="/work/abt.jpg"
-                alt="ABT Automation website, built by Truly Automation"
-                width={960}
-                height={600}
-                className="aspect-[4/3] w-full object-cover object-top"
-              />
-            </a>
+          <div className="relative mx-auto aspect-[5/4.2] w-full max-w-[560px]">
             <a
               href="https://www.southernduolandsolutions.com/"
               target="_blank"
               rel="noopener"
-              className="absolute right-0 bottom-[8%] w-[66%] overflow-hidden border-[6px] border-white bg-white shadow-xl shadow-navy/15 transition hover:-translate-y-1"
+              className="absolute top-[14%] left-0 w-[84%] overflow-hidden border-[6px] border-white bg-white shadow-xl shadow-navy/15 transition hover:-translate-y-1"
             >
               <img
                 src="/work/southern-duo.jpg"
@@ -118,7 +104,7 @@ export default function Hero() {
             </a>
 
             {/* "Understand the market" card */}
-            <div className="absolute top-[6%] right-0 w-44 bg-white p-4 shadow-xl shadow-navy/10 sm:w-48">
+            <div className="absolute top-0 right-0 w-44 bg-white p-4 shadow-xl shadow-navy/10 sm:w-48">
               <p className="text-base leading-tight font-bold text-navy">
                 Understand
                 <br />
@@ -135,10 +121,10 @@ export default function Hero() {
               </ul>
             </div>
 
-            <p className="absolute bottom-0 left-[4%] max-w-[9rem] font-[family-name:var(--font-caveat)] text-xl leading-tight text-navy/60 -rotate-6">
-              Real businesses.
+            <p className="absolute right-[2%] bottom-0 max-w-[10rem] text-right font-[family-name:var(--font-caveat)] text-xl leading-tight text-navy/60 -rotate-6">
+              A real client.
               <br />
-              Real websites.
+              A real website.
             </p>
 
             <span className="absolute top-[-4%] right-[40%] text-2xl text-ember/50" aria-hidden>
