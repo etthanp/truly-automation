@@ -4,15 +4,6 @@ import Reveal from "./Reveal";
 const reviews = [
   {
     quote:
-      "Great service from start to finish. Truly Automation took our marketing off our plate, and we're super satisfied.",
-    name: "Owner",
-    business: "ABT Automation",
-    trade: "Robotic layout for construction",
-    url: "https://www.abtautomation.com/",
-    image: "/work/abt.jpg",
-  },
-  {
-    quote:
       "Great service and easy to work with. They handle our marketing so we can focus on the job. We're very satisfied.",
     name: "Owner",
     business: "Southern Duo Land Solutions",
