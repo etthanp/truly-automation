@@ -40,6 +40,87 @@ export interface Checkup {
 
 export const checkups: Checkup[] = [
   {
+    slug: "cool-air-inc",
+    business: "Cool Air Inc",
+    trade: "HVAC",
+    city: "Hope Mills, NC",
+    date: "September 25, 2026",
+    summary:
+      "Cool Air has what homeowners want: a licensed Bryant dealer that does residential and commercial work, offers emergency service, and gets strong ratings from customers. The problem is that your online presence doesn\u2019t show any of that. There are no photos of your team or your work, no story about who you are, no social media, and competitors from Fayetteville are building pages to win Hope Mills customers.",
+    snapshot: [
+      {
+        label: "Photos of your own team & jobs on your website",
+        value: "0",
+        status: "bad",
+        note: "Every image is stock art, a logo or a brand ad",
+      },
+      {
+        label: "Reviews shown on your website",
+        value: "3",
+        status: "warn",
+        note: "Newest one is from April 2023",
+      },
+      {
+        label: "Facebook & Instagram",
+        value: "None found",
+        status: "bad",
+        note: "No links on your site, none in search",
+      },
+      {
+        label: "Ratings on review sites",
+        value: "4.7\u2605",
+        status: "good",
+        note: "Birdeye (23 reviews) \u00b7 BBB A+",
+      },
+    ],
+    sections: [
+      {
+        title: "Website",
+        items: [
+          { label: "Works on a phone", status: "good", note: "The site resizes for phones and your number is tap-to-call. Good foundation." },
+          { label: "License and credentials shown", status: "good", note: "NC license #30929 and your Bryant dealer status are listed. That builds trust." },
+          { label: "Photos of your team, trucks and work", status: "bad", note: "All 28 images on the homepage are stock graphics, brand logos or ads. Homeowners want to see who is coming to their house before they call." },
+          { label: "About Us page", status: "bad", note: "Two general sentences. No owner names, no story, no years in business, no team photo. This is the page people read before trusting you with a $10,000 system." },
+          { label: "Wording that sounds like Cool Air", status: "warn", note: "Most of the text is general dealer copy about products. It doesn't say what makes Cool Air different from the other Bryant dealers nearby." },
+          { label: "Service area pages", status: "warn", note: "You serve 9 towns from Hope Mills to Pinehurst to Lumberton, but most of them only appear as a list on one page. Competitors like Blanton's, Blackwell and Carolina Comfort Air have pages built specifically to win Hope Mills searches." },
+        ],
+      },
+      {
+        title: "Reviews & reputation",
+        items: [
+          { label: "Customer ratings", status: "good", note: "Customers rate you well: 4.7 stars from 23 reviews on Birdeye, 4.5 on HomeAdvisor, and BBB accredited with an A+." },
+          { label: "Reviews on your website", status: "warn", note: "Only 3 reviews appear on your site, and the newest is from April 2023. Your website makes you look less reviewed than you really are." },
+          { label: "Steady flow of new reviews", status: "warn", note: "There's no automatic way for happy customers to leave a review after a job, so new reviews come in slowly." },
+        ],
+      },
+      {
+        title: "Social media & calls",
+        items: [
+          { label: "Facebook page", status: "bad", note: "No Facebook page linked from your website and none found in search. Neighbors recommend HVAC companies on Facebook and Nextdoor every day." },
+          { label: "Instagram", status: "bad", note: "None found." },
+          { label: "After-hours calls", status: "warn", note: "Office hours are weekdays 7am\u20136pm, and you advertise emergency service. Every evening and weekend caller needs an instant answer, or they call the next company on Google." },
+        ],
+      },
+    ],
+    priorities: [
+      {
+        title: "Show homeowners who you are",
+        detail: "A new website with real photos of your team, trucks and installs, an owner story, and a page for each town you serve, starting with Hope Mills and Fayetteville.",
+      },
+      {
+        title: "Put your great reputation to work",
+        detail: "Automatic review requests after every job, and your best reviews shown on your website and Google profile, so your rating is the first thing people see.",
+      },
+      {
+        title: "Be there for every call and every neighbor",
+        detail: "An AI receptionist that answers evening and weekend calls in seconds, plus an active Facebook page with real jobs, seasonal tune-up offers and reviews.",
+      },
+    ],
+    recommended: "Growth",
+    recommendedWhy:
+      "You already have the reputation. Growth makes sure people can see it. We rebuild the website around your real team and work, keep your Google profile and Facebook active every week, bring in a steady stream of new reviews, and answer every after-hours call so no emergency job goes to someone else.",
+  },
+  {
     slug: "example-plumbing",
     business: "Example Plumbing Co.",
     trade: "Plumbing",
