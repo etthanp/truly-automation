@@ -89,14 +89,14 @@ export default function Hero() {
         <Reveal delay={200}>
           <div className="relative mx-auto aspect-[5/4.2] w-full max-w-[560px]">
             <a
-              href="https://www.southernduolandsolutions.com/"
+              href="https://www.ncsoilpercsolutions.com/"
               target="_blank"
               rel="noopener"
               className="absolute top-[14%] left-0 w-[84%] overflow-hidden border-[6px] border-white bg-white shadow-xl shadow-navy/15 transition hover:-translate-y-1"
             >
               <img
-                src="/work/southern-duo.jpg"
-                alt="Southern Duo Land Solutions website, built by Truly Automation"
+                src="/work/soil-perc.jpg"
+                alt="NC Perc Solutions website, built by Truly Automation"
                 width={960}
                 height={600}
                 className="aspect-[4/3] w-full object-cover object-left-top"

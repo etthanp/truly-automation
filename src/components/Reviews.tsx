@@ -1,17 +1,16 @@
 import Reveal from "./Reveal";
 
 // Each quote must be approved by the client, in their own words, before it goes live.
-const reviews = [
-  {
-    quote:
-      "Great service and easy to work with. They handle our marketing so we can focus on the job. We're very satisfied.",
-    name: "Owner",
-    business: "Southern Duo Land Solutions",
-    trade: "Land clearing & grading, Carolinas",
-    url: "https://www.southernduolandsolutions.com/",
-    image: "/work/southern-duo.jpg",
-  },
-];
+type Review = {
+  quote: string;
+  name: string;
+  business: string;
+  trade: string;
+  url: string;
+  image: string;
+};
+
+const reviews: Review[] = [];
 
 export default function Reviews() {
   return (
