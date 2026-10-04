@@ -43,7 +43,7 @@ export default function Hero() {
 
           <Reveal delay={100}>
             <h1 className="mt-6 text-6xl text-navy sm:text-7xl xl:text-[5.25rem]">
-              Your trade.
+              Your business.
               <br />
               Your goals.
               <br />
@@ -53,8 +53,8 @@ export default function Hero() {
 
           <Reveal delay={200}>
             <p className="mt-7 max-w-xl text-lg text-navy/75">
-              We get to know you, your trade, and your town, then build and run
-              marketing that fits your business. Website, Google, reviews,
+              We get to know you, your business, and your customers, then build and run
+              marketing made for you. Website, Google, reviews,
               social, ads and outreach, handled by people who actually pick up
               the phone.
             </p>
@@ -77,12 +77,6 @@ export default function Hero() {
             </div>
           </Reveal>
 
-          <Reveal delay={400}>
-            <p className="mt-12 flex items-center gap-4 text-xs font-medium uppercase tracking-[0.16em] text-navy/60">
-              <span className="h-px w-12 bg-navy/50" />
-              Built for construction &amp; home service businesses
-            </p>
-          </Reveal>
         </div>
 
         {/* Collage of real client work */}

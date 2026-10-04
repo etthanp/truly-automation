@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 const problems = [
   {
     title: "Invisible on Google Maps",
-    text: "When someone searches “plumber near me,” most call one of the first few companies Google shows. If that isn’t you, you never even hear about the job.",
+    text: "When someone searches “plumber near me” or “dentist near me,” most call one of the first few businesses Google shows. If that isn’t you, you never even hear about them.",
   },
   {
     title: "A website that hurts you",
@@ -15,7 +15,7 @@ const problems = [
   },
   {
     title: "Calls you can’t answer",
-    text: "Up to 62% of calls to small home-services businesses go unanswered because the crew is on a job. Most of those callers just call someone else.",
+    text: "When you’re busy with a customer, the phone goes to voicemail, and most callers just call someone else. In home services, up to 62% of calls go unanswered.",
   },
 ];
 
@@ -31,7 +31,7 @@ export default function Problem() {
             Good work isn&apos;t enough if customers can&apos;t find you.
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Most trade businesses grow on word of mouth, and lose jobs every
+            Most small businesses grow on word of mouth, and lose customers every
             week to competitors who simply show up first online.
           </p>
         </Reveal>
@@ -54,7 +54,7 @@ export default function Problem() {
               <span className="text-royal">You need someone to handle it.</span>
             </p>
             <p className="mt-2 text-navy/70">
-              That&apos;s us. You run the jobs; we make sure the phone keeps
+              That&apos;s us. You run the business; we make sure the phone keeps
               ringing.
             </p>
           </div>

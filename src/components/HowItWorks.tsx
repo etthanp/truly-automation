@@ -37,7 +37,7 @@ export default function HowItWorks() {
             How it works
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            You run the jobs. We&apos;ll keep the phone ringing.
+            You run the business. We&apos;ll keep the phone ringing.
           </h2>
           <p className="mt-4 text-lg text-white/70">
             Four steps from &ldquo;we should do something about

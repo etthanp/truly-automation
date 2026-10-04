@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 
 const steps = [
   {
-    title: "Study your trade",
+    title: "Study your business",
     text: "We research your market, your competitors, and the customers you want more of before we build anything.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
