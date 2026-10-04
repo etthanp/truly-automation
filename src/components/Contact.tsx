@@ -5,22 +5,6 @@ import Reveal from "./Reveal";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkolvvzy";
 
-const TRADES = [
-  "HVAC",
-  "Plumbing",
-  "Electrical",
-  "Roofing",
-  "Concrete",
-  "Landscaping / lawn care",
-  "Fencing",
-  "Pressure washing",
-  "Painting",
-  "Tree service",
-  "Pest control",
-  "Garage doors",
-  "Other",
-];
-
 const inputClass =
   "mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky";
 const labelClass = "block text-sm font-medium text-white/80";
@@ -116,22 +100,11 @@ export default function Contact() {
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="trade" className={labelClass}>Your trade</label>
-                  <select
-                    id="trade"
-                    name="trade"
-                    required
-                    defaultValue=""
-                    className={`${inputClass} [&>option]:text-navy`}
-                  >
-                    <option value="" disabled>Choose one</option>
-                    {TRADES.map((t) => (
-                      <option key={t}>{t}</option>
-                    ))}
-                  </select>
+                  <label htmlFor="business_type" className={labelClass}>Type of business</label>
+                  <input id="business_type" name="business_type" type="text" required placeholder="e.g. roofing, dental office, coffee shop" className={inputClass} />
                 </div>
                 <div>
-                  <label htmlFor="area" className={labelClass}>City / service area</label>
+                  <label htmlFor="area" className={labelClass}>City / area</label>
                   <input id="area" name="area" type="text" required placeholder="Fayetteville & Hope Mills" className={inputClass} />
                 </div>
               </div>

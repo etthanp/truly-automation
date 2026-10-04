@@ -26,11 +26,11 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Truly Automation | A Marketing Team That Knows Your Name",
   description:
-    "Truly Automation is the marketing team for HVAC, plumbing, electrical, roofing, concrete, landscaping and other trade businesses: websites, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
+    "Truly Automation is a personal marketing team for small and growing businesses, from contractors to local shops: websites, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
   openGraph: {
-    title: "Your trade. Your goals. Our full attention.",
+    title: "Your business. Your goals. Our full attention.",
     description:
-      "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for trade businesses. Get a free marketing checkup.",
+      "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for small businesses. Get a free marketing checkup.",
     url: "https://trulyautomation.com",
     siteName: "Truly Automation",
     type: "website",

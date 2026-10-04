@@ -7,7 +7,7 @@ const PHOTO_URL = "";
 
 const promises = [
   "You talk to me, not a ticket system",
-  "I learn your trade, your town and your customers",
+  "I learn your business, your market and your customers",
   "Straight answers and a simple monthly report",
   "If something isn't working, I'll tell you and fix it",
 ];
@@ -25,7 +25,7 @@ export default function Founder() {
           </h2>
           <p className="mt-7 max-w-xl text-lg text-white/80">
             Hi, I&apos;m Ethan. I started Truly Automation in North Carolina
-            because the best tradespeople I know are great at the work and have
+            because the best small-business owners I know are great at what they do and have
             zero time for marketing, and most agencies treat them like an
             account number.
           </p>
