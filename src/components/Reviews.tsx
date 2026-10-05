@@ -13,7 +13,7 @@ type Review = {
 const reviews: Review[] = [
   {
     quote:
-      "Truly Automation built us a clean, professional website that explains what we do and makes it easy for customers to reach us. Great service from start to finish, and we're very satisfied.",
+      "Truly Automation was easy to work with and really valued the relationship with us as a customer. They built us a clean, professional website that explains what we do and makes it easy for customers to reach us. We're very satisfied.",
     name: "Jacob Presley, Owner",
     business: "NC Perc Solutions",
     trade: "Perc tests & septic permitting, North Carolina",
