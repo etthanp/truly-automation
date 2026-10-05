@@ -24,7 +24,7 @@ const short: { quote: string; business: string; detail: string; initials: string
   },
   {
     quote:
-      "Great service and easy to work with. They handle our marketing so we can focus on the job. We're very satisfied.",
+      "Between being out on jobs all day, we never had time for marketing, but we knew it mattered. Truly Automation made it easy and handled all of it for us. Great service, and we're very satisfied.",
     business: "Southern Duo Land Solutions",
     detail: "Land clearing & grading · York County, SC",
     initials: "SD",
