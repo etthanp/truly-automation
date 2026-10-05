@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mkolvvzy";
 
@@ -47,13 +48,21 @@ export default function Contact() {
           <p className="mt-4 text-lg text-white/70">
             We&apos;ll look at your Google ranking, website, reviews and calls,
             and send you a one-page report with the three things to fix first.
-            Free, no strings attached. Or email us directly at{" "}
+            Free, no strings attached. Or reach Ethan directly: call or text{" "}
             <a
-              href="mailto:ethan@trulyautomation.com"
+              href={PHONE_HREF}
+              className="whitespace-nowrap text-sky underline underline-offset-2 hover:text-white"
+            >
+              {PHONE_DISPLAY}
+            </a>{" "}
+            or email{" "}
+            <a
+              href={`mailto:${EMAIL}`}
               className="text-sky underline underline-offset-2 hover:text-white"
             >
-              ethan@trulyautomation.com
+              {EMAIL}
             </a>
+            .
           </p>
         </Reveal>
 
@@ -124,8 +133,8 @@ export default function Contact() {
 
               {status === "error" && (
                 <p className="text-sm text-red-400">
-                  Something went wrong. Please try again or email us directly
-                  at ethan@trulyautomation.com.
+                  Something went wrong. Please try again, call or text{" "}
+                  {PHONE_DISPLAY}, or email {EMAIL}.
                 </p>
               )}
 

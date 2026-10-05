@@ -1,3 +1,4 @@
+import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 import Link from "next/link";
 type FooterLink = { href: string; label: string };
 
@@ -33,12 +34,14 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
             ))}
           </div>
 
-          <a
-            href="mailto:ethan@trulyautomation.com"
-            className="text-sm transition hover:text-white"
-          >
-            ethan@trulyautomation.com
-          </a>
+          <div className="flex flex-col items-center gap-1 text-sm sm:items-end">
+            <a href={PHONE_HREF} className="font-semibold text-white transition hover:text-sky">
+              {PHONE_DISPLAY}
+            </a>
+            <a href={`mailto:${EMAIL}`} className="transition hover:text-white">
+              {EMAIL}
+            </a>
+          </div>
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm sm:flex-row">

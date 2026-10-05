@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
 type NavLink = { href: string; label: string };
 
@@ -19,6 +20,20 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-navy/5 bg-background/80 backdrop-blur-md">
+      <div className="bg-navy text-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-4 px-6 py-1.5 text-xs sm:justify-between lg:px-8">
+          <p className="hidden tracking-[0.14em] text-white/60 uppercase sm:block">
+            A marketing team that knows your name
+          </p>
+          <a
+            href={PHONE_HREF}
+            className="inline-flex items-center gap-2 font-semibold tracking-wide transition hover:text-sky"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-3.5 w-3.5" aria-hidden><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" strokeLinejoin="round" /></svg>
+            Call or text {PHONE_DISPLAY}
+          </a>
+        </div>
+      </div>
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-3">
           <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
@@ -78,6 +93,12 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
             >
               Free marketing checkup
             </Link>
+            <a
+              href={PHONE_HREF}
+              className="rounded-md border border-navy/15 px-5 py-2.5 text-center text-sm font-semibold text-navy"
+            >
+              Call or text {PHONE_DISPLAY}
+            </a>
           </div>
         </div>
       )}
