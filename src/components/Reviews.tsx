@@ -15,7 +15,7 @@ const reviews: Review[] = [
     quote:
       "Truly Automation was easy to work with and really valued the relationship with us as a customer. They built us a clean, professional website that explains what we do and makes it easy for customers to reach us. We're very satisfied.",
     name: "Jacob Presley, Owner",
-    business: "NC Perc Solutions",
+    business: "NC Soil Perc Solutions",
     trade: "Perc tests & septic permitting, North Carolina",
     url: "https://www.ncsoilpercsolutions.com/",
     image: "/work/soil-perc-detail.jpg",

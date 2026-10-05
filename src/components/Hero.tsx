@@ -90,10 +90,10 @@ export default function Hero() {
             >
               <img
                 src="/work/soil-perc.jpg"
-                alt="NC Perc Solutions website, built by Truly Automation"
+                alt="NC Soil Perc Solutions website, built by Truly Automation"
                 width={960}
                 height={600}
-                className="aspect-[4/3] w-full object-cover object-left-top"
+                className="aspect-[4/3] w-full object-cover object-top"
               />
             </a>
 
