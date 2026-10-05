@@ -178,7 +178,8 @@ function SceneCanvas({ variant }: { variant: Variant }) {
     };
   }, [variant]);
 
-  return <canvas ref={ref} aria-hidden="true" className="block h-full w-full" />;
+  // Absolutely positioned so the canvas's own pixel size can never feed back into layout.
+  return <canvas ref={ref} aria-hidden="true" className="absolute inset-0 block h-full w-full" />;
 }
 
 const cards: { variant: Variant; title: string; text: string }[] = [
