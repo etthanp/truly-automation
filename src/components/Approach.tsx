@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import ServiceScenes from "./ServiceScenes";
 
 const steps = [
   {
@@ -45,6 +46,10 @@ export default function Approach() {
             We learn your business
             <br className="hidden sm:block" /> before we build your marketing.
           </h2>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <ServiceScenes />
         </Reveal>
 
         <div className="mt-16 grid gap-12 md:grid-cols-3 md:gap-0">
