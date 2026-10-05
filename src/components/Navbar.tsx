@@ -9,6 +9,7 @@ const homeLinks: NavLink[] = [
   { href: "#approach", label: "Our approach" },
   { href: "#services", label: "What we do" },
   { href: "#trades", label: "Who we help" },
+  { href: "#reviews", label: "Reviews" },
   { href: "#packages", label: "Packages" },
   { href: "#about", label: "About us" },
 ];

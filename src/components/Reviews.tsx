@@ -10,7 +10,17 @@ type Review = {
   image: string;
 };
 
-const reviews: Review[] = [];
+const reviews: Review[] = [
+  {
+    quote:
+      "Truly Automation was easy to work with and really valued the relationship with us as a customer. They built us a clean, professional website that explains what we do and makes it easy for customers to reach us. We're very satisfied.",
+    name: "Jacob Presley, Owner",
+    business: "NC Perc Solutions",
+    trade: "Perc tests & septic permitting, North Carolina",
+    url: "https://www.ncsoilpercsolutions.com/",
+    image: "/work/soil-perc-detail.jpg",
+  },
+];
 
 export default function Reviews() {
   return (
@@ -18,14 +28,14 @@ export default function Reviews() {
       <div className="mx-auto max-w-6xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold uppercase tracking-wide text-ember">
-            What our clients say
+            Reviews
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Real businesses. Real marketing, handled for them.
+            Hear it from our clients
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
+        <div className={`mt-12 grid gap-8 ${reviews.length === 1 ? "mx-auto max-w-2xl" : "md:grid-cols-2"}`}>
           {reviews.map((r, i) => (
             <Reveal key={r.business} delay={i * 120}>
               <figure className="flex h-full flex-col overflow-hidden rounded-2xl border border-navy/10 bg-white shadow-sm">
