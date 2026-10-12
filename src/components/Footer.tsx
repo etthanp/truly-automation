@@ -45,8 +45,15 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Truly Automation. All rights reserved.</p>
-          <p>Built by Ethan, Founder &middot; North Carolina</p>
+          <p>&copy; {new Date().getFullYear()} Truly Automation LLC. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="transition hover:text-white">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="transition hover:text-white">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
