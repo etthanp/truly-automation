@@ -184,7 +184,7 @@ function SceneCanvas({ variant }: { variant: Variant }) {
 
 const cards: { variant: Variant; title: string; text: string }[] = [
   { variant: "grid", title: "Websites", text: "Designed and built" },
-  { variant: "rings", title: "Google & SEO", text: "Maps, reviews and AI answers" },
+  { variant: "rings", title: "SEO & AI search", text: "Google, Maps and ChatGPT" },
   { variant: "lines", title: "Advertising", text: "Google, Meta and Local Services ads" },
   { variant: "wave", title: "AI receptionist", text: "Missed calls, texts and follow-up" },
 ];
