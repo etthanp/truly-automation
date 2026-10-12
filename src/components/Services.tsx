@@ -3,13 +3,13 @@ import Reveal from "./Reveal";
 const services = [
   {
     icon: "🌐",
-    title: "Website & AI search",
-    text: "Fast, mobile-friendly, and built to turn visitors into calls. Set up so you show up when customers ask ChatGPT or Google's AI for a local pro.",
+    title: "Website",
+    text: "Fast, mobile-friendly, and built to turn visitors into calls, with a page for every service you offer and every town you cover.",
   },
   {
     icon: "📍",
-    title: "Google Business Profile",
-    text: "Completed, optimized, and posted to every week so you climb higher on Google Maps in your service area.",
+    title: "SEO & AI search",
+    text: "Rank higher on Google, Google Maps and in ChatGPT answers. We optimize your Google Business Profile, keep your listings consistent on Bing, Apple Maps and Yelp, and track where you show up.",
   },
   {
     icon: "⭐",

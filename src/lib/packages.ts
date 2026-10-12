@@ -20,8 +20,10 @@ export const packages: Package[] = [
     popular: true,
     features: [
       "Professional website: built, hosted & kept updated",
+      "Local SEO: rank on Google & Google Maps",
       "Google Business Profile optimized + weekly posts",
       "Show up in ChatGPT & Google AI answers",
+      "Listings kept consistent on Bing, Apple Maps, Yelp & more",
       "Automatic review requests after every job",
       "24/7 AI receptionist + missed-call text-back",
       "Facebook & Instagram managed (8–12 posts/mo)",
@@ -37,6 +39,7 @@ export const packages: Package[] = [
     features: [
       "Everything in Growth",
       "Google & Facebook ads management",
+      "Ongoing SEO content: new service & town pages every month",
       "Outreach to property managers, builders & local businesses",
       "Past-customer email campaigns",
       "Seasonal promotions (tune-ups, spring cleanups…)",

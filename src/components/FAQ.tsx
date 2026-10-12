@@ -17,6 +17,10 @@ const faqs = [
     a: "The AI receptionist and automatic review requests start working the week they go live. Google Maps rankings and ads build over the first 60 to 90 days, which is why plans start with a 3-month term.",
   },
   {
+    q: "Do you do SEO?",
+    a: "Yes, it's built into every plan. We give you a page for each service and town you cover, optimize your Google Business Profile, keep your business listed the same way on Bing, Apple Maps, Yelp and other directories, and set everything up so Google's AI and ChatGPT can find and recommend you. Every month we show you where you rank. Nobody can honestly guarantee a #1 spot, but we make you the easiest business in your area to find.",
+  },
+  {
     q: "Who pays for the ads?",
     a: "You pay Google or Facebook directly for ad spend, on your own card, so you always see exactly where the money goes. Our monthly fee covers setting up and managing the ads. We'll recommend a starting budget that fits your area and goals.",
   },
