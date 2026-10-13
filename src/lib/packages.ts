@@ -15,7 +15,7 @@ export interface Package {
 export const packages: Package[] = [
   {
     name: "Foundation",
-    monthly: 1999,
+    monthly: 1799,
     setup: 1500,
     tagline:
       "Everything a concrete company needs to get found, get calls, and win more of the jobs you quote.",
@@ -43,7 +43,8 @@ export const packages: Package[] = [
     features: [
       "Everything in Foundation",
       "Permit Radar: new home, pool & shop permits in your county every week",
-      "Bid Board: public concrete bids + outreach to builders, GCs & pool companies",
+      "Outreach: calls & emails to builders, GCs, pool companies & property managers",
+      "Bid Board: public concrete bids in your area every week",
       "Neighbor Drop: postcards to the homes around every job",
       "Google & Facebook ads management",
       "Off-Season Engine: spring pre-booking, reseal reminders, rainy-season work",
