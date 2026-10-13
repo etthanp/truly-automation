@@ -8,7 +8,7 @@ export type LegalSection = { title: string; body: LegalBlock[] };
 const links = [
   { href: "/#approach", label: "Our approach" },
   { href: "/#services", label: "What we do" },
-  { href: "/#reviews", label: "Reviews" },
+  { href: "/#calculator", label: "Calculator" },
   { href: "/#packages", label: "Packages" },
   { href: "/#contact", label: "Contact" },
 ];

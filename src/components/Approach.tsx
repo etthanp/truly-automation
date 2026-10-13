@@ -3,8 +3,8 @@ import ServiceScenes from "./ServiceScenes";
 
 const steps = [
   {
-    title: "Study your business",
-    text: "We research your market, your competitors, and the customers you want more of before we build anything.",
+    title: "Study your market",
+    text: "We map your towns, your competitors, the builders near you, and the jobs you want more of before we build anything.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
         <rect x="4" y="3.5" width="12" height="16" rx="1.5" />
@@ -15,8 +15,8 @@ const steps = [
     ),
   },
   {
-    title: "Find the right people",
-    text: "Marketing and outreach aimed at the customers and partners who actually hire your kind of business.",
+    title: "Go after the right work",
+    text: "Homeowners ready to pour, builders who need a concrete sub, and commercial bids. Not tire-kickers shopping for the cheapest price.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
         <circle cx="9" cy="8.5" r="3.2" />
@@ -43,7 +43,7 @@ export default function Approach() {
         <Reveal>
           <span className="eyebrow">Our approach</span>
           <h2 className="mt-5 max-w-4xl text-5xl text-navy sm:text-6xl">
-            We learn your business
+            We learn your concrete business
             <br className="hidden sm:block" /> before we build your marketing.
           </h2>
         </Reveal>

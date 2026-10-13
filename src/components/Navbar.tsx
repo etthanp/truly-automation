@@ -9,8 +9,8 @@ type NavLink = { href: string; label: string };
 const homeLinks: NavLink[] = [
   { href: "#approach", label: "Our approach" },
   { href: "#services", label: "What we do" },
+  { href: "#calculator", label: "Calculator" },
   { href: "#trades", label: "Who we help" },
-  { href: "#reviews", label: "Reviews" },
   { href: "#packages", label: "Packages" },
   { href: "#about", label: "About us" },
 ];
@@ -23,7 +23,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
       <div className="bg-navy text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-4 px-6 py-1.5 text-xs sm:justify-between lg:px-8">
           <p className="hidden tracking-[0.14em] text-white/60 uppercase sm:block">
-            A marketing team that knows your name
+            Marketing for concrete contractors
           </p>
           <a
             href={PHONE_HREF}

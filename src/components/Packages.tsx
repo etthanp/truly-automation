@@ -15,7 +15,7 @@ export default function Packages() {
             Pick how much you want off your plate
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Everything done for you. Most shops start with Growth.
+            Everything done for you. Most concrete companies start with Foundation.
           </p>
           <p className="mx-auto mt-5 inline-block rounded-full border border-ember/30 bg-ember/10 px-4 py-1.5 text-sm font-semibold text-navy">
             From {usd(startingPrice)}/month + setup fee
@@ -69,8 +69,8 @@ export default function Packages() {
           <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-navy/60">
             3-month starting term, then month-to-month. Ad spend (Google, Local
             Services Ads, Facebook) is paid directly to the platform on your
-            own card, so you always see exactly where it goes. Switch plans
-            anytime.
+            own card, and Neighbor Drop postage is billed at cost, so you
+            always see exactly where the money goes. Switch plans anytime.
           </p>
         </Reveal>
       </div>

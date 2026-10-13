@@ -1,62 +1,35 @@
 import Reveal from "./Reveal";
 
-const marketChecks = [
-  {
-    label: "Competitors",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-        <circle cx="11" cy="11" r="6.5" />
-        <path d="m16 16 4.5 4.5" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Customers",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-        <circle cx="9" cy="8.5" r="3.2" />
-        <circle cx="16.5" cy="9.5" r="2.6" />
-        <path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M14.5 14.6c2.6-.3 4.9 1 5.6 4.4" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    label: "Opportunities",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-4 w-4">
-        <rect x="5" y="3.5" width="14" height="17" rx="2" />
-        <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4" strokeLinecap="round" />
-      </svg>
-    ),
-  },
+const permits = [
+  { label: "New home permits", n: 14 },
+  { label: "Pool permits", n: 3 },
+  { label: "Shop & pole barn permits", n: 5 },
 ];
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden px-6 pt-14 pb-20 lg:px-8 lg:pt-20">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.25fr_1fr]">
+      <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
         {/* Copy */}
         <div>
           <Reveal>
-            <span className="eyebrow">Marketing built around you</span>
+            <span className="eyebrow">Marketing for concrete contractors</span>
           </Reveal>
 
           <Reveal delay={100}>
             <h1 className="mt-6 text-6xl text-navy sm:text-7xl xl:text-[5.25rem]">
-              Your business.
+              You pour the concrete.
               <br />
-              Your goals.
-              <br />
-              <span className="text-royal">Our full attention.</span>
+              <span className="text-royal">We fill the schedule.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={200}>
             <p className="mt-7 max-w-xl text-lg text-navy/75">
-              We get to know you, your business, and your customers, then build and run
-              marketing made for you. Website, Google, reviews,
-              social, ads and outreach, handled by people who actually pick up
-              the phone.
+              Truly Automation is the marketing team built only for concrete
+              contractors. Driveways, patios, slabs and commercial flatwork: we
+              bring in the calls, screen out the tire-kickers and follow up on
+              every quote, so you can stay on the job site.
             </p>
           </Reveal>
 
@@ -69,62 +42,89 @@ export default function Hero() {
                 Get your free marketing checkup <span aria-hidden>→</span>
               </a>
               <a
-                href="#approach"
+                href="#calculator"
                 className="inline-flex items-center justify-center gap-2 border-b border-navy/40 pb-1 text-base font-medium text-navy transition hover:border-royal hover:text-royal sm:justify-start"
               >
-                See our approach <span aria-hidden>→</span>
+                Try the Pour Price Calculator <span aria-hidden>→</span>
               </a>
             </div>
           </Reveal>
-
         </div>
 
-        {/* Collage of real client work */}
+        {/* What lands on the owner's phone (example cards) */}
         <Reveal delay={200}>
-          <div className="relative mx-auto aspect-[5/4.2] w-full max-w-[560px]">
-            <a
-              href="https://www.ncsoilpercsolutions.com/"
-              target="_blank"
-              rel="noopener"
-              className="absolute top-[14%] left-0 w-[84%] overflow-hidden border-[6px] border-white bg-white shadow-xl shadow-navy/15 transition hover:-translate-y-1"
-            >
-              <img
-                src="/work/soil-perc.jpg"
-                alt="NC Soil Perc Solutions website, built by Truly Automation"
-                width={960}
-                height={600}
-                className="aspect-[4/3] w-full object-cover object-top"
-              />
-            </a>
+          <div className="relative mx-auto grid w-full max-w-[540px] gap-4 sm:block sm:aspect-[5/4.6]">
+            {/* Photo Quote Line lead */}
+            <div className="bg-white p-5 shadow-xl shadow-navy/15 sm:absolute sm:top-[10%] sm:left-0 sm:w-[78%] sm:p-6 lg:w-[68%] xl:w-[76%]">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-navy/50">
+                  Photo Quote Line
+                </p>
+                <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  New lead
+                </span>
+              </div>
+              <p className="mt-3 text-xl font-bold text-navy">Driveway replacement</p>
+              <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                {[
+                  ["Size", "About 640 sq ft"],
+                  ["Finish", "Broom, tear-out"],
+                  ["Town", "Newberg"],
+                  ["Timeline", "Before spring"],
+                ].map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="text-navy/50">{k}</dt>
+                    <dd className="font-semibold text-navy">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {["front", "side", "street"].map((p) => (
+                  <div
+                    key={p}
+                    className="flex aspect-[4/3] items-end bg-gradient-to-br from-stone-300 to-stone-400 p-1.5 text-[10px] font-medium text-white/90"
+                  >
+                    {p}.jpg
+                  </div>
+                ))}
+              </div>
+            </div>
 
-            {/* "Understand the market" card */}
-            <div className="absolute top-0 right-0 w-44 bg-white p-4 shadow-xl shadow-navy/10 sm:w-48">
-              <p className="text-base leading-tight font-bold text-navy">
-                Understand
-                <br />
-                the market
+            {/* Permit Radar */}
+            <div className="bg-navy p-4 text-white shadow-xl shadow-navy/20 sm:absolute sm:top-0 sm:right-0 sm:w-48 lg:w-44 xl:w-52">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
+                Permit Radar
               </p>
+              <p className="mt-1 text-sm font-bold">This week in your county</p>
               <span className="mt-2 block h-0.5 w-6 bg-ember" />
-              <ul className="mt-3 space-y-2.5">
-                {marketChecks.map((c) => (
-                  <li key={c.label} className="flex items-center gap-2.5 text-xs text-navy/80">
-                    <span className="text-navy">{c.icon}</span>
-                    {c.label}
+              <ul className="mt-3 space-y-2">
+                {permits.map((p) => (
+                  <li key={p.label} className="flex items-center justify-between gap-3 text-xs text-white/80">
+                    {p.label}
+                    <span className="font-bold text-white">{p.n}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <p className="absolute right-[2%] bottom-0 max-w-[10rem] text-right font-[family-name:var(--font-caveat)] text-xl leading-tight text-navy/60 -rotate-6">
-              A real client.
-              <br />
-              A real website.
+            {/* Estimate Chaser */}
+            <div className="bg-white p-4 shadow-xl shadow-navy/10 sm:absolute sm:right-[4%] sm:bottom-[8%] sm:w-56">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-navy/50">
+                Estimate Chaser
+              </p>
+              <p className="mt-1.5 text-sm font-bold text-navy">Day 7 follow-up sent</p>
+              <p className="mt-0.5 text-xs text-navy/60">Stamped patio quote, $8,400</p>
+            </div>
+
+            <p className="text-center font-[family-name:var(--font-caveat)] text-xl leading-tight text-navy/60 sm:absolute sm:bottom-0 sm:left-[2%] sm:max-w-[11rem] sm:-rotate-6 sm:text-left">
+              What lands on your phone (example)
             </p>
 
-            <span className="absolute top-[-4%] right-[40%] text-2xl text-ember/50" aria-hidden>
+            <span className="absolute top-[-4%] right-[44%] hidden text-2xl text-ember/50 sm:block" aria-hidden>
               +
             </span>
-            <span className="absolute bottom-[30%] left-[-3%] text-2xl text-ember/50" aria-hidden>
+            <span className="absolute bottom-[34%] left-[-3%] hidden text-2xl text-ember/50 sm:block" aria-hidden>
               +
             </span>
           </div>
