@@ -15,7 +15,7 @@ export interface Package {
 export const packages: Package[] = [
   {
     name: "Foundation",
-    monthly: 1999,
+    monthly: 1799,
     setup: 1500,
     tagline:
       "Everything a concrete company needs to get found, get calls, and win more of the jobs you quote.",
