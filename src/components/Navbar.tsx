@@ -11,7 +11,6 @@ const homeLinks: NavLink[] = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/pricing", label: "Pricing" },
   { href: "/samples", label: "Samples" },
-  { href: "/#about", label: "About us" },
 ];
 
 export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
