@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 // Accent color for the animated scenes (Truly ember orange). Swap to "201,169,97" for gold.
@@ -197,19 +198,19 @@ export default function ServiceScenes() {
           <span className="h-2.5 w-2.5 bg-ember" aria-hidden />
           What we do
         </p>
-        <a href="#services" className="text-sm font-semibold text-ember transition hover:text-navy">
+        <Link href="/#services" className="text-sm font-semibold text-ember transition hover:text-navy">
           All services →
-        </a>
+        </Link>
       </div>
       <div className="grid grid-cols-2 gap-3 p-3 sm:gap-4 sm:p-6 lg:grid-cols-4 lg:gap-5">
         {cards.map((c) => (
-          <a key={c.title} href="#services" className="group relative block aspect-[4/5] overflow-hidden bg-black">
+          <Link key={c.title} href="/#services" className="group relative block aspect-[4/5] overflow-hidden bg-black">
             <SceneCanvas variant={c.variant} />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent p-3 pt-12 sm:p-5 sm:pt-16">
               <p className="text-base font-semibold text-white sm:text-xl">{c.title}</p>
               <p className="mt-1 text-xs text-white/65 sm:text-sm">{c.text}</p>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

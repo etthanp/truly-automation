@@ -5,21 +5,6 @@ import Footer from "./Footer";
 export type LegalBlock = string | { list: string[] };
 export type LegalSection = { title: string; body: LegalBlock[] };
 
-const links = [
-  { href: "/#approach", label: "Our approach" },
-  { href: "/#services", label: "What we do" },
-  { href: "/#calculator", label: "Calculator" },
-  { href: "/#packages", label: "Packages" },
-  { href: "/#contact", label: "Contact" },
-];
-
-const footerLinks = [
-  { href: "/#services", label: "Services" },
-  { href: "/#packages", label: "Packages" },
-  { href: "/#faq", label: "FAQ" },
-  { href: "/#contact", label: "Contact" },
-];
-
 export default function LegalPage({
   title,
   updated,
@@ -33,7 +18,7 @@ export default function LegalPage({
 }) {
   return (
     <>
-      <Navbar links={links} />
+      <Navbar />
       <main className="flex-1 px-6 pt-14 pb-24 lg:px-8">
         <article className="mx-auto max-w-3xl">
           <p className="eyebrow">Legal</p>
@@ -65,7 +50,7 @@ export default function LegalPage({
           </div>
         </article>
       </main>
-      <Footer links={footerLinks} />
+      <Footer />
     </>
   );
 }

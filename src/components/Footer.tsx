@@ -3,11 +3,11 @@ import Link from "next/link";
 type FooterLink = { href: string; label: string };
 
 const homeLinks: FooterLink[] = [
-  { href: "#services", label: "Services" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#packages", label: "Packages" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#services", label: "What we do" },
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/samples", label: "Samples" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) {

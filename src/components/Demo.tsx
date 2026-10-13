@@ -19,7 +19,7 @@ const CHIPS = [
   "Do you pour shop slabs?",
 ];
 
-export default function Demo() {
+export default function Demo({ bare = false }: { bare?: boolean } = {}) {
   const [phase, setPhase] = useState<"ringing" | "chat">("ringing");
   const [ringMissed, setRingMissed] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -113,28 +113,8 @@ export default function Demo() {
 
   const showChips = phase === "chat" && messages.length === 1 && !loading && !aiTyping;
 
-  return (
-    <section id="demo" className="bg-gradient-to-b from-background to-royal/5 px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-bold uppercase tracking-wide text-ember">
-            See it live
-          </span>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Watch a missed call turn into a ready-to-quote lead
-          </h2>
-          <p className="mt-4 text-lg text-navy/70">
-            This is the Photo Quote Line, answering live. A homeowner calls,
-            you can&apos;t pick up, so it texts them back in seconds and gets
-            the project details for you.{" "}
-            <strong className="font-semibold text-navy">
-              You&apos;re the homeowner. Text it and see.
-            </strong>
-          </p>
-        </Reveal>
-
-        <Reveal delay={150}>
-          <div className="mt-14 flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:justify-center">
+  const body = (
+    <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:justify-center">
             {/* Phone */}
             <div className="relative w-full max-w-[22rem] shrink-0">
               <div className="overflow-hidden rounded-[2.75rem] border-[10px] border-navy bg-navy shadow-2xl">
@@ -317,6 +297,32 @@ export default function Demo() {
               </p>
             </div>
           </div>
+  );
+
+  if (bare) return body;
+
+  return (
+    <section id="demo" className="bg-gradient-to-b from-background to-royal/5 px-6 py-24 lg:px-8">
+      <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <span className="text-sm font-bold uppercase tracking-wide text-ember">
+            See it live
+          </span>
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+            Watch a missed call turn into a ready-to-quote lead
+          </h2>
+          <p className="mt-4 text-lg text-navy/70">
+            This is the Photo Quote Line, answering live. A homeowner calls,
+            you can&apos;t pick up, so it texts them back in seconds and gets
+            the project details for you.{" "}
+            <strong className="font-semibold text-navy">
+              You&apos;re the homeowner. Text it and see.
+            </strong>
+          </p>
+        </Reveal>
+
+        <Reveal delay={150}>
+          <div className="mt-14">{body}</div>
         </Reveal>
       </div>
     </section>

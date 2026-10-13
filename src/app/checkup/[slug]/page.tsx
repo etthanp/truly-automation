@@ -28,14 +28,6 @@ export async function generateMetadata({
   };
 }
 
-const links = [
-  { href: "/#services", label: "Services" },
-  { href: "/#how-it-works", label: "How It Works" },
-  { href: "/#demo", label: "Live Demo" },
-  { href: "/#packages", label: "Packages" },
-  { href: "/#faq", label: "FAQ" },
-];
-
 const statusStyle: Record<Status, { dot: string; chip: string; label: string; icon: string }> = {
   good: { dot: "bg-emerald-500", chip: "bg-emerald-50 text-emerald-700", label: "Looking good", icon: "✓" },
   warn: { dot: "bg-amber-500", chip: "bg-amber-50 text-amber-700", label: "Needs work", icon: "!" },
@@ -61,7 +53,7 @@ export default async function CheckupPage({
 
   return (
     <>
-      <Navbar links={links} />
+      <Navbar />
       <main className="flex-1">
         {/* Header */}
         <section className="bg-gradient-to-b from-navy to-royal/90 px-6 pt-16 pb-20 text-white lg:px-8">
@@ -251,7 +243,7 @@ export default async function CheckupPage({
           </p>
         </section>
       </main>
-      <Footer links={links} />
+      <Footer />
     </>
   );
 }

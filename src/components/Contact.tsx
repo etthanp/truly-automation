@@ -10,7 +10,8 @@ const inputClass =
   "mt-2 w-full rounded-lg border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none focus:border-sky";
 const labelClass = "block text-sm font-medium text-white/80";
 
-export default function Contact() {
+export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
+  const Heading = asPage ? "h1" : "h2";
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -42,9 +43,9 @@ export default function Contact() {
     <section id="contact" className="bg-navy px-6 py-24 text-white lg:px-8">
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <Heading className="text-4xl sm:text-5xl">
             Get your free marketing checkup
-          </h2>
+          </Heading>
           <p className="mt-4 text-lg text-white/70">
             We&apos;ll look at where you rank for driveways, patios and slabs,
             your website, your reviews and your calls, and send you a one-page

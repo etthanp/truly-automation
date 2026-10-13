@@ -26,23 +26,22 @@ export default function Hero() {
 
           <Reveal delay={200}>
             <p className="mt-7 max-w-xl text-lg text-navy/75">
-              Truly Automation is the marketing team built only for concrete
-              contractors. Driveways, patios, slabs and commercial flatwork: we
-              bring in the calls, screen out the tire-kickers and follow up on
-              every quote, so you can stay on the job site.
+              The marketing team built only for concrete contractors. More
+              calls, fewer tire-kickers, and follow-up on every quote, while you
+              stay on the job site.
             </p>
           </Reveal>
 
           <Reveal delay={300}>
             <div className="mt-9 flex flex-col gap-5 sm:flex-row sm:items-center">
               <a
-                href="#contact"
+                href="/contact"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-royal px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-royal/25 transition hover:bg-navy"
               >
                 Get your free marketing checkup <span aria-hidden>→</span>
               </a>
               <a
-                href="#calculator"
+                href="#try"
                 className="inline-flex items-center justify-center gap-2 border-b border-navy/40 pb-1 text-base font-medium text-navy transition hover:border-royal hover:text-royal sm:justify-start"
               >
                 Try the Pour Price Calculator <span aria-hidden>→</span>

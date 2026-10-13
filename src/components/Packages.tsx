@@ -3,7 +3,8 @@ import { packages, usd } from "@/lib/packages";
 
 const startingPrice = Math.min(...packages.map((p) => p.monthly));
 
-export default function Packages() {
+export default function Packages({ asPage = false }: { asPage?: boolean } = {}) {
+  const Heading = asPage ? "h1" : "h2";
   return (
     <section id="packages" className="bg-gradient-to-b from-royal/5 to-background px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-5xl">
@@ -11,9 +12,9 @@ export default function Packages() {
           <span className="text-sm font-bold uppercase tracking-wide text-ember">
             Packages
           </span>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
+          <Heading className="mt-3 text-4xl text-navy sm:text-5xl">
             Pick how much you want off your plate
-          </h2>
+          </Heading>
           <p className="mt-4 text-lg text-navy/70">
             Everything done for you. Most concrete companies start with Foundation.
           </p>
@@ -51,7 +52,7 @@ export default function Packages() {
                 </ul>
                 <div className="flex-1" />
                 <a
-                  href="#contact"
+                  href="/contact"
                   className={`mt-8 block rounded-full px-6 py-3.5 text-center text-base font-semibold transition ${
                     p.popular
                       ? "bg-ember text-white shadow-lg shadow-ember/30 hover:scale-105"
