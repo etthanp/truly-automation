@@ -16,6 +16,12 @@ const systems: { icon: string; title: string; text: string; tier: Tier }[] = [
     tier: "Foundation",
   },
   {
+    icon: "🔎",
+    title: "SEO & AI search",
+    text: "Show up on Google, Google Maps and ChatGPT when homeowners search for concrete, with a page for every service and town you cover.",
+    tier: "Foundation",
+  },
+  {
     icon: "📍",
     title: "Job Site Pages",
     text: "Every finished pour becomes a page like “Stamped patio in Dayton” that helps you rank on Google and ChatGPT in that town.",
@@ -40,9 +46,15 @@ const systems: { icon: string; title: string; text: string; tier: Tier }[] = [
     tier: "Reinforced",
   },
   {
+    icon: "🤝",
+    title: "Outreach",
+    text: "We call and email home builders, general contractors, pool companies and property managers for you to line up steady repeat work.",
+    tier: "Reinforced",
+  },
+  {
     icon: "📋",
     title: "Bid Board",
-    text: "Public concrete jobs open for bids, plus outreach to home builders, general contractors and pool companies.",
+    text: "Public concrete jobs open for bids in your area, sent to you every week: city, county, school and commercial work.",
     tier: "Reinforced",
   },
   {
@@ -74,7 +86,7 @@ export default function Services() {
             What we do
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Ten systems built only for concrete contractors
+            Twelve systems built only for concrete contractors
           </h2>
           <p className="mt-4 text-lg text-navy/70">
             Not a generic marketing package. Each one solves a problem concrete
@@ -83,9 +95,9 @@ export default function Services() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {systems.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 5) * 80}>
+            <Reveal key={s.title} delay={(i % 3) * 80}>
               <div className="flex h-full flex-col rounded-2xl border border-navy/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-royal/10">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ember/15 to-sky/20 text-2xl">
                   {s.icon}
