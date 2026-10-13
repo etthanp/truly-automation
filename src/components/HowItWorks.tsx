@@ -1,12 +1,11 @@
 import Reveal from "./Reveal";
-import Link from "next/link";
 
 const steps = [
   {
     number: "01",
     title: "Free marketing checkup",
     description:
-      "We look at where you show up on Google Maps, your website on a phone, your reviews next to your competitors, and how your calls get answered. You get a one-page report.",
+      "We check where you show up on Google Maps for driveways, patios and slabs, your website on a phone, your reviews next to other concrete companies, and how your calls get answered. You get a one-page report.",
   },
   {
     number: "02",
@@ -18,13 +17,13 @@ const steps = [
     number: "03",
     title: "We build everything",
     description:
-      "Website, Google listing, review requests, AI receptionist, social pages, ads. Most clients are fully live in about two weeks. You don't touch anything technical.",
+      "Website and Pour Price Calculator, Google profile, Photo Quote Line, review requests and Estimate Chaser. Most clients are fully live in about two weeks. You don't touch anything technical.",
   },
   {
     number: "04",
     title: "We run it every month",
     description:
-      "Posts go out, reviews come in, ads get tuned, and every missed call gets answered. Each month you get a simple report of what it brought in.",
+      "Job Site Pages go up, reviews come in, quotes get followed up, and every missed call gets answered. Each month you get a simple report of what it brought in.",
   },
 ];
 
@@ -37,7 +36,7 @@ export default function HowItWorks() {
             How it works
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            You run the business. We&apos;ll keep the phone ringing.
+            You run the crews. We&apos;ll keep the schedule full.
           </h2>
           <p className="mt-4 text-lg text-white/70">
             Four steps from &ldquo;we should do something about
@@ -59,16 +58,6 @@ export default function HowItWorks() {
           ))}
         </div>
 
-        <Reveal delay={200}>
-          <p className="mt-10 text-center">
-            <Link
-              href="/checkup/example-plumbing"
-              className="text-sm font-semibold text-sky underline underline-offset-4 hover:text-white"
-            >
-              See a sample marketing checkup →
-            </Link>
-          </p>
-        </Reveal>
       </div>
     </section>
   );

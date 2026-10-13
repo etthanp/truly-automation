@@ -2,20 +2,20 @@ import Reveal from "./Reveal";
 
 const problems = [
   {
-    title: "Invisible on Google Maps",
-    text: "When someone searches “plumber near me” or “dentist near me,” most call one of the first few businesses Google shows. If that isn’t you, you never even hear about them.",
+    title: "Tire-kickers eat your day",
+    text: "Half the calls are someone wanting a price on a 10x10 pad. You drive out, measure, write the quote, and never hear from them again.",
   },
   {
-    title: "A website that hurts you",
-    text: "No website, or one that’s slow and broken on a phone, tells customers you might not be around next year. They move on to the next result.",
+    title: "Quotes that go quiet",
+    text: "You bid a $14,000 driveway and nobody follows up. A month later you drive by and someone else poured it.",
   },
   {
-    title: "Not enough reviews",
-    text: "Customers compare stars before they call. The company with 180 reviews beats the one with 12, even when your work is better.",
+    title: "Feast or famine",
+    text: "Slammed all summer, dead when it rains or freezes, with no plan to fill the slow months or line up spring work early.",
   },
   {
-    title: "Calls you can’t answer",
-    text: "When you’re busy with a customer, the phone goes to voicemail, and most callers just call someone else. In home services, up to 62% of calls go unanswered.",
+    title: "Calls you can't answer",
+    text: "You're finishing a slab when the phone rings. It goes to voicemail, and they call the next concrete company on Google.",
   },
 ];
 
@@ -28,11 +28,11 @@ export default function Problem() {
             The problem
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Good work isn&apos;t enough if customers can&apos;t find you.
+            Good concrete work isn&apos;t enough if the phone doesn&apos;t ring.
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            Most small businesses grow on word of mouth, and lose customers every
-            week to competitors who simply show up first online.
+            Most concrete companies grow on word of mouth and a few builder
+            relationships, then hit a wall.
           </p>
         </Reveal>
 
@@ -51,11 +51,10 @@ export default function Problem() {
           <div className="mt-10 rounded-2xl border border-royal/20 bg-gradient-to-r from-royal/5 to-sky/10 p-8 text-center">
             <p className="text-lg font-semibold text-navy sm:text-xl">
               You don&apos;t need to learn marketing.{" "}
-              <span className="text-royal">You need someone to handle it.</span>
+              <span className="text-royal">You need a team that knows concrete.</span>
             </p>
             <p className="mt-2 text-navy/70">
-              That&apos;s us. You run the business; we make sure the phone keeps
-              ringing.
+              That&apos;s us. You run the crews; we keep the schedule full.
             </p>
           </div>
         </Reveal>

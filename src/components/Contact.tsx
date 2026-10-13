@@ -46,9 +46,10 @@ export default function Contact() {
             Get your free marketing checkup
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            We&apos;ll look at your Google ranking, website, reviews and calls,
-            and send you a one-page report with the three things to fix first.
-            Free, no strings attached. Or reach Ethan directly: call or text{" "}
+            We&apos;ll look at where you rank for driveways, patios and slabs,
+            your website, your reviews and your calls, and send you a one-page
+            report with the three things to fix first. We&apos;ll also tell you
+            if your city is still open. Free, no strings attached. Or reach Ethan directly: call or text{" "}
             <a
               href={PHONE_HREF}
               className="whitespace-nowrap text-sky underline underline-offset-2 hover:text-white"
@@ -99,18 +100,18 @@ export default function Contact() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="business" className={labelClass}>Business name</label>
-                  <input id="business" name="business" type="text" required placeholder="Johnson Plumbing & Drain" className={inputClass} />
+                  <input id="business" name="business" type="text" required placeholder="Johnson Concrete" className={inputClass} />
                 </div>
                 <div>
                   <label htmlFor="email" className={labelClass}>Email</label>
-                  <input id="email" name="email" type="email" required placeholder="mike@johnsonplumbing.com" className={inputClass} />
+                  <input id="email" name="email" type="email" required placeholder="mike@johnsonconcrete.com" className={inputClass} />
                 </div>
               </div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="business_type" className={labelClass}>Type of business</label>
-                  <input id="business_type" name="business_type" type="text" required placeholder="e.g. roofing, dental office, coffee shop" className={inputClass} />
+                  <label htmlFor="business_type" className={labelClass}>Concrete work you do most</label>
+                  <input id="business_type" name="business_type" type="text" required placeholder="e.g. driveways, patios, commercial flatwork" className={inputClass} />
                 </div>
                 <div>
                   <label htmlFor="area" className={labelClass}>City / area</label>
@@ -126,7 +127,7 @@ export default function Contact() {
                   id="need"
                   name="need"
                   rows={3}
-                  placeholder="e.g. 'We don't have a website and most work comes from referrals.'"
+                  placeholder="e.g. 'Most of our work comes from two builders and we want more homeowner jobs.'"
                   className={inputClass}
                 />
               </div>

@@ -24,15 +24,16 @@ export default function Founder() {
             that <span className="text-[#5b7cff]">knows your name.</span>
           </h2>
           <p className="mt-7 max-w-xl text-lg text-white/80">
-            Hi, I&apos;m Ethan. I started Truly Automation in North Carolina
-            because the best small-business owners I know are great at what they do and have
-            zero time for marketing, and most agencies treat them like an
-            account number.
+            Hi, I&apos;m Ethan. I started Truly Automation in North Carolina to
+            do one thing really well: marketing for concrete contractors. The
+            best concrete companies do great work and have zero time for
+            marketing, and most agencies treat them like an account number.
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
-            Smart tools handle the busywork. I focus on your business: who your
-            customers are, what jobs you want more of, and what&apos;s actually
-            bringing in calls.
+            Because concrete is all we do, everything we build fits how your
+            business actually runs: quotes by the square foot, busy and slow
+            seasons, builders and general contractors, and crews on the job
+            all day.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <a

@@ -1,10 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Approach from "@/components/Approach";
-import Reviews from "@/components/Reviews";
 import Problem from "@/components/Problem";
 import Services from "@/components/Services";
 import Trades from "@/components/Trades";
+import PourCalculator from "@/components/PourCalculator";
 import Demo from "@/components/Demo";
 import HowItWorks from "@/components/HowItWorks";
 import Packages from "@/components/Packages";
@@ -21,11 +21,11 @@ export default function Home() {
         <Hero />
         <Approach />
         <Founder />
-        <Reviews />
         <Problem />
         <Services />
-        <Trades />
+        <PourCalculator />
         <Demo />
+        <Trades />
         <HowItWorks />
         <Packages />
         <FAQ />

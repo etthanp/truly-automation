@@ -24,11 +24,11 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Truly Automation | A Marketing Team That Knows Your Name",
+  title: "Truly Automation | Marketing for Concrete Contractors",
   description:
-    "Truly Automation is a personal marketing team for small and growing businesses, from contractors to local shops: websites, SEO and AI search, Google Business Profile, reviews, social media, ads and a 24/7 AI receptionist. Get a free marketing checkup.",
+    "Truly Automation is the marketing team built only for concrete contractors: websites with an instant Pour Price Calculator, SEO and Job Site Pages, missed-call text-back, estimate follow-up, permit leads and builder outreach. One concrete company per city. Get a free marketing checkup.",
   openGraph: {
-    title: "Your business. Your goals. Our full attention.",
+    title: "You pour the concrete. We fill the schedule.",
     description:
       "Websites, Google listings, reviews, social media, ads and a 24/7 AI receptionist for small businesses. Get a free marketing checkup.",
     url: "https://trulyautomation.com",

@@ -8,15 +8,15 @@ interface Msg {
   content: string;
 }
 
-const BUSINESS = "Summit Comfort Heating & Air";
+const BUSINESS = "Granite Ridge Concrete";
 const CALLER = "(910) 555-0148";
 const GREETING =
-  "Hi, this is Ava — the virtual receptionist at Summit Comfort Heating & Air 👋 So sorry we missed your call! I can help you right here by text. What's going on with your system?";
+  "Hi, this is Ava with Granite Ridge Concrete. Sorry we missed your call, the crew is out on a pour! I can help right here by text. What kind of project are you thinking about?";
 
 const CHIPS = [
-  "My AC stopped cooling 😰",
-  "No heat and it's freezing in here",
-  "What do you charge for a tune-up?",
+  "I need a new driveway",
+  "Price for a stamped patio?",
+  "Do you pour shop slabs?",
 ];
 
 export default function Demo() {
@@ -81,14 +81,14 @@ export default function Demo() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, bot: "hvac" }),
+        body: JSON.stringify({ messages: next, bot: "concrete" }),
       });
       const data = await res.json();
       setMessages((p) => [
         ...p,
         {
           role: "assistant",
-          content: data.reply || "Sorry, I didn't catch that — say that again?",
+          content: data.reply || "Sorry, I didn't catch that. Can you say that again?",
         },
       ]);
     } catch {
@@ -121,13 +121,14 @@ export default function Demo() {
             See it live
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-navy sm:text-4xl">
-            Watch a missed call turn into a booked job
+            Watch a missed call turn into a ready-to-quote lead
           </h2>
           <p className="mt-4 text-lg text-navy/70">
-            This is a real AI, answering live. A customer calls, you can&apos;t
-            pick up — so it texts them back in seconds and books the job.{" "}
+            This is the Photo Quote Line, answering live. A homeowner calls,
+            you can&apos;t pick up, so it texts them back in seconds and gets
+            the project details for you.{" "}
             <strong className="font-semibold text-navy">
-              You&apos;re the customer — text it and see.
+              You&apos;re the homeowner. Text it and see.
             </strong>
           </p>
         </Reveal>
@@ -157,7 +158,7 @@ export default function Demo() {
                     <div className="leading-tight">
                       <p className="text-sm font-semibold text-navy">{BUSINESS}</p>
                       <p className="text-[11px] text-navy/50">
-                        Virtual receptionist · replies in seconds
+                        Demo company · replies in seconds
                       </p>
                     </div>
                     <button
@@ -188,7 +189,7 @@ export default function Demo() {
                       <p className="text-xs text-white/40">
                         {ringMissed
                           ? "Nobody free to pick up…"
-                          : "Your crew is out on a job"}
+                          : "Your crew is out on a pour"}
                       </p>
                     </div>
                   ) : (
@@ -282,7 +283,7 @@ export default function Demo() {
                   {
                     n: "1",
                     t: "The call comes in",
-                    d: "A homeowner with a dead AC calls. Your team is on a roof — nobody can grab it.",
+                    d: "A homeowner calls about a new driveway. Your whole crew is finishing a slab, so nobody can grab it.",
                   },
                   {
                     n: "2",
@@ -291,8 +292,8 @@ export default function Demo() {
                   },
                   {
                     n: "3",
-                    t: "It books the job",
-                    d: "Ava asks what's wrong, gets their address, and locks in a time slot — then hands you the details.",
+                    t: "You get a ready-to-quote lead",
+                    d: "Ava asks about the project, size, finish, town and timeline, asks for photos, and books a time for you to come measure.",
                   },
                 ].map((s) => (
                   <li key={s.n} className="flex gap-4">
@@ -307,7 +308,7 @@ export default function Demo() {
                 ))}
               </ol>
               <p className="mt-8 rounded-xl border border-navy/10 bg-white p-4 text-sm text-navy/70 shadow-sm">
-                No app for your customer to download — it&apos;s just a text.
+                No app for your customer to download. It&apos;s just a text.
                 This same receptionist runs on{" "}
                 <span className="font-semibold text-navy">your</span> business
                 number, trained on{" "}

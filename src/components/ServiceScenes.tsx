@@ -183,10 +183,10 @@ function SceneCanvas({ variant }: { variant: Variant }) {
 }
 
 const cards: { variant: Variant; title: string; text: string }[] = [
-  { variant: "grid", title: "Websites", text: "Designed and built" },
-  { variant: "rings", title: "SEO & AI search", text: "Google, Maps and ChatGPT" },
-  { variant: "lines", title: "Advertising", text: "Google, Meta and Local Services ads" },
-  { variant: "wave", title: "AI receptionist", text: "Missed calls, texts and follow-up" },
+  { variant: "grid", title: "Pour Price Calculator", text: "Instant estimates on your website" },
+  { variant: "rings", title: "Permit Radar", text: "New permits in your county, weekly" },
+  { variant: "lines", title: "Job Site Pages", text: "Every pour ranks in its town" },
+  { variant: "wave", title: "Photo Quote Line", text: "Missed calls turned into quotes" },
 ];
 
 export default function ServiceScenes() {
