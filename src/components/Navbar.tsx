@@ -7,12 +7,11 @@ import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
-  { href: "#approach", label: "Our approach" },
-  { href: "#services", label: "What we do" },
-  { href: "#calculator", label: "Calculator" },
-  { href: "#trades", label: "Who we help" },
-  { href: "#packages", label: "Packages" },
-  { href: "#about", label: "About us" },
+  { href: "/#services", label: "What we do" },
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/samples", label: "Samples" },
+  { href: "/#about", label: "About us" },
 ];
 
 export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
@@ -54,7 +53,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/#contact"
+            href="/contact"
             className="whitespace-nowrap rounded-md bg-royal px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:px-5 lg:py-2.5"
           >
             <span className="xl:hidden">Free checkup</span>
@@ -87,7 +86,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
               </a>
             ))}
             <Link
-              href="/#contact"
+              href="/contact"
               onClick={() => setOpen(false)}
               className="rounded-md bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >

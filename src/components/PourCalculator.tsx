@@ -57,7 +57,7 @@ function Choice<T extends string>({
   );
 }
 
-export default function PourCalculator() {
+export default function PourCalculator({ bare = false }: { bare?: boolean } = {}) {
   const [project, setProject] = useState<ProjectKey>("driveway");
   const [finish, setFinish] = useState<FinishKey>("broom");
   const [length, setLength] = useState(24);
@@ -76,11 +76,13 @@ export default function PourCalculator() {
     "w-full rounded-lg border border-navy/15 bg-white px-3 py-2.5 text-base text-navy outline-none focus:border-royal";
 
   return (
-    <section id="calculator" className="px-6 py-24 lg:px-8">
+    <section id={bare ? undefined : "calculator"} className={bare ? "" : "px-6 py-24 lg:px-8"}>
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_1.15fr]">
         <Reveal>
-          <span className="eyebrow">Try it</span>
-          <h2 className="mt-5 text-5xl text-navy sm:text-6xl">The Pour Price Calculator</h2>
+          {!bare && <span className="eyebrow">Try it</span>}
+          <h2 className={bare ? "text-4xl text-navy sm:text-5xl" : "mt-5 text-5xl text-navy sm:text-6xl"}>
+            The Pour Price Calculator
+          </h2>
           <p className="mt-6 max-w-lg text-lg text-navy/75">
             Homeowners get a real price range in 30 seconds. You get their name,
             number and project details, and the tire-kickers screen themselves

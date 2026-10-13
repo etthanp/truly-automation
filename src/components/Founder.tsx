@@ -37,7 +37,7 @@ export default function Founder() {
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-md bg-royal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-white hover:text-navy"
             >
               Let&apos;s talk about your business <span aria-hidden>→</span>

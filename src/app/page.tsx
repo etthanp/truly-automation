@@ -1,16 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Approach from "@/components/Approach";
-import Problem from "@/components/Problem";
 import Services from "@/components/Services";
-import Trades from "@/components/Trades";
-import PourCalculator from "@/components/PourCalculator";
-import Demo from "@/components/Demo";
-import HowItWorks from "@/components/HowItWorks";
-import Packages from "@/components/Packages";
+import TryIt from "@/components/TryIt";
+import SamplesBand from "@/components/SamplesBand";
 import Founder from "@/components/Founder";
-import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
+import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -19,17 +13,11 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Approach />
-        <Founder />
-        <Problem />
         <Services />
-        <PourCalculator />
-        <Demo />
-        <Trades />
-        <HowItWorks />
-        <Packages />
-        <FAQ />
-        <Contact />
+        <TryIt />
+        <SamplesBand />
+        <Founder />
+        <CtaBand />
       </main>
       <Footer />
     </>
