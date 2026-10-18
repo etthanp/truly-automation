@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
+
+const noSubscribe = () => () => {};
 import Reveal from "./Reveal";
 import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
@@ -12,6 +14,12 @@ const labelClass = "block text-sm font-medium text-white/80";
 
 export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
   const Heading = asPage ? "h1" : "h2";
+  // Industry pages link here with ?business=Roofing so the form starts filled in.
+  const businessType = useSyncExternalStore(
+    noSubscribe,
+    () => new URLSearchParams(window.location.search).get("business") ?? "",
+    () => ""
+  );
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -47,8 +55,8 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
             Get your free marketing checkup
           </Heading>
           <p className="mt-4 text-lg text-white/70">
-            We&apos;ll look at where you rank for driveways, patios and slabs,
-            your website, your reviews and your calls, and send you a one-page
+            We&apos;ll look at where you rank on Google, your website, your
+            reviews and how your calls get answered, and send you a one-page
             report with the three things to fix first. We&apos;ll also tell you
             if your city is still open. Free, no strings attached. Or reach Ethan directly: call or text{" "}
             <a
@@ -101,18 +109,18 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="business" className={labelClass}>Business name</label>
-                  <input id="business" name="business" type="text" required placeholder="Johnson Concrete" className={inputClass} />
+                  <input id="business" name="business" type="text" required placeholder="Johnson Roofing" className={inputClass} />
                 </div>
                 <div>
                   <label htmlFor="email" className={labelClass}>Email</label>
-                  <input id="email" name="email" type="email" required placeholder="mike@johnsonconcrete.com" className={inputClass} />
+                  <input id="email" name="email" type="email" required placeholder="mike@johnsonroofing.com" className={inputClass} />
                 </div>
               </div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="business_type" className={labelClass}>Concrete work you do most</label>
-                  <input id="business_type" name="business_type" type="text" required placeholder="e.g. driveways, patios, commercial flatwork" className={inputClass} />
+                  <label htmlFor="business_type" className={labelClass}>Type of business</label>
+                  <input key={businessType} id="business_type" name="business_type" type="text" required defaultValue={businessType} placeholder="e.g. roofing, plumbing, concrete" className={inputClass} />
                 </div>
                 <div>
                   <label htmlFor="area" className={labelClass}>City / area</label>
@@ -128,7 +136,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                   id="need"
                   name="need"
                   rows={3}
-                  placeholder="e.g. 'Most of our work comes from two builders and we want more homeowner jobs.'"
+                  placeholder="e.g. 'Most of our work is referrals and we want more jobs from Google.'"
                   className={inputClass}
                 />
               </div>

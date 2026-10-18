@@ -8,8 +8,8 @@ export default function CtaBand() {
       <Reveal className="mx-auto max-w-3xl text-center">
         <h2 className="text-5xl text-navy sm:text-6xl">Is your city still open?</h2>
         <p className="mx-auto mt-5 max-w-xl text-lg text-navy/70">
-          We work with one concrete company per city. Get a free marketing
-          checkup and we&apos;ll tell you if your town is available.
+          We work with one company per industry in each city. Get a free
+          marketing checkup and we&apos;ll tell you if your town is available.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link

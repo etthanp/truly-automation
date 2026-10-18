@@ -1,23 +1,21 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import TryIt from "@/components/TryIt";
-import SamplesBand from "@/components/SamplesBand";
+import HomeHero from "@/components/home/HomeHero";
+import Directory from "@/components/home/Directory";
 import Founder from "@/components/Founder";
-import CtaBand from "@/components/CtaBand";
+import HomeCta from "@/components/home/HomeCta";
 import Footer from "@/components/Footer";
+import { categories, industries } from "@/lib/industries";
 
 export default function Home() {
+  const items = industries.map(({ slug, name, icon, tagline, category }) => ({ slug, name, icon, tagline, category }));
   return (
     <>
       <Navbar />
       <main className="flex-1">
-        <Hero />
-        <Services />
-        <TryIt />
-        <SamplesBand />
+        <HomeHero />
+        <Directory items={items} categories={categories} />
         <Founder />
-        <CtaBand />
+        <HomeCta />
       </main>
       <Footer />
     </>

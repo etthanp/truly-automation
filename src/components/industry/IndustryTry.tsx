@@ -1,19 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Reveal from "./Reveal";
-import PourCalculator from "./PourCalculator";
-import Demo from "./Demo";
+import Reveal from "../Reveal";
+import Demo from "../Demo";
+import Estimator from "./Estimator";
+import type { Industry } from "@/lib/industries/types";
 
-const tabs = [
-  { id: "calculator", label: "Pour Price Calculator" },
-  { id: "receptionist", label: "Photo Quote Line" },
-] as const;
-
-type TabId = (typeof tabs)[number]["id"];
-
-export default function TryIt() {
-  const [tab, setTab] = useState<TabId>("calculator");
+export default function IndustryTry({ ind }: { ind: Industry }) {
+  const [tab, setTab] = useState<"estimator" | "receptionist">("estimator");
+  const tabs = [
+    { id: "estimator" as const, label: ind.estimator.name },
+    { id: "receptionist" as const, label: ind.demo.name },
+  ];
+  const d = ind.demo;
 
   return (
     <section id="try" className="scroll-mt-24 px-6 py-24 lg:px-8">
@@ -43,7 +42,19 @@ export default function TryIt() {
         </div>
 
         <div className="mt-12" role="tabpanel">
-          {tab === "calculator" ? <PourCalculator bare /> : <Demo bare />}
+          {tab === "estimator" ? (
+            <Estimator config={ind.estimator} />
+          ) : (
+            <Demo
+              bare
+              bot={ind.slug}
+              business={d.business}
+              greeting={d.greeting}
+              chips={d.chips}
+              busy={d.busy}
+              steps={d.steps}
+            />
+          )}
         </div>
       </div>
     </section>
