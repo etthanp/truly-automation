@@ -7,10 +7,9 @@ import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
-  { href: "/#services", label: "What we do" },
+  { href: "/#industries", label: "Industries" },
   { href: "/how-it-works", label: "How it works" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/samples", label: "Samples" },
+  { href: "/#about", label: "About" },
 ];
 
 export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
@@ -21,7 +20,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
       <div className="bg-navy text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-4 px-6 py-1.5 text-xs sm:justify-between lg:px-8">
           <p className="hidden tracking-[0.14em] text-white/60 uppercase sm:block">
-            Marketing for concrete contractors
+            Marketing built for your kind of business
           </p>
           <a
             href={PHONE_HREF}

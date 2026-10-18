@@ -8,7 +8,7 @@ import CtaBand from "@/components/CtaBand";
 export const metadata: Metadata = {
   title: "How It Works | Truly Automation",
   description:
-    "How Truly Automation fills the schedule for concrete contractors: a free checkup, a two-week setup, and marketing that runs every month.",
+    "How Truly Automation fills your schedule: a free checkup, a two-week setup, and marketing built for your industry that runs every month.",
 };
 
 const steps = [
@@ -18,15 +18,15 @@ const steps = [
   },
   {
     title: "Pick your plan",
-    text: "A 15-minute call to go over the report and choose Foundation or Reinforced. No pressure.",
+    text: "A 15-minute call to go over the report and pick the package that fits. No pressure.",
   },
   {
     title: "We build it",
-    text: "Website, Pour Price Calculator, Google profile and Photo Quote Line, live in about two weeks.",
+    text: "Your website, instant quote tool, Google profile and missed-call text-back, live in about two weeks.",
   },
   {
     title: "We run it monthly",
-    text: "Job Site Pages, reviews, quote follow-up, and a simple report of what it brought in.",
+    text: "Job pages, reviews, quote follow-up, and a simple report of what it brought in.",
   },
 ];
 
@@ -60,7 +60,7 @@ export default function HowItWorksPage() {
                 🔒
               </span>
               <div className="mt-4 sm:mt-0">
-                <p className="text-lg font-bold text-navy">One concrete company per city</p>
+                <p className="text-lg font-bold text-navy">One company per industry per city</p>
                 <p className="mt-1 text-navy/70">
                   Once you sign up, we won&apos;t work with your competitors in your town.
                 </p>

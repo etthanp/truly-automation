@@ -8,18 +8,40 @@ interface Msg {
   content: string;
 }
 
-const BUSINESS = "Granite Ridge Concrete";
 const CALLER = "(910) 555-0148";
-const GREETING =
-  "Hi, this is Ava with Granite Ridge Concrete. Sorry we missed your call, the crew is out on a pour! I can help right here by text. What kind of project are you thinking about?";
 
-const CHIPS = [
-  "I need a new driveway",
-  "Price for a stamped patio?",
-  "Do you pour shop slabs?",
-];
+export interface DemoProps {
+  bare?: boolean;
+  bot?: string;
+  business?: string;
+  greeting?: string;
+  chips?: string[];
+  busy?: string;
+  steps?: { t: string; d: string }[];
+}
 
-export default function Demo({ bare = false }: { bare?: boolean } = {}) {
+const CONCRETE: Required<Omit<DemoProps, "bare">> = {
+  bot: "concrete",
+  business: "Granite Ridge Concrete",
+  greeting:
+    "Hi, this is Ava with Granite Ridge Concrete. Sorry we missed your call, the crew is out on a pour! I can help right here by text. What kind of project are you thinking about?",
+  chips: ["I need a new driveway", "Price for a stamped patio?", "Do you pour shop slabs?"],
+  busy: "Your crew is out on a pour",
+  steps: [
+    { t: "The call comes in", d: "A homeowner calls about a new driveway. Your whole crew is finishing a slab, so nobody can grab it." },
+    { t: "It texts back in seconds", d: "Instead of hitting voicemail, they get a friendly text before they can dial the next company." },
+    { t: "You get a ready-to-quote lead", d: "Ava asks about the project, size, finish, town and timeline, asks for photos, and books a time for you to come measure." },
+  ],
+};
+
+export default function Demo(props: DemoProps = {}) {
+  const bare = props.bare ?? false;
+  const bot = props.bot ?? CONCRETE.bot;
+  const BUSINESS = props.business ?? CONCRETE.business;
+  const GREETING = props.greeting ?? CONCRETE.greeting;
+  const CHIPS = props.chips ?? CONCRETE.chips;
+  const busy = props.busy ?? CONCRETE.busy;
+  const steps = props.steps ?? CONCRETE.steps;
   const [phase, setPhase] = useState<"ringing" | "chat">("ringing");
   const [ringMissed, setRingMissed] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -56,7 +78,7 @@ export default function Demo({ bare = false }: { bare?: boolean } = {}) {
         setMessages([{ role: "assistant", content: GREETING }]);
       }, 2900)
     );
-  }, [clearTimers]);
+  }, [clearTimers, GREETING]);
 
   useEffect(() => {
     start();
@@ -81,7 +103,7 @@ export default function Demo({ bare = false }: { bare?: boolean } = {}) {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, bot: "concrete" }),
+        body: JSON.stringify({ messages: next, bot }),
       });
       const data = await res.json();
       setMessages((p) => [
@@ -169,7 +191,7 @@ export default function Demo({ bare = false }: { bare?: boolean } = {}) {
                       <p className="text-xs text-white/40">
                         {ringMissed
                           ? "Nobody free to pick up…"
-                          : "Your crew is out on a pour"}
+                          : busy}
                       </p>
                     </div>
                   ) : (
@@ -259,23 +281,7 @@ export default function Demo({ bare = false }: { bare?: boolean } = {}) {
             {/* Side explainer */}
             <div className="max-w-sm lg:pt-6">
               <ol className="space-y-6">
-                {[
-                  {
-                    n: "1",
-                    t: "The call comes in",
-                    d: "A homeowner calls about a new driveway. Your whole crew is finishing a slab, so nobody can grab it.",
-                  },
-                  {
-                    n: "2",
-                    t: "It texts back in seconds",
-                    d: "Instead of hitting voicemail, they get a friendly text before they can dial the next company.",
-                  },
-                  {
-                    n: "3",
-                    t: "You get a ready-to-quote lead",
-                    d: "Ava asks about the project, size, finish, town and timeline, asks for photos, and books a time for you to come measure.",
-                  },
-                ].map((s) => (
+                {steps.map((st, i) => ({ ...st, n: String(i + 1) })).map((s) => (
                   <li key={s.n} className="flex gap-4">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ember text-sm font-bold text-white">
                       {s.n}

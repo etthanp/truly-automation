@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { industryPrompt } from "@/lib/industries/prompt";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -420,7 +421,7 @@ Saturday: 9:00 AM
 export async function POST(req: NextRequest) {
   try {
     const { messages, bot } = await req.json();
-    const systemPrompt = SYSTEM_PROMPTS[bot] ?? SYSTEM_PROMPTS.dental;
+    const systemPrompt = industryPrompt(String(bot)) ?? SYSTEM_PROMPTS[bot] ?? SYSTEM_PROMPTS.dental;
 
     const response = await client.messages.create({
       model: "claude-opus-4-8",

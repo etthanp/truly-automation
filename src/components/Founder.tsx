@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 
 // Paste your LinkedIn profile URL here to show the "Connect on LinkedIn" button.
@@ -24,24 +25,24 @@ export default function Founder() {
             that <span className="text-[#5b7cff]">knows your name.</span>
           </h2>
           <p className="mt-7 max-w-xl text-lg text-white/80">
-            Hi, I&apos;m Ethan. I started Truly Automation in North Carolina to
-            do one thing really well: marketing for concrete contractors. The
-            best concrete companies do great work and have zero time for
-            marketing, and most agencies treat them like an account number.
+            Hi, I&apos;m Ethan. I started Truly Automation in North Carolina
+            because the best business owners I know do great work and have
+            zero time for marketing, and most agencies sell all of them the
+            same package and treat them like an account number.
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
-            Because concrete is all we do, everything we build fits how your
-            business actually runs: quotes by the square foot, busy and slow
-            seasons, builders and general contractors, and crews on the job
-            all day.
+            So we build marketing around how your kind of business actually
+            makes money: the way you quote, your busy and slow seasons, the
+            partners who send you work, and the calls you miss while
+            you&apos;re on the job.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
-            <a
+            <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-md bg-royal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-white hover:text-navy"
             >
               Let&apos;s talk about your business <span aria-hidden>→</span>
-            </a>
+            </Link>
             {LINKEDIN_URL && (
               <a
                 href={LINKEDIN_URL}
