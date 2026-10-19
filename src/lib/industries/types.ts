@@ -24,6 +24,8 @@ export interface EstOption {
   label: string;
   per?: Range;
   fixed?: Range;
+  /** Only show and count this option for these project keys. */
+  only?: string[];
 }
 
 export interface EstimatorConfig {

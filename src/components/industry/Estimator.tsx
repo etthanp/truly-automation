@@ -4,7 +4,8 @@ import { useState } from "react";
 import type { EstimatorConfig, EstOption, EstProject, Range } from "@/lib/industries/types";
 import { usd } from "@/lib/packages";
 
-const roundTo100 = (n: number) => Math.round(n / 100) * 100;
+// Round to $100 for bigger jobs and $10 for small ones (cleanings, pickups).
+const roundTo100 = (n: number) => (n >= 1000 ? Math.round(n / 100) * 100 : Math.round(n / 10) * 10);
 const money = (n: number) => (Number.isInteger(n) ? `$${n.toLocaleString()}` : `$${n.toFixed(2)}`);
 
 function startQty(p: EstProject): [number, number] {
@@ -64,9 +65,12 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
   const sized = project.unit !== "none";
 
   // Choices and toggles only apply to sized projects when they're priced per unit.
+  const applies = (o: EstOption) => !o.only || o.only.includes(projectKey);
+  const choices = (config.choices ?? []).filter(applies);
+  const shownToggles = (config.toggles ?? []).filter(applies);
   const extras: EstOption[] = [
-    ...(config.choices?.filter((c) => c.key === choiceKey) ?? []),
-    ...(config.toggles?.filter((t) => toggles[t.key]) ?? []),
+    ...choices.filter((c) => c.key === choiceKey),
+    ...shownToggles.filter((t) => toggles[t.key]),
   ];
   const sum = (i: 0 | 1) => {
     let total = (project.fixed?.[i] ?? 0) + (project.per?.[i] ?? 0) * units;
@@ -137,14 +141,14 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
             </label>
           )}
 
-          {config.choices && config.choices.length > 0 && (
+          {choices.length > 0 && (
             <div>
               <p className="mb-2 text-sm font-medium text-navy/70">{config.choiceLabel ?? "Option"}</p>
-              <Pills items={config.choices} value={choiceKey} onChange={setChoiceKey} />
+              <Pills items={choices} value={choices.some((c) => c.key === choiceKey) ? choiceKey : ""} onChange={setChoiceKey} />
             </div>
           )}
 
-          {config.toggles?.map((t) => (
+          {shownToggles.map((t) => (
             <label key={t.key} className="flex cursor-pointer items-center gap-3 text-sm font-medium text-navy">
               <input
                 type="checkbox"
