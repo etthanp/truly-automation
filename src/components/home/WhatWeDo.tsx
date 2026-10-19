@@ -21,7 +21,7 @@ const rows = [
 
 export default function WhatWeDo() {
   return (
-    <section className="px-6 py-14 lg:px-8">
+    <section className="px-6 pt-12 pb-14 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2 className="max-w-3xl text-3xl text-navy sm:text-4xl">
