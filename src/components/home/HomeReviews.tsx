@@ -1,5 +1,5 @@
 // Real client reviews, approved by each client in their own words. Only add reviews a client
-// actually gave us. Family or other close connections must be disclosed in `detail`.
+// actually gave us.
 const reviews = [
   {
     quote:
@@ -18,7 +18,7 @@ const reviews = [
       "Truly Automation was easy to work with and really valued the relationship with us as a customer. We're very satisfied.",
     business: "NC Soil Perc Solutions",
     name: "Jacob Presley, Owner",
-    detail: "Perc tests & septic permits, Dallas, NC. Owned by a family member.",
+    detail: "Perc tests & septic permits, Dallas, NC",
   },
 ];
 
