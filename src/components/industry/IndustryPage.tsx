@@ -5,13 +5,11 @@ import IndustryTry from "./IndustryTry";
 import IndustryFAQ from "./IndustryFAQ";
 import CityCheck from "./CityCheck";
 import type { Industry } from "@/lib/industries/types";
+import { CORE, personalSystems } from "@/lib/industries/core";
 
-// Included in every package, on top of the industry's own systems.
+// Included in every package, on top of the core services and the industry's own systems.
 const BASICS_1 = [
-  "Website built for your business, hosted and kept updated",
-  "Local SEO: show up on Google, Google Maps & ChatGPT",
   "Google Business Profile optimized + weekly posts",
-  "Automatic review requests after every customer",
   "Facebook & Instagram managed with your real photos",
   "Google & Facebook ads, set up and managed for you",
   "Monthly results report",
@@ -133,24 +131,30 @@ function Problems({ ind }: { ind: Industry }) {
 }
 
 function Systems({ ind }: { ind: Industry }) {
-  const [p1, p2] = ind.packages;
+  const personal = personalSystems(ind);
+  const cards = [
+    ...CORE.map((c) => ({ ...c, tag: "Core service", core: true })),
+    ...personal.map((p) => ({ ...p, tag: `For ${ind.who}`, core: false })),
+  ];
   return (
     <section id="services" className="bg-gradient-to-b from-background to-royal/5 px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold uppercase tracking-wide text-ember">What we do</span>
-          <h2 className="mt-3 text-4xl text-navy sm:text-5xl">
-            {ind.systems.length} systems built only for {ind.who}
-          </h2>
+          <h2 className="mt-3 text-4xl text-navy sm:text-5xl">What we do for {ind.who}</h2>
           <p className="mt-4 text-lg text-navy/70">
-            Not a generic marketing package. Each one solves a problem {ind.who} actually
-            have, on top of your website, Google profile, reviews, social media and ads.
+            Our core services come first, because they&apos;re what we do best. The rest are built
+            specifically for {ind.who}. Every plan is personalized, so you pick what you need.
           </p>
         </Reveal>
         <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {ind.systems.map((s, i) => (
+          {cards.map((s, i) => (
             <Reveal key={s.title} delay={(i % 3) * 80}>
-              <div className="flex h-full flex-col rounded-2xl border border-navy/10 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-royal/10">
+              <div
+                className={`flex h-full flex-col rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-royal/10 ${
+                  s.core ? "border-royal/25" : "border-navy/10"
+                }`}
+              >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-ember/15 to-sky/20 text-2xl">
                   {s.icon}
                 </div>
@@ -158,10 +162,10 @@ function Systems({ ind }: { ind: Industry }) {
                 <p className="mt-2 flex-1 text-sm text-navy/70">{s.text}</p>
                 <p
                   className={`mt-5 self-start rounded-full px-2.5 py-1 text-xs font-semibold ${
-                    s.tier === 1 ? "bg-royal/10 text-royal" : "bg-ember/10 text-ember"
+                    s.core ? "bg-royal/10 text-royal" : "bg-ember/10 text-ember"
                   }`}
                 >
-                  {s.tier === 1 ? p1.name : p2.name}
+                  {s.tag}
                 </p>
               </div>
             </Reveal>
@@ -213,9 +217,10 @@ function Ads({ ind }: { ind: Industry }) {
 
 function Packages({ ind }: { ind: Industry }) {
   const [p1, p2] = ind.packages;
+  const personal = personalSystems(ind);
   const lists = [
-    [...ind.systems.filter((s) => s.tier === 1).map((s) => s.title), ...BASICS_1],
-    [`Everything in ${p1.name}`, ...ind.systems.filter((s) => s.tier === 2).map((s) => s.title), ...BASICS_2],
+    [...CORE.map((c) => c.title), ...personal.filter((s) => s.tier === 1).map((s) => s.title), ...BASICS_1],
+    [`Everything in ${p1.name}`, ...personal.filter((s) => s.tier === 2).map((s) => s.title), ...BASICS_2],
   ];
   return (
     <section id="packages" className="bg-gradient-to-b from-royal/5 to-background px-6 py-24 lg:px-8">
