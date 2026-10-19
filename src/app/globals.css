@@ -132,22 +132,21 @@ h2 {
   }
 }
 
-/* Homepage review rotator */
-@keyframes review-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Homepage rolling reviews */
+.reviews-track {
+  animation: ticker 90s linear infinite;
 }
-.review-in {
-  animation: review-in 0.5s ease-out;
+.reviews-roll:hover .reviews-track {
+  animation-play-state: paused;
+}
+.reviews-roll {
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
 @media (prefers-reduced-motion: reduce) {
-  .review-in {
+  .reviews-track {
     animation: none;
+  }
+  .reviews-roll {
+    overflow-x: auto;
   }
 }
