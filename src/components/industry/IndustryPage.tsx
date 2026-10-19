@@ -8,11 +8,11 @@ import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
 // Included in every package, on top of the industry's own systems.
 const BASICS_1 = [
-  "Website built for your trade, hosted and kept updated",
+  "Website built for your business, hosted and kept updated",
   "Local SEO: show up on Google, Google Maps & ChatGPT",
   "Google Business Profile optimized + weekly posts",
-  "Automatic review requests after every job",
-  "Facebook & Instagram managed with your job photos",
+  "Automatic review requests after every customer",
+  "Facebook & Instagram managed with your real photos",
   "Monthly results report",
 ];
 const BASICS_2 = ["Google & Facebook ads management", "Monthly strategy call", "Priority support"];

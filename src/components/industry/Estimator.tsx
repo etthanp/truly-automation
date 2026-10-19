@@ -4,8 +4,9 @@ import { useState } from "react";
 import type { EstimatorConfig, EstOption, EstProject, Range } from "@/lib/industries/types";
 import { usd } from "@/lib/packages";
 
-// Round to $100 for bigger jobs and $10 for small ones (cleanings, pickups).
-const roundTo100 = (n: number) => (n >= 1000 ? Math.round(n / 100) * 100 : Math.round(n / 10) * 10);
+// Round to $100 for bigger jobs, $10 for small ones (cleanings, pickups) and $5 for services like haircuts.
+const roundTo100 = (n: number) =>
+  n >= 1000 ? Math.round(n / 100) * 100 : n >= 200 ? Math.round(n / 10) * 10 : Math.round(n / 5) * 5;
 const money = (n: number) => (Number.isInteger(n) ? `$${n.toLocaleString()}` : `$${n.toFixed(2)}`);
 
 function startQty(p: EstProject): [number, number] {
@@ -118,7 +119,7 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
 
         <div className="mt-6 space-y-6">
           <div>
-            <p className="mb-2 text-sm font-medium text-navy/70">Project</p>
+            <p className="mb-2 text-sm font-medium text-navy/70">{config.projectLabel ?? "Project"}</p>
             <Pills items={config.projects} value={projectKey} onChange={pickProject} />
           </div>
 
@@ -173,14 +174,14 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
                 ? project.note
                 : perRange
                 ? `About ${money(perRange[0])} to ${money(perRange[1])} per ${unitWord}.`
-                : "Final price after a free visit."}
+                : config.after ?? "Final price after a free visit."}
           </p>
           <button
             type="button"
             onClick={() => setAsked(true)}
             className="mt-5 w-full rounded-full bg-ember px-6 py-3 text-base font-semibold text-white transition hover:scale-[1.01]"
           >
-            Get my exact quote
+            {config.cta ?? "Get my exact quote"}
           </button>
           {asked && (
             <p className="mt-4 rounded-xl bg-white/10 p-4 text-sm text-white/85">

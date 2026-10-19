@@ -37,6 +37,8 @@ export interface EstimatorConfig {
   question: string;
   blurb: string;
   bullets: [string, string, string];
+  /** Label above the project pills (defaults to "Project"), e.g. "Service". */
+  projectLabel?: string;
   projects: EstProject[];
   /** Single-choice group (material / finish / efficiency). */
   choiceLabel?: string;
@@ -44,6 +46,10 @@ export interface EstimatorConfig {
   /** Yes/no add-ons. */
   toggles?: (EstOption & { on?: boolean })[];
   minimum?: number;
+  /** Button text, e.g. "Book my appointment" (defaults to "Get my exact quote"). */
+  cta?: string;
+  /** Line under the price when there is no per-unit line (defaults to "Final price after a free visit."). */
+  after?: string;
 }
 
 export interface DemoConfig {
