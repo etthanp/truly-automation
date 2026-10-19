@@ -41,6 +41,18 @@ import dogGrooming from "./dog-grooming";
 import autoRepair from "./auto-repair";
 import autoDetailing from "./auto-detailing";
 import restaurants from "./restaurants";
+import lawFirms from "./law-firms";
+import realEstate from "./real-estate";
+import insuranceAgents from "./insurance-agents";
+import accountants from "./accountants";
+import photographers from "./photographers";
+import weddingVenues from "./wedding-venues";
+import daycares from "./daycares";
+import tutoring from "./tutoring";
+import physicalTherapy from "./physical-therapy";
+import carpetCleaning from "./carpet-cleaning";
+import handyman from "./handyman";
+import windowCleaning from "./window-cleaning";
 
 /** Every live industry page. Add a new industry by writing its file and listing it here. */
 export const industries: Industry[] = [
@@ -86,6 +98,18 @@ export const industries: Industry[] = [
   autoRepair,
   autoDetailing,
   restaurants,
+  lawFirms,
+  realEstate,
+  insuranceAgents,
+  accountants,
+  photographers,
+  weddingVenues,
+  daycares,
+  tutoring,
+  physicalTherapy,
+  carpetCleaning,
+  handyman,
+  windowCleaning,
 ];
 
 /** Directory order for categories on the homepage. */
@@ -97,6 +121,9 @@ export const categories = [
   "Pets",
   "Auto",
   "Food & hospitality",
+  "Professional services",
+  "Events & creative",
+  "Kids & education",
 ];
 
 export function getIndustry(slug: string) {

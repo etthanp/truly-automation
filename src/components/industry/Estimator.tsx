@@ -163,7 +163,7 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
         </div>
 
         <div className="mt-7 rounded-2xl bg-navy p-6 text-white">
-          <p className="text-sm text-white/60">Estimated price</p>
+          <p className="text-sm text-white/60">{config.resultLabel ?? "Estimated price"}</p>
           <p className="mt-1 font-[family-name:var(--font-anton)] text-4xl tracking-wide sm:text-5xl">
             {low === high ? usd(low) : `${usd(low)} to ${usd(high)}`}
           </p>
