@@ -21,6 +21,12 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
     () => new URLSearchParams(window.location.search).get("business") ?? "",
     () => ""
   );
+  // The city checker on industry pages adds ?city=Charlotte%2C%20NC.
+  const city = useSyncExternalStore(
+    noSubscribe,
+    () => new URLSearchParams(window.location.search).get("city") ?? "",
+    () => ""
+  );
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -125,7 +131,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                 </div>
                 <div>
                   <label htmlFor="area" className={labelClass}>City / area</label>
-                  <input id="area" name="area" type="text" required placeholder="Fayetteville & Hope Mills" className={inputClass} />
+                  <input key={city} id="area" name="area" type="text" required defaultValue={city} placeholder="Fayetteville & Hope Mills" className={inputClass} />
                 </div>
               </div>
 
