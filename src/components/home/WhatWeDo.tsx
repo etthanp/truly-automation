@@ -21,19 +21,19 @@ const rows = [
 
 export default function WhatWeDo() {
   return (
-    <section className="px-6 py-24 lg:px-8">
+    <section className="px-6 py-14 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="max-w-3xl text-5xl text-navy sm:text-6xl">
+          <h2 className="max-w-3xl text-3xl text-navy sm:text-4xl">
             What we actually do for you.
           </h2>
         </Reveal>
-        <div className="mt-12 border-t border-navy/15">
+        <div className="mt-7 border-t border-navy/15">
           {rows.map((r, i) => (
             <Reveal key={r.big} delay={i * 80}>
-              <div className="grid gap-4 border-b border-navy/15 py-9 md:grid-cols-[1fr_1.1fr] md:gap-12">
-                <p className="font-[family-name:var(--font-anton)] text-3xl leading-tight text-navy sm:text-4xl">{r.big}</p>
-                <p className="text-lg text-navy/70 md:pt-1">{r.text}</p>
+              <div className="grid gap-1.5 border-b border-navy/15 py-4 md:grid-cols-[0.8fr_1.2fr] md:items-baseline md:gap-10">
+                <p className="font-[family-name:var(--font-anton)] text-xl leading-tight text-navy sm:text-2xl">{r.big}</p>
+                <p className="text-[0.95rem] text-navy/70">{r.text}</p>
               </div>
             </Reveal>
           ))}
