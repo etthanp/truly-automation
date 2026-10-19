@@ -15,10 +15,10 @@ const reviews = [
   },
   {
     quote:
-      "Truly Automation was easy to work with and really valued the relationship with us as a customer. They built us a clean, professional website that explains what we do and makes it easy for customers to reach us. We're very satisfied.",
+      "Truly Automation was easy to work with and really valued the relationship with us as a customer. We're very satisfied.",
     business: "NC Soil Perc Solutions",
     name: "Jacob Presley, Owner",
-    detail: "Perc tests & septic permits, Dallas, NC. Family business and our first website client.",
+    detail: "Perc tests & septic permits, Dallas, NC. Owned by a family member.",
   },
 ];
 
@@ -28,32 +28,30 @@ export default function HomeReviews() {
   // is doubled so the -50% loop is seamless.
   const half = [...reviews, ...reviews];
   const row = (hidden: boolean) => (
-    <ul className="flex shrink-0 gap-5 pr-5" aria-hidden={hidden || undefined}>
+    <ul className="flex shrink-0 gap-4 pr-4" aria-hidden={hidden || undefined}>
       {half.map((r, n) => (
         <li
           key={`${r.business}-${n}`}
-          className="flex w-[19rem] shrink-0 flex-col rounded-2xl border border-navy/10 bg-white p-6 shadow-sm sm:w-[25rem]"
+          className="flex w-[16rem] shrink-0 flex-col rounded-xl border border-navy/10 bg-white p-4 shadow-sm sm:w-[18rem]"
         >
-          <p className="text-base tracking-widest text-ember" aria-label="5 out of 5 stars">
+          <p className="text-sm tracking-widest text-ember" aria-label="5 out of 5 stars">
             ★★★★★
           </p>
-          <blockquote className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-navy/85">&ldquo;{r.quote}&rdquo;</blockquote>
-          <p className="mt-5 border-t border-navy/10 pt-4 font-bold text-navy">
+          <blockquote className="mt-2 flex-1 text-sm leading-relaxed text-navy/85">&ldquo;{r.quote}&rdquo;</blockquote>
+          <p className="mt-3 border-t border-navy/10 pt-3 text-sm font-bold text-navy">
             {r.name ? `${r.name}, ` : ""}
             {r.business}
           </p>
-          <p className="mt-0.5 text-sm text-navy/60">{r.detail}</p>
+          <p className="mt-0.5 text-xs text-navy/60">{r.detail}</p>
         </li>
       ))}
     </ul>
   );
 
   return (
-    <section aria-label="Client reviews" className="pt-14">
-      <p className="px-6 text-center font-[family-name:var(--font-caveat)] text-2xl text-navy/60 lg:px-8">
-        what our clients say
-      </p>
-      <div className="reviews-roll mt-5 overflow-hidden py-2">
+    <section aria-label="Client reviews" className="px-6 pt-12 lg:px-8">
+      <p className="text-center font-[family-name:var(--font-caveat)] text-2xl text-navy/60">what our clients say</p>
+      <div className="reviews-roll mx-auto mt-4 max-w-4xl overflow-hidden py-2">
         <div className="reviews-track flex w-max">
           {row(false)}
           {row(true)}

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Reveal from "../Reveal";
-import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
 // Example activity for the hero panel. Not real client data.
 const feed = [
@@ -55,14 +54,6 @@ export default function HomeHero() {
                 Find your business <span aria-hidden>↓</span>
               </a>
             </div>
-          </Reveal>
-          <Reveal delay={400}>
-            <p className="mt-8 text-navy/70">
-              Rather just talk?{" "}
-              <a href={PHONE_HREF} className="font-semibold text-navy underline underline-offset-4 hover:text-royal">
-                Call Ethan at {PHONE_DISPLAY}
-              </a>
-            </p>
           </Reveal>
         </div>
 
