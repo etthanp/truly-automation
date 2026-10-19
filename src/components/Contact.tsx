@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 
 const noSubscribe = () => () => {};
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
@@ -153,9 +154,9 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                   Text me about my checkup. I agree to receive text messages from Truly Automation about my
                   request and our services. Message frequency varies. Message and data rates may apply. Reply
                   STOP to opt out or HELP for help. Consent is not required to get a checkup. See our{" "}
-                  <a href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</a>{" "}
+                  <Link href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</Link>{" "}
                   and{" "}
-                  <a href="/terms" className="text-sky underline underline-offset-2 hover:text-white">Terms</a>.
+                  <Link href="/terms" className="text-sky underline underline-offset-2 hover:text-white">Terms</Link>.
                 </span>
               </label>
 

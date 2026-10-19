@@ -14,8 +14,9 @@ const BASICS_1 = [
   "Automatic review requests after every customer",
   "Facebook & Instagram managed with your real photos",
   "Monthly results report",
+  "Google & Facebook ads available as an add-on",
 ];
-const BASICS_2 = ["Google & Facebook ads management", "Monthly strategy call", "Priority support"];
+const BASICS_2 = ["Google & Facebook ads management included", "Monthly strategy call", "Priority support"];
 
 function Hero({ ind }: { ind: Industry }) {
   const { lead, side, small } = ind.hero.cards;
@@ -171,6 +172,45 @@ function Systems({ ind }: { ind: Industry }) {
   );
 }
 
+const ADS = [
+  { title: "Google Search ads", text: "Show up at the top of Google when someone nearby is searching for exactly what you do." },
+  { title: "Local Services Ads", text: "Pay-per-lead ads with Google's trust badge at the very top of the page, where Google offers them for your industry." },
+  { title: "Facebook & Instagram ads", text: "Offers, seasonal pushes and reminders shown to people in your area, plus everyone who already visited your site." },
+  { title: "Tracking on every dollar", text: "Every call and form is tracked, so you see what each lead and each customer cost you." },
+];
+
+function Ads({ ind }: { ind: Industry }) {
+  return (
+    <section id="ads" className="px-6 py-20 lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+        <Reveal>
+          <span className="eyebrow">Ads</span>
+          <h2 className="mt-4 text-4xl text-navy sm:text-5xl">We run your ads, too.</h2>
+          <p className="mt-5 text-lg text-navy/75">
+            Google and Facebook ads built for {ind.who}, aimed at the customers you actually want
+            and the towns you actually serve. We write them, run them, and cut what isn&apos;t
+            bringing in work.
+          </p>
+          <p className="mt-4 text-navy/65">
+            It&apos;s your ad account and the spend goes on your own card, so you always see exactly
+            where the money goes. Add ads to any package, or have us run just your ads.
+          </p>
+        </Reveal>
+        <Reveal delay={120}>
+          <ul className="border-t border-navy/15">
+            {ADS.map((a) => (
+              <li key={a.title} className="border-b border-navy/15 py-4">
+                <p className="font-bold text-navy">{a.title}</p>
+                <p className="mt-1 text-[0.95rem] text-navy/70">{a.text}</p>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 function Packages({ ind }: { ind: Industry }) {
   const [p1, p2] = ind.packages;
   const lists = [
@@ -182,9 +222,10 @@ function Packages({ ind }: { ind: Industry }) {
       <div className="mx-auto max-w-5xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-bold uppercase tracking-wide text-ember">Packages</span>
-          <h2 className="mt-3 text-4xl text-navy sm:text-5xl">Pick how much you want off your plate</h2>
+          <h2 className="mt-3 text-4xl text-navy sm:text-5xl">Built around your business</h2>
           <p className="mt-4 text-lg text-navy/70">
-            Everything done for you. Get a free checkup and we&apos;ll recommend the right fit.
+            These are starting points, not fixed bundles. Every plan is personalized: you decide what
+            you want from us, keep what helps, drop what doesn&apos;t, and add ads to any package.
           </p>
         </Reveal>
         <div className="mt-14 grid gap-8 md:grid-cols-2">
@@ -225,10 +266,23 @@ function Packages({ ind }: { ind: Industry }) {
             </Reveal>
           ))}
         </div>
-        <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-navy/60">
-          Ad spend is paid directly to Google or Facebook on your own card, so you always see
-          exactly where the money goes.
-        </p>
+        <Reveal>
+          <div className="mt-10 flex flex-col items-start gap-5 rounded-3xl border border-navy/10 bg-white p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <h3 className="font-sans text-xl font-extrabold tracking-tight text-navy">Want something different? Build your own.</h3>
+              <p className="mt-2 max-w-xl text-navy/70">
+                Pick only the systems you want, just ads, or just a new website and Google profile.
+                Tell us what matters to you and we&apos;ll put together a plan that fits.
+              </p>
+            </div>
+            <Link
+              href={`/contact?business=${encodeURIComponent(ind.name)}`}
+              className="inline-flex shrink-0 items-center gap-2 rounded-md bg-navy px-6 py-3.5 text-base font-semibold text-white transition hover:bg-royal"
+            >
+              Build my plan <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -267,6 +321,7 @@ export default function IndustryPage({ ind }: { ind: Industry }) {
       <Systems ind={ind} />
       <IndustryTry ind={ind} />
       {ind.samples && <SamplesBand />}
+      <Ads ind={ind} />
       <Packages ind={ind} />
       <IndustryFAQ faqs={ind.faqs} />
       <Cta ind={ind} />
