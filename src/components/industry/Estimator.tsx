@@ -169,7 +169,9 @@ export default function Estimator({ config }: { config: EstimatorConfig }) {
           <p className="mt-2 text-sm text-white/60">
             {atMinimum
               ? `Small jobs start at our ${usd(min)} minimum.`
-              : perRange
+              : project.note
+                ? project.note
+                : perRange
                 ? `About ${money(perRange[0])} to ${money(perRange[1])} per ${unitWord}.`
                 : "Final price after a free visit."}
           </p>

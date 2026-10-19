@@ -12,6 +12,8 @@ export interface EstProject {
   per?: Range;
   /** Fixed price added once. */
   fixed?: Range;
+  /** Replaces the "About $X per unit" line under the price, e.g. "Before tax credits." */
+  note?: string;
   /** Word shown after "per" in the price line, e.g. "sq ft" (defaults from the unit). */
   perWord?: string;
   /** Starting size: [length, width] for area, a number otherwise. */
