@@ -136,7 +136,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                   id="need"
                   name="need"
                   rows={3}
-                  placeholder="e.g. 'Most of our work is referrals and we want more jobs from Google.'"
+                  placeholder="e.g. 'Most of our work is referrals and we want more customers from Google.'"
                   className={inputClass}
                 />
               </div>

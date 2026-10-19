@@ -29,6 +29,18 @@ import siding from "./siding";
 import insulation from "./insulation";
 import movers from "./movers";
 import locksmith from "./locksmith";
+import dental from "./dental";
+import medSpa from "./med-spa";
+import chiropractors from "./chiropractors";
+import gyms from "./gyms";
+import salons from "./salons";
+import barbershops from "./barbershops";
+import massage from "./massage";
+import veterinarians from "./veterinarians";
+import dogGrooming from "./dog-grooming";
+import autoRepair from "./auto-repair";
+import autoDetailing from "./auto-detailing";
+import restaurants from "./restaurants";
 
 /** Every live industry page. Add a new industry by writing its file and listing it here. */
 export const industries: Industry[] = [
@@ -62,10 +74,30 @@ export const industries: Industry[] = [
   insulation,
   movers,
   locksmith,
+  dental,
+  medSpa,
+  chiropractors,
+  gyms,
+  salons,
+  barbershops,
+  massage,
+  veterinarians,
+  dogGrooming,
+  autoRepair,
+  autoDetailing,
+  restaurants,
 ];
 
 /** Directory order for categories on the homepage. */
-export const categories = ["Home services", "Construction & outdoor"];
+export const categories = [
+  "Home services",
+  "Construction & outdoor",
+  "Health & wellness",
+  "Beauty & personal care",
+  "Pets",
+  "Auto",
+  "Food & hospitality",
+];
 
 export function getIndustry(slug: string) {
   return industries.find((i) => i.slug === slug);

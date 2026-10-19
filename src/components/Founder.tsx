@@ -32,9 +32,9 @@ export default function Founder() {
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
             So we build marketing around how your kind of business actually
-            makes money: the way you quote, your busy and slow seasons, the
+            makes money: the way you price, your busy and slow seasons, the
             partners who send you work, and the calls you miss while
-            you&apos;re on the job.
+            you&apos;re with a customer.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link

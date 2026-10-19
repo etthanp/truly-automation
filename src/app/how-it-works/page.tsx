@@ -22,11 +22,11 @@ const steps = [
   },
   {
     title: "We build it",
-    text: "Your website, instant quote tool, Google profile and missed-call text-back, live in about two weeks.",
+    text: "Your website, pricing or quote tool, Google profile and missed-call text-back, live in about two weeks.",
   },
   {
     title: "We run it monthly",
-    text: "Job pages, reviews, quote follow-up, and a simple report of what it brought in.",
+    text: "Fresh pages and posts, reviews, follow-up, and a simple report of what it brought in.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
         <PageHeader
           eyebrow="How it works"
           title="Four steps to a full schedule"
-          intro="You stay on the job site. We handle the rest."
+          intro="You run your business. We handle the rest."
         />
 
         <section className="px-6 py-12 lg:px-8">

@@ -13,7 +13,7 @@ ${d.facts}
 
 --- HOW TO HANDLE IT ---
 1. You already apologized for the missed call in your first text. Find out what they need and show you care.
-2. Gather the details one or two at a time: what the job is, rough size or scope, their town or address, timeline, and photos if helpful.
+2. Gather the details one or two at a time: what they need, the details that matter for it (size, scope, or which service), their town, timing, and photos if helpful.
 3. If they ask about price, give the typical range from the company info and say the exact price comes after the visit or consult.
 4. Get their name and best number, offer specific times from the list, and lock one in.
 5. Confirm clearly: give a confirmation code (make one up, like ${d.business.slice(0, 2).toUpperCase()}-4821), the day and time, and what happens next.

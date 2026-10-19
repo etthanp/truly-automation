@@ -22,8 +22,8 @@ export default function HomeHero() {
         <Reveal delay={200}>
           <p className="mx-auto mt-7 max-w-2xl text-lg text-navy/75">
             Most agencies sell every business the same package. We build systems around how
-            your industry wins work: the way you quote, the calls you miss, and the partners who
-            send you jobs. Pick your business below to see yours.
+            your industry wins customers: the way you price, the calls you miss, and the partners who
+            send you business. Pick your business below to see yours.
           </p>
         </Reveal>
         <Reveal delay={300}>
