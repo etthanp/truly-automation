@@ -13,10 +13,10 @@ const BASICS_1 = [
   "Google Business Profile optimized + weekly posts",
   "Automatic review requests after every customer",
   "Facebook & Instagram managed with your real photos",
+  "Google & Facebook ads, set up and managed for you",
   "Monthly results report",
-  "Google & Facebook ads available as an add-on",
 ];
-const BASICS_2 = ["Google & Facebook ads management included", "Monthly strategy call", "Priority support"];
+const BASICS_2 = ["Local Services Ads and retargeting", "Monthly strategy call", "Priority support"];
 
 function Hero({ ind }: { ind: Industry }) {
   const { lead, side, small } = ind.hero.cards;
@@ -185,7 +185,7 @@ function Ads({ ind }: { ind: Industry }) {
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
         <Reveal>
           <span className="eyebrow">Ads</span>
-          <h2 className="mt-4 text-4xl text-navy sm:text-5xl">We run your ads, too.</h2>
+          <h2 className="mt-4 text-4xl text-navy sm:text-5xl">We run your ads.</h2>
           <p className="mt-5 text-lg text-navy/75">
             Google and Facebook ads built for {ind.who}, aimed at the customers you actually want
             and the towns you actually serve. We write them, run them, and cut what isn&apos;t
@@ -193,7 +193,7 @@ function Ads({ ind }: { ind: Industry }) {
           </p>
           <p className="mt-4 text-navy/65">
             It&apos;s your ad account and the spend goes on your own card, so you always see exactly
-            where the money goes. Add ads to any package, or have us run just your ads.
+            where the money goes. Ads are part of every plan we build.
           </p>
         </Reveal>
         <Reveal delay={120}>
@@ -225,7 +225,7 @@ function Packages({ ind }: { ind: Industry }) {
           <h2 className="mt-3 text-4xl text-navy sm:text-5xl">Built around your business</h2>
           <p className="mt-4 text-lg text-navy/70">
             These are starting points, not fixed bundles. Every plan is personalized: you decide what
-            you want from us, keep what helps, drop what doesn&apos;t, and add ads to any package.
+            you want from us, keep what helps, and drop what doesn&apos;t. Every plan includes ads.
           </p>
         </Reveal>
         <div className="mt-14 grid gap-8 md:grid-cols-2">
