@@ -251,7 +251,7 @@ function Cta({ ind }: { ind: Industry }) {
             Get your free checkup <span aria-hidden>→</span>
           </Link>
           <a href={PHONE_HREF} className="text-base font-semibold text-navy underline-offset-4 hover:underline">
-            or call / text {PHONE_DISPLAY}
+            or call {PHONE_DISPLAY}
           </a>
         </div>
       </Reveal>

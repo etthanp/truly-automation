@@ -1,6 +1,6 @@
-// Business phone (Google Voice) and email, shared across the site.
-export const PHONE_DISPLAY = "(704) 750-5137";
-export const PHONE_HREF = "tel:+17047505137";
+// Business phone (GoHighLevel number answered by the Riley AI receptionist) and email, shared across the site.
+export const PHONE_DISPLAY = "(980) 990-3722";
+export const PHONE_HREF = "tel:+19809903722";
 export const EMAIL = "ethan@trulyautomation.com";
 
 // Legal entity and its address on record (registered office), used on the legal pages.

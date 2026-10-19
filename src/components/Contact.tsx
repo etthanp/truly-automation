@@ -58,7 +58,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
             We&apos;ll look at where you rank on Google, your website, your
             reviews and how your calls get answered, and send you a one-page
             report with the three things to fix first. We&apos;ll also tell you
-            if your city is still open. Free, no strings attached. Or reach Ethan directly: call or text{" "}
+            if your city is still open. Free, no strings attached. Or reach Ethan directly: call{" "}
             <a
               href={PHONE_HREF}
               className="whitespace-nowrap text-sky underline underline-offset-2 hover:text-white"
@@ -141,9 +141,27 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                 />
               </div>
 
+              <label htmlFor="sms_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
+                <input
+                  id="sms_consent"
+                  name="sms_consent"
+                  type="checkbox"
+                  value="yes"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
+                />
+                <span>
+                  Text me about my checkup. I agree to receive text messages from Truly Automation about my
+                  request and our services. Message frequency varies. Message and data rates may apply. Reply
+                  STOP to opt out or HELP for help. Consent is not required to get a checkup. See our{" "}
+                  <a href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</a>{" "}
+                  and{" "}
+                  <a href="/terms" className="text-sky underline underline-offset-2 hover:text-white">Terms</a>.
+                </span>
+              </label>
+
               {status === "error" && (
                 <p className="text-sm text-red-400">
-                  Something went wrong. Please try again, call or text{" "}
+                  Something went wrong. Please try again, call{" "}
                   {PHONE_DISPLAY}, or email {EMAIL}.
                 </p>
               )}
