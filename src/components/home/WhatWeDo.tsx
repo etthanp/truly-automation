@@ -2,16 +2,16 @@ import Reveal from "../Reveal";
 
 const rows = [
   {
-    big: "Real leads, not likes.",
-    text: "We don't sell impressions or follower counts. We track calls, booked appointments and signed jobs, and every month you see exactly what came in and where it came from.",
+    big: "Ads that bring real leads.",
+    text: "We run your Google, Local Services and Facebook ads and track every call, booked appointment and signed job, so every month you see exactly what came in and what it cost.",
   },
   {
     big: "AI that works your phones.",
     text: "Every missed call gets a text back in seconds. Our AI answers questions, gives price ranges, books the appointment, follows up on quotes and asks for the review. It works nights and weekends so you don't have to.",
   },
   {
-    big: "Built to scale with you.",
-    text: "Start with the basics that bring in work right away. As you grow, we add ads, outreach and referral partners, so the system is ready when you hire your next person or open your next location.",
+    big: "Your plan, your call.",
+    text: "No cookie-cutter packages. You pick what you want from us, from just a website and Google profile to ads, outreach and partners, and we scale it up as you hire your next person or open your next location.",
   },
   {
     big: "Straight talk. Real relationships.",
