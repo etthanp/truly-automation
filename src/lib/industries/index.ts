@@ -19,6 +19,16 @@ import decks from "./decks";
 import flooring from "./flooring";
 import houseCleaning from "./house-cleaning";
 import junkRemoval from "./junk-removal";
+import solar from "./solar";
+import foundationRepair from "./foundation-repair";
+import septic from "./septic";
+import excavation from "./excavation";
+import masonry from "./masonry";
+import epoxyFloors from "./epoxy-floors";
+import siding from "./siding";
+import insulation from "./insulation";
+import movers from "./movers";
+import locksmith from "./locksmith";
 
 /** Every live industry page. Add a new industry by writing its file and listing it here. */
 export const industries: Industry[] = [
@@ -42,6 +52,16 @@ export const industries: Industry[] = [
   flooring,
   houseCleaning,
   junkRemoval,
+  solar,
+  foundationRepair,
+  septic,
+  excavation,
+  masonry,
+  epoxyFloors,
+  siding,
+  insulation,
+  movers,
+  locksmith,
 ];
 
 /** Directory order for categories on the homepage. */
