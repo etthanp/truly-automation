@@ -92,7 +92,7 @@ Rules: ask about their average power bill, roof age and direction, and shade. Ne
   faqs: [
     { q: "How do you compete with the door-to-door companies?", a: "By being the opposite: honest numbers on your website, a no-pressure consult, real local reviews, and fast replies. A lot of homeowners are looking for exactly that." },
     { q: "Do you overpromise savings?", a: "No. The estimator shows system size and cost before incentives, and the Incentive Pages explain programs in plain English. Your consult covers the exact savings." },
-    { q: "Why stop buying leads?", a: "Shared leads go to several installers at once. Leads from your own website, Google profile and referrals are yours alone and close at a much higher rate." },
+    { q: "Why not rely on shared lead services?", a: "Shared lead services send the same homeowner to several installers at once. Leads from your own website, Google profile and referrals are yours alone and close at a much higher rate." },
     { q: "How soon will I see more consults?", a: "The Solar Line and review requests start working the week they go live. Google rankings and ads build over 60 to 90 days." },
   ],
 };
