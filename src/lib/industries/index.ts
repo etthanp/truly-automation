@@ -9,6 +9,16 @@ import pressureWashing from "./pressure-washing";
 import fencing from "./fencing";
 import pools from "./pools";
 import remodeling from "./remodeling";
+import painting from "./painting";
+import treeService from "./tree-service";
+import pestControl from "./pest-control";
+import garageDoors from "./garage-doors";
+import gutters from "./gutters";
+import windowsDoors from "./windows-doors";
+import decks from "./decks";
+import flooring from "./flooring";
+import houseCleaning from "./house-cleaning";
+import junkRemoval from "./junk-removal";
 
 /** Every live industry page. Add a new industry by writing its file and listing it here. */
 export const industries: Industry[] = [
@@ -22,6 +32,16 @@ export const industries: Industry[] = [
   fencing,
   pools,
   remodeling,
+  painting,
+  treeService,
+  pestControl,
+  garageDoors,
+  gutters,
+  windowsDoors,
+  decks,
+  flooring,
+  houseCleaning,
+  junkRemoval,
 ];
 
 /** Directory order for categories on the homepage. */
