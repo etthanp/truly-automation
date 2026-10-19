@@ -1,5 +1,5 @@
-import Script from "next/script";
 import Navbar from "@/components/Navbar";
+import ChatWidget from "@/components/ChatWidget";
 import HomeHero from "@/components/home/HomeHero";
 import IndustryTicker from "@/components/home/IndustryTicker";
 import WhatWeDo from "@/components/home/WhatWeDo";
@@ -26,13 +26,7 @@ export default function Home() {
       </main>
       <Footer />
       {/* GoHighLevel chat widget: the only SMS opt-in form on this page (A2P requirement) */}
-      <Script
-        src="https://widgets.leadconnectorhq.com/loader.js"
-        data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
-        data-widget-id="6ad68732e19e4c46e8d80e21"
-        data-source="WEB_USER"
-        strategy="afterInteractive"
-      />
+      <ChatWidget />
     </>
   );
 }
