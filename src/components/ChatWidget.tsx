@@ -8,7 +8,7 @@ import Script from "next/script";
 const OVERRIDE = `
 #lc_text-widget { left: 16px !important; right: auto !important; bottom: 16px !important; }
 .lc_text-widget--prompt { display: none !important; }
-.lc_text-widget--bubble { left: 16px !important; right: auto !important; bottom: 16px !important; }
+.lc_text-widget--bubble { left: 16px !important; right: auto !important; bottom: 16px !important; transition: none !important; }
 .lc_text-widget--bubble, .lc_text-widget--bubble .icon { width: 44px !important; height: 44px !important; }
 .lc_text-widget--bubble svg { width: 22px !important; height: 22px !important; }
 `;
@@ -32,8 +32,8 @@ export default function ChatWidget() {
     let tries = 0;
     const t = setInterval(() => {
       applyOverride();
-      if (++tries > 60) clearInterval(t);
-    }, 500);
+      if (++tries > 300) clearInterval(t);
+    }, 100);
     return () => clearInterval(t);
   }, []);
 
