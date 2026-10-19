@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HomeHero from "@/components/home/HomeHero";
+import IndustryTicker from "@/components/home/IndustryTicker";
+import WhatWeDo from "@/components/home/WhatWeDo";
 import Directory from "@/components/home/Directory";
 import Founder from "@/components/Founder";
 import HomeCta from "@/components/home/HomeCta";
@@ -13,6 +15,8 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <HomeHero />
+        <IndustryTicker items={items} />
+        <WhatWeDo />
         <Directory items={items} categories={categories} />
         <Founder />
         <HomeCta />
