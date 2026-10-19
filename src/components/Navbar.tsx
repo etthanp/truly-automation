@@ -27,7 +27,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
             className="inline-flex items-center gap-2 font-semibold tracking-wide transition hover:text-sky"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-3.5 w-3.5" aria-hidden><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" strokeLinejoin="round" /></svg>
-            Call or text {PHONE_DISPLAY}
+            Call {PHONE_DISPLAY}
           </a>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
               href={PHONE_HREF}
               className="rounded-md border border-navy/15 px-5 py-2.5 text-center text-sm font-semibold text-navy"
             >
-              Call or text {PHONE_DISPLAY}
+              Call {PHONE_DISPLAY}
             </a>
           </div>
         </div>

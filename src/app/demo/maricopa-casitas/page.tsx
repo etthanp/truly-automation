@@ -39,7 +39,7 @@ export default function MaricopaCasitasDemo() {
             <img src="/logo.svg" alt="Truly Automation" className="h-10 w-auto" />
           </Link>
           <a href={PHONE_HREF} className="text-sm font-semibold text-navy hover:text-royal">
-            Call or text Ethan {PHONE_DISPLAY}
+            Call Ethan {PHONE_DISPLAY}
           </a>
         </div>
       </header>
@@ -101,7 +101,7 @@ export default function MaricopaCasitasDemo() {
           <div className="mx-auto max-w-5xl rounded-3xl bg-navy px-8 py-10 text-white">
             <h2 className="text-2xl font-extrabold">Questions about the demo?</h2>
             <p className="mt-2 text-white/70">
-              Call or text Ethan at{" "}
+              Call Ethan at{" "}
               <a href={PHONE_HREF} className="font-semibold text-sky hover:underline">
                 {PHONE_DISPLAY}
               </a>{" "}

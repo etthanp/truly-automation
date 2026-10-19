@@ -60,7 +60,7 @@ export default function HomeHero() {
             <p className="mt-8 text-navy/70">
               Rather just talk?{" "}
               <a href={PHONE_HREF} className="font-semibold text-navy underline underline-offset-4 hover:text-royal">
-                Call or text Ethan at {PHONE_DISPLAY}
+                Call Ethan at {PHONE_DISPLAY}
               </a>
             </p>
           </Reveal>
