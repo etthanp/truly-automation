@@ -46,6 +46,8 @@ export interface EstimatorConfig {
   /** Yes/no add-ons. */
   toggles?: (EstOption & { on?: boolean })[];
   minimum?: number;
+  /** Label above the result (defaults to "Estimated price"), e.g. "Estimated take-home". */
+  resultLabel?: string;
   /** Button text, e.g. "Book my appointment" (defaults to "Get my exact quote"). */
   cta?: string;
   /** Line under the price when there is no per-unit line (defaults to "Final price after a free visit."). */
