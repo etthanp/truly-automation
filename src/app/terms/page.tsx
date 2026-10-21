@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "The terms for using trulyautomation.com and paying for Truly Automation services.",
 };
 
-const UPDATED = "October 12, 2026";
+const UPDATED = "October 21, 2026";
 
 const sections: LegalSection[] = [
   {
@@ -51,14 +51,17 @@ const sections: LegalSection[] = [
     ],
   },
   {
-    title: "Text messaging",
+    title: "Text messaging (SMS) terms",
     body: [
-      "We text with people who contact us or who ask us to text them, and we operate missed-call text-back and AI receptionist messaging for our clients' business phone lines. These messages respond to people who reached out first.",
+      `${LEGAL_NAME} sends text messages only to people who opt in. You can opt in by entering your mobile number and checking the text-message consent box in the chat widget on our homepage or on our free checkup form. The consent box is never pre-checked, and agreeing to texts is not a condition of any purchase.`,
+      "After you opt in, we may text you about your request or free checkup, appointment reminders, and occasional marketing messages about our services, offers and updates.",
       {
         list: [
           "Message frequency varies. Message and data rates may apply.",
-          "Reply STOP to opt out at any time. Reply HELP for help.",
+          "Reply STOP at any time to opt out, and you will get one message confirming you have been unsubscribed. Reply HELP for help.",
+          `For help you can also email ${EMAIL} or call ${PHONE_DISPLAY}.`,
           "Carriers are not liable for delayed or undelivered messages.",
+          "Separately, we operate missed-call text-back and AI receptionist messaging on our clients' business phone lines. Those messages only reply to people who contacted that business first.",
           "See our Privacy Policy for how we handle phone numbers and messages.",
         ],
       },

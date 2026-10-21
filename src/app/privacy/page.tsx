@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "How Truly Automation LLC collects, uses and protects your information.",
 };
 
-const UPDATED = "October 12, 2026";
+const UPDATED = "October 21, 2026";
 
 const sections: LegalSection[] = [
   {
@@ -55,7 +55,7 @@ const sections: LegalSection[] = [
   {
     title: "Text messaging",
     body: [
-      "If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
+      "If you opt in to text messages from us, by checking the text-message consent box in the chat widget on our homepage or on our free checkup form, we use your mobile number to text you about your request or checkup, appointment reminders, and occasional marketing messages about our services, offers and updates. If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
       {
         list: [
           "Message frequency varies. Message and data rates may apply.",
@@ -78,6 +78,7 @@ const sections: LegalSection[] = [
           "If our business is sold or merged, as part of that transaction.",
         ],
       },
+      "All of the categories above exclude text messaging originator opt-in data and consent. This information will not be shared with any third parties.",
     ],
   },
   {
