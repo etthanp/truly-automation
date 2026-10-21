@@ -1,4 +1,4 @@
-import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
+import { EMAIL, MAILING_ADDRESS, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 import Link from "next/link";
 type FooterLink = { href: string; label: string };
 
@@ -39,6 +39,7 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
             <a href={`mailto:${EMAIL}`} className="transition hover:text-white">
               {EMAIL}
             </a>
+            <p className="text-white/50">{MAILING_ADDRESS}</p>
           </div>
         </div>
 
