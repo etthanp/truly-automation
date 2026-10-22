@@ -157,9 +157,10 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                   className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
                 />
                 <span>
-                  Text me about my checkup. I agree to receive text messages from Truly Automation about my
-                  request and our services. Message frequency varies. Message and data rates may apply. Reply
-                  STOP to opt out or HELP for help. Consent is not required to get a checkup. See our{" "}
+                  Text me about my checkup. I agree to receive text messages from Truly Automation LLC, including
+                  updates about my checkup request, appointment reminders, and marketing messages about our
+                  services and offers. Message frequency varies. Message and data rates may apply. Reply STOP to
+                  opt out or HELP for help. Consent is not required to get a checkup. See our{" "}
                   <Link href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</Link>{" "}
                   and{" "}
                   <Link href="/terms" className="text-sky underline underline-offset-2 hover:text-white">Terms</Link>.

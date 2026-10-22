@@ -57,6 +57,7 @@ const sections: LegalSection[] = [
       "After you opt in, we may text you about your request or free checkup, appointment reminders, and occasional marketing messages about our services, offers and updates.",
       {
         list: [
+          "You must be 18 or older to opt in to text messages.",
           "Message frequency varies. Message and data rates may apply.",
           "Reply STOP at any time to opt out, and you will get one message confirming you have been unsubscribed. Reply HELP for help.",
           `For help you can also email ${EMAIL} or call ${PHONE_DISPLAY}.`,
