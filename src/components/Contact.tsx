@@ -148,24 +148,45 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                 />
               </div>
 
-              <label htmlFor="sms_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
-                <input
-                  id="sms_consent"
-                  name="sms_consent"
-                  type="checkbox"
-                  value="yes"
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
-                />
-                <span>
-                  Text me about my checkup. I agree to receive text messages from Truly Automation LLC, including
-                  updates about my checkup request, appointment reminders, and marketing messages about our
-                  services and offers. Message frequency varies. Message and data rates may apply. Reply STOP to
-                  opt out or HELP for help. Consent is not required to get a checkup. See our{" "}
+              <div className="grid gap-3">
+                <label htmlFor="sms_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
+                  <input
+                    id="sms_consent"
+                    name="sms_consent"
+                    type="checkbox"
+                    value="yes"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
+                  />
+                  <span>
+                    Text me about my checkup. I agree to receive text messages from Truly Automation LLC about my
+                    checkup request, such as my report link and appointment reminders. Message frequency varies.
+                    Message and data rates may apply. Reply STOP to opt out or HELP for help. Optional.
+                  </span>
+                </label>
+
+                <label htmlFor="sms_marketing_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
+                  <input
+                    id="sms_marketing_consent"
+                    name="sms_marketing_consent"
+                    type="checkbox"
+                    value="yes"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
+                  />
+                  <span>
+                    Send me marketing texts. I agree to receive marketing text messages from Truly Automation LLC
+                    about our marketing services, special offers and updates. Up to 4 messages per month. Message
+                    and data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of
+                    purchase and is not required to get a checkup. Optional.
+                  </span>
+                </label>
+
+                <p className="text-xs leading-relaxed text-white/60">
+                  See our{" "}
                   <Link href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</Link>{" "}
                   and{" "}
                   <Link href="/terms" className="text-sky underline underline-offset-2 hover:text-white">Terms</Link>.
-                </span>
-              </label>
+                </p>
+              </div>
 
               {status === "error" && (
                 <p className="text-sm text-red-400">

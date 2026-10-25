@@ -53,12 +53,18 @@ const sections: LegalSection[] = [
   {
     title: "Text messaging (SMS) terms",
     body: [
-      `${LEGAL_NAME} sends text messages only to people who opt in. You can opt in by entering your mobile number and checking the text-message consent box in the chat widget on our homepage or on our free checkup form. The consent box is never pre-checked, and agreeing to texts is not a condition of any purchase.`,
-      "After you opt in, we may text you about your request or free checkup, appointment reminders, and occasional marketing messages about our services, offers and updates.",
+      `${LEGAL_NAME} sends text messages only to people who opt in. Our free checkup form has two separate, optional checkboxes, and neither is ever pre-checked:`,
+      {
+        list: [
+          "Checkup texts: messages about your checkup request, such as your report link and appointment reminders. Message frequency varies.",
+          "Marketing texts: messages about our marketing services, special offers and updates. Up to 4 messages per month. We only send marketing texts if you check the marketing box.",
+        ],
+      },
+      "You can choose either, both or neither. Agreeing to texts is not a condition of any purchase and is not required to get a checkup.",
       {
         list: [
           "You must be 18 or older to opt in to text messages.",
-          "Message frequency varies. Message and data rates may apply.",
+          "Message and data rates may apply.",
           "Reply STOP at any time to opt out, and you will get one message confirming you have been unsubscribed. Reply HELP for help.",
           `For help you can also email ${EMAIL} or call ${PHONE_DISPLAY}.`,
           "Carriers are not liable for delayed or undelivered messages.",

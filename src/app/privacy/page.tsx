@@ -55,7 +55,7 @@ const sections: LegalSection[] = [
   {
     title: "Text messaging",
     body: [
-      "If you opt in to text messages from us, by checking the text-message consent box in the chat widget on our homepage or on our free checkup form, we use your mobile number to text you about your request or checkup, appointment reminders, and occasional marketing messages about our services, offers and updates. If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
+      "Our free checkup form has two separate, optional text-message checkboxes. If you check the checkup box, we use your mobile number to text you about your checkup request, such as your report link and appointment reminders. If you check the marketing box, we also text you marketing messages about our services, special offers and updates (up to 4 per month). We never send marketing texts without the marketing box checked. If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
       {
         list: [
           "Message frequency varies. Message and data rates may apply.",
