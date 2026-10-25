@@ -2,7 +2,8 @@ import type { Industry, System } from "./types";
 
 /**
  * What Truly Automation specializes in. These show first, in this order, on every industry page
- * (3 per row: outreach, AI receptionist, qualifying; chatbot, text-back, SEO; reviews, website).
+ * (3 per row: outreach, AI receptionist, qualifying; chatbot, text-back, SEO; Google profile, social,
+ * videos; reviews, website).
  */
 export const CORE: Omit<System, "tier">[] = [
   {
@@ -36,6 +37,21 @@ export const CORE: Omit<System, "tier">[] = [
     text: "Show up on Google, Google Maps and ChatGPT when people nearby search for what you do.",
   },
   {
+    icon: "🗺️",
+    title: "Google Profile on Autopilot",
+    text: "Your Google Business Profile kept fresh every week with new posts, photos of your work, up-to-date services and hours, and a reply to every review. An active profile is what moves you up on Google Maps.",
+  },
+  {
+    icon: "📣",
+    title: "Social Posts on Autopilot",
+    text: "Send us photos of your work. We turn them, and your best 5-star reviews, into posts on Facebook, Instagram and LinkedIn every week, so your pages stay active while you stay busy.",
+  },
+  {
+    icon: "🎬",
+    title: "Short Videos From Your Photos",
+    text: "We turn your photos into short videos and post them to TikTok, YouTube and your Google profile, with the titles and descriptions written for you.",
+  },
+  {
     icon: "⭐",
     title: "Review Checkup",
     text: "We reach out to your past customers to collect the reviews you never asked for, then set up automatic review requests after every future job or visit.",
@@ -47,8 +63,9 @@ export const CORE: Omit<System, "tier">[] = [
   },
 ];
 
-// Industry systems that repeat a core service (text-back lines, SEO, reviews, website, chat).
-const DUPLICATE_TITLE = /\bSEO\b|AI search|Territory Lock|Review|Text-?Back|Chat ?bot|Website|\bLine$/i;
+// Industry systems that repeat a core service (text-back lines, SEO, reviews, website, chat, social).
+const DUPLICATE_TITLE =
+  /\bSEO\b|AI search|Territory Lock|Review|Text-?Back|Chat ?bot|Website|\bLine$|^Social Content$|Instagram & TikTok/i;
 const DUPLICATE_TEXT = /[Mm]issed calls? (get|gets) a text|text back in seconds|^Missed calls and/;
 
 /** The four systems built specifically for this industry, shown after the core services. */

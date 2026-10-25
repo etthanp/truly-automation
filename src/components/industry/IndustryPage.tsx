@@ -9,8 +9,6 @@ import { CORE, personalSystems } from "@/lib/industries/core";
 
 // Included in every package, on top of the core services and the industry's own systems.
 const BASICS_1 = [
-  "Google Business Profile optimized + weekly posts",
-  "Facebook & Instagram managed with your real photos",
   "Google & Facebook ads, set up and managed for you",
   "Monthly results report",
 ];
