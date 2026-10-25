@@ -53,6 +53,26 @@ import physicalTherapy from "./physical-therapy";
 import carpetCleaning from "./carpet-cleaning";
 import handyman from "./handyman";
 import windowCleaning from "./window-cleaning";
+import applianceRepair from "./appliance-repair";
+import restoration from "./restoration";
+import chimneySweeps from "./chimney-sweeps";
+import holidayLighting from "./holiday-lighting";
+import aduBuilders from "./adu-builders";
+import paving from "./paving";
+import cabinetsCountertops from "./cabinets-countertops";
+import optometrists from "./optometrists";
+import yogaPilates from "./yoga-pilates";
+import nailSalons from "./nail-salons";
+import tattooShops from "./tattoo-shops";
+import dogTrainers from "./dog-trainers";
+import petBoarding from "./pet-boarding";
+import towing from "./towing";
+import autoBody from "./auto-body";
+import catering from "./catering";
+import propertyManagement from "./property-management";
+import eventRentals from "./event-rentals";
+import martialArts from "./martial-arts";
+import danceStudios from "./dance-studios";
 
 /** Every live industry page. Add a new industry by writing its file and listing it here. */
 export const industries: Industry[] = [
@@ -110,6 +130,26 @@ export const industries: Industry[] = [
   carpetCleaning,
   handyman,
   windowCleaning,
+  applianceRepair,
+  restoration,
+  chimneySweeps,
+  holidayLighting,
+  aduBuilders,
+  paving,
+  cabinetsCountertops,
+  optometrists,
+  yogaPilates,
+  nailSalons,
+  tattooShops,
+  dogTrainers,
+  petBoarding,
+  towing,
+  autoBody,
+  catering,
+  propertyManagement,
+  eventRentals,
+  martialArts,
+  danceStudios,
 ];
 
 /** Directory order for categories on the homepage. */
