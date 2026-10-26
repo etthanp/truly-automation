@@ -7,11 +7,30 @@ import { SITE_URL } from "@/lib/site";
  * and the one-click List-Unsubscribe headers Gmail and Yahoo require from bulk senders.
  */
 
-export const FROM = process.env.OUTREACH_FROM ?? "Ethan Presley <ethan@trulyautomation.com>";
+export const FROM = process.env.OUTREACH_FROM ?? "Truly Automation <ethan@trulyautomation.com>";
 export const REPLY_TO = process.env.OUTREACH_REPLY_TO || undefined;
 
 function token(email: string) {
   return createHmac("sha256", process.env.OUTREACH_SECRET ?? "").update(email).digest("hex").slice(0, 32);
+}
+
+/** Short tag that identifies a lead in its reply address, since owners often reply from a different inbox. */
+export function replyTag(email: string) {
+  return token(email).slice(0, 10);
+}
+
+/** ethan@reply.example.com becomes ethan+<tag>@reply.example.com for this lead. */
+export function replyToFor(email: string) {
+  return REPLY_TO?.replace("@", `+${replyTag(email)}@`);
+}
+
+/** Finds the reply tag in the addresses an inbound email was sent to. */
+export function tagFrom(addresses: string[]) {
+  for (const a of addresses) {
+    const m = a.match(/\+([a-f0-9]{10})@/i);
+    if (m) return m[1].toLowerCase();
+  }
+  return null;
 }
 
 export function checkToken(email: string, t: string) {
@@ -30,7 +49,7 @@ export function footer() {
 }
 
 export function unsubscribeHeaders(email: string): Record<string, string> {
-  const mailto = REPLY_TO ?? FROM.match(/<([^>]+)>/)?.[1] ?? FROM;
+  const mailto = replyToFor(email) ?? FROM.match(/<([^>]+)>/)?.[1] ?? FROM;
   return {
     "List-Unsubscribe": `<${unsubscribeUrl(email)}>, <mailto:${mailto}?subject=unsubscribe>`,
     "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",

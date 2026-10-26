@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
-import { authorized, footer, FROM, REPLY_TO, unsubscribeHeaders } from "@/lib/outreach/compliance";
+import { authorized, footer, FROM, replyTag, replyToFor, unsubscribeHeaders } from "@/lib/outreach/compliance";
 import {
   bumpStat,
   FOLLOW_UP_DAYS,
@@ -69,13 +69,16 @@ export async function GET(req: NextRequest) {
     if (stale.length) await redis.zrem("out:due", ...stale);
     if (leads.length === 0) continue;
 
+    // Map each lead's reply tag back to its email, so replies from any inbox can be matched.
+    await redis.mset(Object.fromEntries(leads.map((l) => [`out:tag:${replyTag(l.email)}`, l.email])));
+
     const { data, error } = await resend.batch.send(
       leads.map((lead) => {
         const draft = lead.drafts[lead.step];
         return {
           from: FROM,
           to: lead.email,
-          replyTo: REPLY_TO,
+          replyTo: replyToFor(lead.email),
           subject: draft.subject,
           text: draft.body + footer(),
           headers: unsubscribeHeaders(lead.email),
