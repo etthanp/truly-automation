@@ -2,12 +2,15 @@
   "functions": {
     "src/app/api/send-emails/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/outreach/leads/route.ts": {
+      "maxDuration": 60
     }
   },
   "crons": [
     {
       "path": "/api/send-emails",
-      "schedule": "0 9 * * *"
+      "schedule": "0 14 * * 1-5"
     }
   ]
 }
