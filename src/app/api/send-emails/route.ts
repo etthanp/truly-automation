@@ -9,7 +9,6 @@ import {
   isPaused,
   redis,
   saveLead,
-  setPaused,
   stopLead,
   today,
   type OutreachLead,
@@ -41,11 +40,11 @@ export async function GET(req: NextRequest) {
   if (!authorized(req, true)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: "RESEND_API_KEY not set" }, { status: 500 });
 
-  const paused = (await isPaused()) ?? (await checkBrake());
-  if (paused) {
-    await setPaused(paused);
-    return NextResponse.json({ sent: 0, paused });
-  }
+  // A manual pause holds until resumed. The bounce/complaint brake is re-checked every run, so it
+  // lifts by itself once the last two days look healthy again. ?force=1 skips the brake for one run.
+  const force = req.nextUrl.searchParams.get("force") === "1" && authorized(req);
+  const paused = (await isPaused()) ?? (force ? null : await checkBrake());
+  if (paused) return NextResponse.json({ sent: 0, paused });
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const deadline = Date.now() + 45_000;
