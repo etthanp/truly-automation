@@ -14,6 +14,7 @@ import {
   today,
   type OutreachLead,
 } from "@/lib/outreach/store";
+import { introEmail, openingOf } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
 
@@ -57,12 +58,13 @@ export async function GET(req: NextRequest) {
   const planLimit = Number(process.env.OUTREACH_DAILY_LIMIT) || 2200;
   let room = planLimit - (await getStats(today())).sent;
 
+  // ?only=<email> sends just that lead's next email (for testing without touching the rest of the queue).
+  const only = req.nextUrl.searchParams.get("only")?.toLowerCase();
+
   while (Date.now() < deadline && room > 0) {
-    const due = await redis.zrange<string[]>("out:due", 0, Date.now(), {
-      byScore: true,
-      offset: 0,
-      count: Math.min(100, room),
-    });
+    const due = only
+      ? (await redis.zscore("out:due", only)) !== null ? [only] : []
+      : await redis.zrange<string[]>("out:due", 0, Date.now(), { byScore: true, offset: 0, count: Math.min(100, room) });
     if (due.length === 0) break;
 
     const leads = (await getLeads(due)).filter((l): l is OutreachLead => !!l && l.status === "active" && !!l.drafts[l.step]);
@@ -76,12 +78,14 @@ export async function GET(req: NextRequest) {
     const { data, error } = await resend.batch.send(
       leads.map((lead) => {
         const draft = lead.drafts[lead.step];
+        // The intro is rebuilt from the AI opening so queued leads always get the current template.
+        const body = lead.step === 0 ? introEmail(openingOf(draft.body), lead) : draft.body;
         return {
           from: FROM,
           to: lead.email,
           replyTo: replyToFor(lead.email),
           subject: draft.subject,
-          text: draft.body + footer(),
+          text: body + footer(),
           headers: unsubscribeHeaders(lead.email),
         };
       }),
@@ -103,6 +107,7 @@ export async function GET(req: NextRequest) {
     );
     sent += leads.length;
     room -= leads.length;
+    if (only) break;
     await bumpStat("sent", leads.length);
     // Stay under Resend's default API rate limit.
     await new Promise((r) => setTimeout(r, 600));
