@@ -1,10 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { PHONE_DISPLAY } from "@/lib/contact";
 import { industries } from "@/lib/industries";
 import type { Industry } from "@/lib/industries/types";
 import { SITE_URL } from "@/lib/site";
 import type { Draft } from "./store";
 
 const anthropic = new Anthropic();
+
+const VIDEO_URL = "https://www.youtube.com/shorts/m_Qd10L5ORo";
+const SERVICES_MARKER = "\n\nWe're Truly Automation";
 
 /** The industry page that matches a lead's free-text industry, e.g. "concrete contractor" -> /concrete. */
 function industryFor(text: string): Industry | undefined {
@@ -16,22 +20,46 @@ function industryFor(text: string): Industry | undefined {
   );
 }
 
+function pageFor(industry: string) {
+  const ind = industryFor(industry);
+  return { link: ind ? `${SITE_URL}/${ind.slug}` : SITE_URL, who: ind?.who ?? "local service businesses" };
+}
+
+/** The AI-written opening of a stored intro email (everything before the fixed services section). */
+export function openingOf(body: string) {
+  const i = body.indexOf(SERVICES_MARKER);
+  return (i >= 0 ? body.slice(0, i) : body).trim();
+}
+
 /**
- * What we offer, written once here so the email never claims a service we don't run.
- * The AI only writes the personal opening and the two follow-ups.
+ * The intro email. Everything after the AI's personal opening is fixed text written here, so the
+ * email never claims a service we don't run. It's built at send time, so queued leads always get
+ * the current version.
  */
-function servicesBlock(who: string, one: string, link: string) {
-  return `We're Truly Automation, a marketing team for ${who}. Here's what we handle:
+export function introEmail(opening: string, lead: { business: string; industry: string }): string {
+  const { link, who } = pageFor(lead.industry);
+  return `${opening.trim()}
 
-- Google and Facebook ads that bring in real leads
-- An AI receptionist that answers every call 24/7, qualifies the lead and books it on your calendar
-- A website chatbot and missed-call text-back, so no lead slips through
-- SEO so you show up on Google, Google Maps and ChatGPT
-- Your Google profile, social posts and short videos, kept fresh every week
-- Review requests after every job, plus outreach that brings in steady work
-- A fast website built for your business, if you need one
+We're Truly Automation, a marketing team for ${who}. Here's a quick video on what we do: ${VIDEO_URL}
 
-Every plan is built around your business, and we only work with one ${one} per area. You can see it all here: ${link}`;
+What we offer:
+- An AI receptionist that answers every call 24/7 and books the job
+- An AI chatbot on your website that answers questions and captures leads
+- A website checkup to find what's costing you calls
+- Facebook posts and Google Business Profile posts, done for you automatically
+- An automatic review system for your past and future customers
+- Cold outreach on the phone to bring in steady work
+- Meta (Facebook and Instagram) and Google ads
+- Alerts when someone posts in a local Facebook group looking for the work you do
+
+Get your free marketing checkup today, and work with a real team that values real, personal relationships.
+
+See everything here: ${link}
+Or call us: ${PHONE_DISPLAY}
+
+Want me to put together a free marketing checkup for ${lead.business}?
+
+Ethan`;
 }
 
 const SEQUENCE_SCHEMA = {
@@ -94,23 +122,11 @@ export async function writeSequence(lead: {
   if (!text || text.type !== "text") throw new Error("No email text returned");
   const out = JSON.parse(text.text) as { subject: string; opening: string; email2: string; email3: string };
 
-  const ind = industryFor(lead.industry);
-  const link = ind ? `${SITE_URL}/${ind.slug}` : SITE_URL;
-  const who = ind?.who ?? "local service businesses";
-  const one = ind?.one ?? "business in each industry";
+  const { link } = pageFor(lead.industry);
   const subject = out.subject.trim();
-
-  const email1 = `${out.opening.trim()}
-
-${servicesBlock(who, one, link)}
-
-Want me to put together a free marketing checkup for ${lead.business}? It's a short, plain-English look at what's costing you calls and jobs.
-
-Ethan`;
-
   return [
-    { subject, body: email1 },
-    { subject: `Re: ${subject}`, body: `${out.email2.trim()}\n\nHere's everything we do: ${link}\n\nEthan` },
+    { subject, body: introEmail(out.opening, lead) },
+    { subject: `Re: ${subject}`, body: `${out.email2.trim()}\n\nHere's everything we do: ${link}\nOr call us: ${PHONE_DISPLAY}\n\nEthan` },
     { subject: `Re: ${subject}`, body: out.email3.trim() },
   ];
 }
