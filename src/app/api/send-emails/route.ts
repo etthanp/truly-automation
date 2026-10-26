@@ -51,9 +51,10 @@ export async function GET(req: NextRequest) {
   let sent = 0;
   const errors: string[] = [];
 
-  // The Resend plan's daily sending limit (100 on the free plan). Resend rejects a whole batch that
-  // would go over it, so we stop at the limit and the rest go out on the next run. Unset = no limit.
-  const planLimit = Number(process.env.RESEND_DAILY_LIMIT) || Infinity;
+  // Daily cap matched to the Resend plan: Pro is 50,000 a month with no daily limit, which is about
+  // 2,200 per weekday. Resend rejects a whole batch that would go over the plan, so we stop at the cap
+  // and the rest go out on the next run. Override with OUTREACH_DAILY_LIMIT.
+  const planLimit = Number(process.env.OUTREACH_DAILY_LIMIT) || 2200;
   let room = planLimit - (await getStats(today())).sent;
 
   while (Date.now() < deadline && room > 0) {
