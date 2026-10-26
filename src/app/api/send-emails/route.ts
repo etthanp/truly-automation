@@ -39,9 +39,6 @@ async function checkBrake() {
 export async function GET(req: NextRequest) {
   if (!authorized(req, true)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   if (!process.env.RESEND_API_KEY) return NextResponse.json({ error: "RESEND_API_KEY not set" }, { status: 500 });
-  if (!process.env.OUTREACH_ADDRESS) {
-    return NextResponse.json({ error: "OUTREACH_ADDRESS not set. Cold email must include a mailing address." }, { status: 500 });
-  }
 
   const paused = (await isPaused()) ?? (await checkBrake());
   if (paused) {

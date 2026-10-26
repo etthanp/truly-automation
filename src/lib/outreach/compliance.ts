@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { LEGAL_NAME, MAILING_ADDRESS } from "@/lib/contact";
 import { SITE_URL } from "@/lib/site";
 
 /**
@@ -25,7 +26,7 @@ export function unsubscribeUrl(email: string) {
 }
 
 export function footer() {
-  return `\n\n--\nTruly Automation LLC, ${process.env.OUTREACH_ADDRESS}\nNot interested? Reply "stop" and I won't email again.`;
+  return `\n\n--\n${LEGAL_NAME}, ${process.env.OUTREACH_ADDRESS || MAILING_ADDRESS}\nNot interested? Reply "stop" and I won't email again.`;
 }
 
 export function unsubscribeHeaders(email: string): Record<string, string> {
