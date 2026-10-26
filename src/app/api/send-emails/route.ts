@@ -54,8 +54,17 @@ export async function GET(req: NextRequest) {
   let sent = 0;
   const errors: string[] = [];
 
-  while (Date.now() < deadline) {
-    const due = await redis.zrange<string[]>("out:due", 0, Date.now(), { byScore: true, offset: 0, count: 100 });
+  // The Resend plan's daily sending limit (100 on the free plan). Resend rejects a whole batch that
+  // would go over it, so we stop at the limit and the rest go out on the next run. Unset = no limit.
+  const planLimit = Number(process.env.RESEND_DAILY_LIMIT) || Infinity;
+  let room = planLimit - (await getStats(today())).sent;
+
+  while (Date.now() < deadline && room > 0) {
+    const due = await redis.zrange<string[]>("out:due", 0, Date.now(), {
+      byScore: true,
+      offset: 0,
+      count: Math.min(100, room),
+    });
     if (due.length === 0) break;
 
     const leads = (await getLeads(due)).filter((l): l is OutreachLead => !!l && l.status === "active" && !!l.drafts[l.step]);
@@ -92,6 +101,7 @@ export async function GET(req: NextRequest) {
       }),
     );
     sent += leads.length;
+    room -= leads.length;
     await bumpStat("sent", leads.length);
     // Stay under Resend's default API rate limit.
     await new Promise((r) => setTimeout(r, 600));
