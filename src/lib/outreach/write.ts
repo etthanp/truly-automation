@@ -3,7 +3,7 @@ import { PHONE_DISPLAY } from "@/lib/contact";
 import { industries } from "@/lib/industries";
 import type { Industry } from "@/lib/industries/types";
 import { SITE_URL } from "@/lib/site";
-import type { Draft } from "./store";
+import type { Draft, Variant } from "./store";
 
 const anthropic = new Anthropic();
 
@@ -31,12 +31,21 @@ export function openingOf(body: string) {
   return (i >= 0 ? body.slice(0, i) : body).trim();
 }
 
+const STUDENT_SUBJECT = "quick question from a UNC Pembroke student";
+
+/** Subject for a lead's next email. The student version has its own fixed subject line. */
+export function subjectFor(lead: { variant?: Variant; step: number; drafts: Draft[] }) {
+  if (lead.variant !== "student") return lead.drafts[lead.step].subject;
+  return lead.step === 0 ? STUDENT_SUBJECT : `Re: ${STUDENT_SUBJECT}`;
+}
+
 /**
  * The intro email. Everything after the AI's personal opening is fixed text written here, so the
  * email never claims a service we don't run. It's built at send time, so queued leads always get
  * the current version.
  */
-export function introEmail(opening: string, lead: { business: string; industry: string }): string {
+export function introEmail(opening: string, lead: { business: string; industry: string; variant?: Variant }): string {
+  if (lead.variant === "student") return studentIntro(opening, lead);
   const { link, who } = pageFor(lead.industry);
   return `${opening.trim()}
 
@@ -60,6 +69,36 @@ Or call us: ${PHONE_DISPLAY}
 Want me to put together a free marketing checkup for ${lead.business}?
 
 Ethan`;
+}
+
+/**
+ * The student angle: Ethan introduces himself as the student lead of the AI program at UNC Pembroke
+ * before the AI's observation about their site, then a shorter offer list.
+ */
+function studentIntro(opening: string, lead: { business: string; industry: string }): string {
+  const { link, who } = pageFor(lead.industry);
+  const [first, ...rest] = opening.trim().split("\n");
+  const hasGreeting = /^(hi|hey|hello)\b.*,$/i.test(first.trim());
+  const greeting = hasGreeting ? first.trim() : "Hi there,";
+  const observation = (hasGreeting ? rest.join("\n") : opening).trim();
+  return `${greeting}
+
+I'm Ethan, a student at UNC Pembroke studying business and AI, and I'm the student lead of the AI program there. This semester I'm working with a small number of ${who} to help them get more calls and jobs using AI and better marketing.
+
+${observation}
+
+A few things I can help with:
+- An AI receptionist that answers every call 24/7 and books the job
+- Automatic Google and Facebook posts so you stay visible
+- An automatic review system for past and future customers
+- A free marketing checkup that shows what's costing you calls
+
+I'm keeping this to a handful of businesses so I can give each one real attention. Would you be open to a free checkup for ${lead.business}?
+
+Ethan Presley
+UNC Pembroke, Business & AI
+Truly Automation: ${link}
+${PHONE_DISPLAY}`;
 }
 
 const SEQUENCE_SCHEMA = {
@@ -99,6 +138,7 @@ export async function writeSequence(lead: {
   city: string;
   state?: string;
   facts: string[];
+  variant?: Variant;
 }): Promise<Draft[]> {
   const where = lead.state ? `${lead.city}, ${lead.state}` : lead.city;
   const details = [

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authorized, footer, FROM, replyTag, replyToFor, unsubscribeHeaders } from "@/lib/outreach/compliance";
 import {
   bumpStat,
+  bumpVariant,
   FOLLOW_UP_DAYS,
   getLeads,
   getStats,
@@ -13,7 +14,7 @@ import {
   today,
   type OutreachLead,
 } from "@/lib/outreach/store";
-import { introEmail, openingOf } from "@/lib/outreach/write";
+import { introEmail, openingOf, subjectFor } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
 
@@ -83,7 +84,7 @@ export async function GET(req: NextRequest) {
           from: FROM,
           to: lead.email,
           replyTo: replyToFor(lead.email),
-          subject: draft.subject,
+          subject: subjectFor(lead),
           text: body + footer(),
           headers: unsubscribeHeaders(lead.email),
         };
@@ -98,6 +99,7 @@ export async function GET(req: NextRequest) {
     await Promise.all(
       leads.map(async (lead, i) => {
         lead.sent.push({ step: lead.step, id: data.data[i]?.id ?? "", at });
+        if (lead.step === 0 && !only) await bumpVariant(lead.variant, "intros");
         lead.step += 1;
         if (lead.step >= lead.drafts.length) return stopLead(lead, "done");
         await saveLead(lead);

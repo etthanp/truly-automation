@@ -14,6 +14,9 @@ import { Redis } from "@upstash/redis";
 
 export type LeadStatus = "active" | "replied" | "unsubscribed" | "bounced" | "complained" | "done";
 
+/** Which intro a lead gets: the agency pitch, or the UNC Pembroke student angle. */
+export type Variant = "standard" | "student";
+
 export interface Draft {
   subject: string;
   body: string;
@@ -31,6 +34,8 @@ export interface OutreachLead {
   facts: string[];
   /** The whole sequence, written when the lead is added: intro, follow-up, last note. */
   drafts: Draft[];
+  /** Missing on leads added before the student version existed; they're "standard". */
+  variant?: Variant;
   status: LeadStatus;
   /** How many emails of the sequence have gone out. */
   step: number;
@@ -109,6 +114,15 @@ export async function getStats(day: string) {
     replied: Number(s.replied ?? 0),
     unsubscribed: Number(s.unsubscribed ?? 0),
   };
+}
+
+/** All-time counters per intro version (intros sent, replies, opt-outs), for comparing them. */
+export async function bumpVariant(variant: Variant | undefined, field: string, by = 1) {
+  await redis.hincrby("out:variants", `${variant ?? "standard"}:${field}`, by);
+}
+
+export async function getVariantStats() {
+  return (await redis.hgetall<Record<string, number>>("out:variants")) ?? {};
 }
 
 export async function isPaused() {
