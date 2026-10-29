@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
-import { getLead, getStats, isPaused, redis, setPaused, stopLead } from "@/lib/outreach/store";
+import { getLead, getStats, getVariantStats, isPaused, redis, setPaused, stopLead } from "@/lib/outreach/store";
 
 const STATUSES = ["active", "replied", "unsubscribed", "bounced", "complained", "done"] as const;
 
@@ -18,6 +18,8 @@ export async function GET(req: NextRequest) {
     paused: await isPaused(),
     dueNow: await redis.zcount("out:due", 0, Date.now()),
     leads: counts,
+    // Intro versions compared: "<variant>:intros", ":replied", ":unsubscribed" (counted since the split began).
+    variants: await getVariantStats(),
     recent,
   });
 }

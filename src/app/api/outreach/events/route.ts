@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
 import { bareEmail, FROM, tagFrom } from "@/lib/outreach/compliance";
-import { bumpStat, getLead, redis, stopLead } from "@/lib/outreach/store";
+import { bumpStat, bumpVariant, getLead, redis, stopLead } from "@/lib/outreach/store";
 
 const OPT_OUT = /\b(stop|unsubscribe|remove me|take me off|not interested|no thanks|don'?t (email|contact) me)\b/i;
 
@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
       if (lead && lead.status === "active") {
         await stopLead(lead, optedOut ? "unsubscribed" : "replied");
         await bumpStat(optedOut ? "unsubscribed" : "replied");
+        await bumpVariant(lead.variant, optedOut ? "unsubscribed" : "replied");
       } else if (optedOut) {
         await redis.sadd("out:suppress", email);
       }

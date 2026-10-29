@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
 import { canReceiveMail, researchSite } from "@/lib/outreach/enrich";
-import { addLead, isKnown, type OutreachLead } from "@/lib/outreach/store";
+import { addLead, isKnown, type OutreachLead, type Variant } from "@/lib/outreach/store";
 import { writeSequence } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
@@ -24,7 +24,7 @@ type Result = { business: string; result: string; email?: string };
  * on the site, write the 3-email sequence, and queue it. Leads not reached in time come back in
  * `notProcessed` so the caller can resend them.
  */
-async function processLead(input: IncomingLead): Promise<Result> {
+async function processLead(input: IncomingLead, variant: Variant): Promise<Result> {
   const business = input.business?.trim();
   if (!business || !input.industry || !input.city) return { business: business || "?", result: "missing business, industry or city" };
 
@@ -49,6 +49,7 @@ async function processLead(input: IncomingLead): Promise<Result> {
     website: input.website?.trim() || undefined,
     facts,
     drafts: [],
+    variant,
     status: "active",
     step: 0,
     sent: [],
@@ -62,11 +63,16 @@ async function processLead(input: IncomingLead): Promise<Result> {
 export async function POST(req: NextRequest) {
   if (!authorized(req)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const body = (await req.json().catch(() => null)) as { leads?: IncomingLead[] } | null;
+  const body = (await req.json().catch(() => null)) as
+    | { leads?: IncomingLead[]; variant?: Variant | "split" }
+    | null;
   const leads = body?.leads ?? [];
   if (!Array.isArray(leads) || leads.length === 0) {
     return NextResponse.json({ error: "send { leads: [...] }" }, { status: 400 });
   }
+  // New leads are split 50/50 between the two intros unless the caller picks one.
+  const pick = body?.variant ?? "split";
+  const variantFor = (): Variant => (pick === "split" ? (Math.random() < 0.5 ? "standard" : "student") : pick);
 
   const deadline = Date.now() + 45_000;
   const results: Result[] = [];
@@ -81,7 +87,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
       try {
-        results.push(await processLead(next));
+        results.push(await processLead(next, variantFor()));
       } catch (err) {
         results.push({ business: next.business, result: `error: ${String((err as Error)?.message ?? err)}` });
       }

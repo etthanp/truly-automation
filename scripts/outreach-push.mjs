@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Pushes a lead list into the cold email queue.
 //
-//   OUTREACH_SECRET=... node scripts/outreach-push.mjs leads.csv --industry "concrete contractor"
+//   OUTREACH_SECRET=... node scripts/outreach-push.mjs leads.csv --industry "concrete contractor" [--variant student|standard]
 //
 // Takes a .csv or .json file. Columns it understands (any case): business/name/company,
 // email, website/site/url, city, state, owner/contact, industry/trade. --industry fills in
@@ -68,19 +68,35 @@ const leads = raw
 console.log(`${leads.length} leads with an email or website`);
 let pending = leads;
 const totals = { queued: 0, skipped: 0 };
+let size = 15;
 while (pending.length) {
-  const chunk = pending.slice(0, 15);
-  pending = pending.slice(15);
-  const res = await fetch(`${URL_BASE}/api/outreach/leads`, {
-    method: "POST",
-    headers: { "content-type": "application/json", authorization: `Bearer ${SECRET}` },
-    body: JSON.stringify({ leads: chunk }),
-  });
-  const out = await res.json();
+  const chunk = pending.slice(0, size);
+  pending = pending.slice(size);
+  let res, out;
+  try {
+    res = await fetch(`${URL_BASE}/api/outreach/leads`, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${SECRET}` },
+      body: JSON.stringify({ leads: chunk, variant: flag("variant") }),
+    });
+    out = await res.json();
+  } catch (err) {
+    // A dropped connection or a timed-out request shouldn't end the run. Resend the leads in
+    // smaller chunks so one slow website can't stall the rest, and give up on a lead after 3 tries.
+    console.error(`request failed (${err.cause?.code ?? err.message}), retrying`);
+    for (const l of chunk) l.tries = (l.tries ?? 0) + 1;
+    const retry = chunk.filter((l) => l.tries < 3);
+    for (const l of chunk.filter((l) => l.tries >= 3)) console.log(`· ${l.business}: gave up after 3 tries`);
+    pending = [...retry, ...pending];
+    size = 3;
+    await new Promise((r) => setTimeout(r, 5000));
+    continue;
+  }
   if (!res.ok) {
     console.error(res.status, out);
     process.exit(1);
   }
+  size = 15;
   totals.queued += out.queued;
   totals.skipped += out.skipped;
   for (const r of out.results) console.log(`${r.result === "queued" ? "✓" : "·"} ${r.business}${r.email ? ` <${r.email}>` : ""}: ${r.result}`);
