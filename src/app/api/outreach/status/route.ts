@@ -1,8 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
-import { getLead, getStats, getVariantStats, isPaused, redis, setPaused, stopLead } from "@/lib/outreach/store";
+import {
+  getLead,
+  getLeads,
+  getStats,
+  getVariantStats,
+  isPaused,
+  redis,
+  saveLead,
+  setPaused,
+  stopLead,
+  type OutreachLead,
+  type Variant,
+} from "@/lib/outreach/store";
 
-const STATUSES = ["active", "replied", "unsubscribed", "bounced", "complained", "done"] as const;
+export const maxDuration = 60;
+
+const STATUSES =["active", "replied", "unsubscribed", "bounced", "complained", "done"] as const;
 
 /** Queue and send numbers, plus the last 7 days of activity. */
 export async function GET(req: NextRequest) {
@@ -24,14 +38,36 @@ export async function GET(req: NextRequest) {
   });
 }
 
+/** Switches every queued lead that hasn't had its intro yet to one intro version. Returns how many changed. */
+async function setQueuedVariant(variant: Variant) {
+  const emails = await redis.smembers("out:status:active");
+  let changed = 0;
+  for (let i = 0; i < emails.length; i += 200) {
+    const leads = await getLeads(emails.slice(i, i + 200));
+    const unsent = leads.filter((l): l is OutreachLead => !!l && l.step === 0 && l.variant !== variant);
+    for (const lead of unsent) lead.variant = variant;
+    await Promise.all(unsent.map(saveLead));
+    changed += unsent.length;
+  }
+  return changed;
+}
+
 /**
  * { action: "pause" | "resume" } controls sending.
  * { action: "replied" | "stop", email } ends one lead's sequence by hand ("stop" also opts them out).
+ * { action: "variant", variant } switches every lead still waiting for its intro to that version.
  */
 export async function POST(req: NextRequest) {
   if (!authorized(req)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const { action, email } = (await req.json().catch(() => ({}))) as { action?: string; email?: string };
+  const { action, email, variant } = (await req.json().catch(() => ({}))) as {
+    action?: string;
+    email?: string;
+    variant?: string;
+  };
 
+  if (action === "variant" && (variant === "student" || variant === "standard")) {
+    return NextResponse.json({ ok: true, changed: await setQueuedVariant(variant) });
+  }
   if (action === "pause") await setPaused("paused by hand");
   else if (action === "resume") await setPaused(null);
   else if ((action === "replied" || action === "stop") && email) {
