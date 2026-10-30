@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
   if (!Array.isArray(leads) || leads.length === 0) {
     return NextResponse.json({ error: "send { leads: [...] }" }, { status: 400 });
   }
-  // New leads are split 50/50 between the two intros unless the caller picks one.
-  const pick = body?.variant ?? "split";
+  // New leads get the student intro unless the caller picks the agency one or a 50/50 "split".
+  const pick = body?.variant ?? "student";
   const variantFor = (): Variant => (pick === "split" ? (Math.random() < 0.5 ? "standard" : "student") : pick);
 
   const deadline = Date.now() + 45_000;
