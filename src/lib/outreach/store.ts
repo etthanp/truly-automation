@@ -32,19 +32,16 @@ export interface OutreachLead {
   website?: string;
   /** True things we found on their website, used to personalize the first email. */
   facts: string[];
-  /** The whole sequence, written when the lead is added: intro, follow-up, last note. */
+  /** The intro, written when the lead is added. Leads added before follow-ups were dropped also hold two follow-ups, never sent. */
   drafts: Draft[];
   /** Missing on leads added before the student version existed; they're "standard". */
   variant?: Variant;
   status: LeadStatus;
-  /** How many emails of the sequence have gone out. */
+  /** 0 until the intro goes out. */
   step: number;
   sent: { step: number; id: string; at: string }[];
   addedAt: string;
 }
-
-/** Days to wait after each email before the next one. */
-export const FOLLOW_UP_DAYS = [3, 4];
 
 export const redis = Redis.fromEnv();
 
@@ -86,7 +83,7 @@ export async function addLead(lead: OutreachLead) {
   ]);
 }
 
-/** Move a lead to a final status and stop its sequence. */
+/** Move a lead to a final status and take it out of the send queue. */
 export async function stopLead(lead: OutreachLead, status: Exclude<LeadStatus, "active">) {
   const prev = lead.status;
   lead.status = status;

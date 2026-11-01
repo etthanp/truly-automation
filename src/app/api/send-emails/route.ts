@@ -4,12 +4,10 @@ import { authorized, footer, FROM, replyTag, replyToFor, unsubscribeHeaders } fr
 import {
   bumpStat,
   bumpVariant,
-  FOLLOW_UP_DAYS,
   getLeads,
   getStats,
   isPaused,
   redis,
-  saveLead,
   stopLead,
   today,
   type OutreachLead,
@@ -33,9 +31,9 @@ async function checkBrake() {
 }
 
 /**
- * Daily send run (Vercel cron, weekdays). Sends every email that's due: first emails for new leads
- * and follow-ups for leads who haven't replied, 100 per Resend batch call, until time runs out.
- * Anything left over stays due and goes out on the next run.
+ * Daily send run (Vercel cron, weekdays). Sends the intro to every new lead, 100 per Resend batch
+ * call, until time runs out. Each lead gets one email and no follow-ups. Anything left over stays
+ * due and goes out on the next run.
  */
 export async function GET(req: NextRequest) {
   if (!authorized(req, true)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -67,7 +65,12 @@ export async function GET(req: NextRequest) {
       : await redis.zrange<string[]>("out:due", 0, Date.now(), { byScore: true, offset: 0, count: Math.min(100, room) });
     if (due.length === 0) break;
 
-    const leads = (await getLeads(due)).filter((l): l is OutreachLead => !!l && l.status === "active" && !!l.drafts[l.step]);
+    const found = await getLeads(due);
+    // Leads that already had their intro were waiting on a follow-up, which we no longer send: end them.
+    await Promise.all(
+      found.map((l) => (l && l.status === "active" && l.step > 0 ? stopLead(l, "done") : null)),
+    );
+    const leads = found.filter((l): l is OutreachLead => !!l && l.status === "active" && l.step === 0 && !!l.drafts[0]);
     const stale = due.filter((e) => !leads.some((l) => l.email === e));
     if (stale.length) await redis.zrem("out:due", ...stale);
     if (leads.length === 0) continue;
@@ -77,9 +80,8 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await resend.batch.send(
       leads.map((lead) => {
-        const draft = lead.drafts[lead.step];
         // The intro is rebuilt from the AI opening so queued leads always get the current template.
-        const body = lead.step === 0 ? introEmail(openingOf(draft.body), lead) : draft.body;
+        const body = introEmail(openingOf(lead.drafts[0].body), lead);
         return {
           from: FROM,
           to: lead.email,
@@ -98,12 +100,11 @@ export async function GET(req: NextRequest) {
     const at = new Date().toISOString();
     await Promise.all(
       leads.map(async (lead, i) => {
-        lead.sent.push({ step: lead.step, id: data.data[i]?.id ?? "", at });
-        if (lead.step === 0 && !only) await bumpVariant(lead.variant, "intros");
-        lead.step += 1;
-        if (lead.step >= lead.drafts.length) return stopLead(lead, "done");
-        await saveLead(lead);
-        await redis.zadd("out:due", { score: Date.now() + FOLLOW_UP_DAYS[lead.step - 1] * DAY, member: lead.email });
+        lead.sent.push({ step: 0, id: data.data[i]?.id ?? "", at });
+        if (!only) await bumpVariant(lead.variant, "intros");
+        lead.step = 1;
+        // "done" still matches replies to this email; it just never sends again.
+        await stopLead(lead, "done");
       }),
     );
     sent += leads.length;
