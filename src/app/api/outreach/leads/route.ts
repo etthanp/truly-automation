@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
 import { canReceiveMail, researchSite } from "@/lib/outreach/enrich";
 import { addLead, isKnown, type OutreachLead, type Variant } from "@/lib/outreach/store";
-import { writeSequence } from "@/lib/outreach/write";
+import { writeIntro } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
 
@@ -21,7 +21,7 @@ type Result = { business: string; result: string; email?: string };
 /**
  * Adds leads to the outreach queue. For each one: find the email on their website if it's missing,
  * check the address can receive mail, skip anyone already contacted or opted out, note what we found
- * on the site, write the 3-email sequence, and queue it. Leads not reached in time come back in
+ * on the site, write the intro email, and queue it. Leads not reached in time come back in
  * `notProcessed` so the caller can resend them.
  */
 async function processLead(input: IncomingLead, variant: Variant): Promise<Result> {
@@ -55,7 +55,7 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
     sent: [],
     addedAt: new Date().toISOString(),
   };
-  lead.drafts = await writeSequence(lead);
+  lead.drafts = await writeIntro(lead);
   await addLead(lead);
   return { business, email, result: "queued" };
 }

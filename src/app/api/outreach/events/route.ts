@@ -1,13 +1,16 @@
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
 import { bareEmail, FROM, tagFrom } from "@/lib/outreach/compliance";
-import { bumpStat, bumpVariant, getLead, redis, stopLead } from "@/lib/outreach/store";
+import { bumpStat, bumpVariant, getLead, redis, stopLead, type LeadStatus } from "@/lib/outreach/store";
 
 const OPT_OUT = /\b(stop|unsubscribe|remove me|take me off|not interested|no thanks|don'?t (email|contact) me)\b/i;
 
+/** A lead whose outcome isn't known yet: still queued, or emailed with no reply, bounce or opt-out. */
+const isOpen = (s: LeadStatus) => s === "active" || s === "done";
+
 /**
  * Resend webhook. Bounces and spam complaints suppress the address for good. Replies (via Resend
- * receiving on OUTREACH_REPLY_TO) end the sequence, count as an opt-out when they say so, and are
+ * receiving on OUTREACH_REPLY_TO) are recorded, count as an opt-out when they say so, and are
  * forwarded to Ethan's inbox.
  */
 export async function POST(req: NextRequest) {
@@ -40,7 +43,7 @@ export async function POST(req: NextRequest) {
       for (const to of event.data.to) {
         const email = bareEmail(to);
         const lead = await getLead(email);
-        if (lead && lead.status === "active") await stopLead(lead, status);
+        if (lead && isOpen(lead.status)) await stopLead(lead, status);
         await redis.sadd("out:suppress", email);
         await bumpStat(status);
       }
@@ -54,7 +57,7 @@ export async function POST(req: NextRequest) {
       const lead = await getLead(email);
       const { data: full } = await resend.emails.receiving.get(event.data.email_id);
       const optedOut = OPT_OUT.test(`${event.data.subject}\n${(full?.text ?? "").split(/\n>|\nOn .+wrote:/)[0]}`);
-      if (lead && lead.status === "active") {
+      if (lead && isOpen(lead.status)) {
         await stopLead(lead, optedOut ? "unsubscribed" : "replied");
         await bumpStat(optedOut ? "unsubscribed" : "replied");
         await bumpVariant(lead.variant, optedOut ? "unsubscribed" : "replied");

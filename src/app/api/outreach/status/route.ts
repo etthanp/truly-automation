@@ -52,8 +52,22 @@ async function setQueuedVariant(variant: Variant) {
   return changed;
 }
 
+/** Ends every lead that already had its intro and was waiting on a follow-up. Returns how many. */
+async function endFollowUps() {
+  const emails = await redis.smembers("out:status:active");
+  let ended = 0;
+  for (let i = 0; i < emails.length; i += 200) {
+    const leads = await getLeads(emails.slice(i, i + 200));
+    const waiting = leads.filter((l): l is OutreachLead => !!l && l.status === "active" && l.step > 0);
+    await Promise.all(waiting.map((l) => stopLead(l, "done")));
+    ended += waiting.length;
+  }
+  return ended;
+}
+
 /**
  * { action: "pause" | "resume" } controls sending.
+ * { action: "endFollowUps" } cancels every follow-up still waiting to go out.
  * { action: "replied" | "stop", email } ends one lead's sequence by hand ("stop" also opts them out).
  * { action: "variant", variant } switches every lead still waiting for its intro to that version.
  */
@@ -68,6 +82,7 @@ export async function POST(req: NextRequest) {
   if (action === "variant" && (variant === "student" || variant === "standard")) {
     return NextResponse.json({ ok: true, changed: await setQueuedVariant(variant) });
   }
+  if (action === "endFollowUps") return NextResponse.json({ ok: true, ended: await endFollowUps() });
   if (action === "pause") await setPaused("paused by hand");
   else if (action === "resume") await setPaused(null);
   else if ((action === "replied" || action === "stop") && email) {
