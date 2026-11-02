@@ -12,6 +12,7 @@ import {
   today,
   type OutreachLead,
 } from "@/lib/outreach/store";
+import { cleanEmail } from "@/lib/outreach/enrich";
 import { introEmail, openingOf, subjectFor } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
@@ -84,7 +85,8 @@ export async function GET(req: NextRequest) {
         const body = introEmail(openingOf(lead.drafts[0].body), lead);
         return {
           from: FROM,
-          to: lead.email,
+          // Leads queued before cleanEmail existed can still have "%20" stuck to the front.
+          to: cleanEmail(lead.email),
           replyTo: replyToFor(lead.email),
           subject: subjectFor(lead),
           text: body + footer(),

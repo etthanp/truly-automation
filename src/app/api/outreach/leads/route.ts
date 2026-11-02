@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
-import { canReceiveMail, researchSite } from "@/lib/outreach/enrich";
+import { canReceiveMail, cleanEmail, researchSite } from "@/lib/outreach/enrich";
 import { addLead, isKnown, type OutreachLead, type Variant } from "@/lib/outreach/store";
 import { writeIntro } from "@/lib/outreach/write";
 
@@ -28,7 +28,7 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
   const business = input.business?.trim();
   if (!business || !input.industry || !input.city) return { business: business || "?", result: "missing business, industry or city" };
 
-  let email = input.email?.trim().toLowerCase() || null;
+  let email = (input.email && cleanEmail(input.email)) || null;
   let facts: string[] = [];
   if (input.website) {
     const site = await researchSite(input.website);

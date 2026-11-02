@@ -26,13 +26,18 @@ function normalizeUrl(site: string) {
   return /^https?:\/\//i.test(s) ? s : `https://${s}`;
 }
 
+/** Drops URL-encoded junk stuck to the front of an address, e.g. "mailto:%20info@x.com" -> "info@x.com". */
+export function cleanEmail(email: string) {
+  return email.trim().toLowerCase().replace(/^(%[0-9a-f]{2})+/i, "");
+}
+
 function emailsIn(html: string) {
   const decoded = html
     .replace(/&#64;|&#x40;|\[at\]|\(at\)/gi, "@")
     .replace(/&#46;|\[dot\]|\(dot\)/gi, ".");
   const found = new Set<string>();
   for (const m of decoded.matchAll(EMAIL_RE)) {
-    const e = m[0].toLowerCase().replace(/^mailto:/, "").replace(/\.$/, "");
+    const e = cleanEmail(m[0].replace(/^mailto:/i, "")).replace(/\.$/, "");
     if (!JUNK_EMAIL.test(e)) found.add(e);
   }
   return [...found];
