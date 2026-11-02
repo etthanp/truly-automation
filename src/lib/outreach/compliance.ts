@@ -45,7 +45,7 @@ export function unsubscribeUrl(email: string) {
 }
 
 export function footer() {
-  return `\n\n--\n${LEGAL_NAME}, ${process.env.OUTREACH_ADDRESS || MAILING_ADDRESS}\nNot interested? Reply "stop" and I won't email again.`;
+  return `\n\n--\n${LEGAL_NAME}, ${process.env.OUTREACH_ADDRESS || MAILING_ADDRESS}\nThis is a one-time note. If you'd rather not hear from me, just reply and say so.`;
 }
 
 export function unsubscribeHeaders(email: string): Record<string, string> {
