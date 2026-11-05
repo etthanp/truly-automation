@@ -1,17 +1,21 @@
 import type { Industry } from "./industries/types";
 
-/** Sample data for the example front desk dashboard. Never real customers. */
+/** Sample data for the example front desk dashboard (mirrors the real Truly Front Desk app). Never real customers. */
 export interface DashData {
   business: string;
-  stats: [string, string][];
-  attention: { who: string; text: string; due: string }[];
-  calls: { time: string; who: string; summary: string; outcome: "Booked" | "Answered" | "Callback" | "Sent to you"; length: string }[];
-  appts: { day: string; time: string; who: string; what: string }[];
-  pipeline: { stage: string; items: { who: string; what: string }[] }[];
-  customers: { name: string; phone: string; last: string; status: string }[];
+  metrics: [label: string, value: string, sub: string][];
+  activity: { name: string; title: string; kind: "call" | "text"; badge: "Booked" | "Answered" | "Follow-up" | "Text"; time: string }[];
+  tasks: { name: string; title: string; detail: string; priority: "Urgent" | "Normal"; due: string }[];
+  appts: { day: string; time: string; name: string; what: string; status: "Booked" | "Requested" }[];
+  customers: { name: string; phone: string; stage: string; note: string }[];
+  convo: { name: string; phone: string; summary: string; lines: { ai: boolean; text: string }[] };
 }
 
+/** Job stages, the same ones the real dashboard uses. */
+export const STAGES = ["New lead", "Qualified", "Appointment requested", "Appointment booked", "Quote sent", "Won", "Completed", "Lost"];
+
 const strip = (s: string) => s.replace(/\s*\(.*\)/, "").replace(/\?$/, "");
+const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 // A customer's words as a quoted sentence, e.g. "I need a new driveway."
 const said = (s: string) => `"${s}${/[?.!]$/.test(s) ? "" : "."}"`;
 
@@ -22,40 +26,49 @@ export function dashFor(ind: Industry): DashData {
   const lead = ind.hero.cards.lead;
   return {
     business: ind.demo.business,
-    stats: [
-      ["Calls answered", "38"],
-      ["Booked", "12"],
-      ["Needs you", "2"],
-      ["After hours", "9"],
+    metrics: [
+      ["Calls received", "38", "Saved call records"],
+      ["Text messages", "14", "Incoming and outgoing"],
+      ["Appointments", "12", "Booked this week"],
+      ["Needs attention", "2", "Waiting on you"],
     ],
-    attention: [
-      { who: "Dana R.", text: `Wants to talk to the owner: ${said(c3)}`, due: "Call back by 2:00 PM" },
-      { who: "Chris P.", text: "Asked to move Thursday's appointment. Two open times sent for you to approve.", due: "Today" },
+    activity: [
+      { name: "Sarah Mitchell", title: cap(strip(c1)), kind: "call", badge: "Booked", time: "9:42 PM" },
+      { name: "Mike Torres", title: cap(strip(c2)), kind: "call", badge: "Answered", time: "8:15 AM" },
+      { name: "Dana Reed", title: cap(strip(c3)), kind: "call", badge: "Follow-up", time: "10:03 AM" },
+      { name: "Jen Kowalski", title: "Incoming text message", kind: "text", badge: "Text", time: "11:26 AM" },
+      { name: "Chris Patel", title: lead.title, kind: "call", badge: "Booked", time: "12:10 PM" },
     ],
-    calls: [
-      { time: "9:42 PM", who: "Sarah M.", summary: `${said(c1)} Booked ${goal}.`, outcome: "Booked", length: "3:12" },
-      { time: "8:15 AM", who: "Mike T.", summary: `${said(c2)} Answered their questions and took their details.`, outcome: "Answered", length: "2:05" },
-      { time: "10:03 AM", who: "Dana R.", summary: `${said(c3)} Wants the owner. Callback task created.`, outcome: "Callback", length: "1:41" },
-      { time: "11:26 AM", who: "Jen K.", summary: `New customer. ${lead.title}.`, outcome: "Booked", length: "4:20" },
-      { time: "12:10 PM", who: "Tom B.", summary: "Upset about a past visit. Sent straight to you with the notes.", outcome: "Sent to you", length: "0:58" },
+    tasks: [
+      { name: "Dana Reed", title: "Callback requested", detail: `Wants to talk to the owner. Asked: ${said(c3)}`, priority: "Urgent", due: "Today, 2:00 PM" },
+      { name: "Jen Kowalski", title: "Reschedule request", detail: "Asked to move Thursday's appointment. Two open times are ready to offer.", priority: "Normal", due: "Today" },
     ],
     appts: [
-      { day: "Today", time: "2:30 PM", who: "Jen K.", what: lead.title },
-      { day: "Tomorrow", time: "9:00 AM", who: "Sarah M.", what: goal[0].toUpperCase() + goal.slice(1) },
-      { day: "Thursday", time: "11:00 AM", who: "Chris P.", what: strip(c1) },
-      { day: "Friday", time: "8:30 AM", who: "Alex W.", what: strip(c2) },
-    ],
-    pipeline: [
-      { stage: "New", items: [{ who: "Mike T.", what: strip(c2) }, { who: "Dana R.", what: strip(c3) }] },
-      { stage: "Booked", items: [{ who: "Sarah M.", what: goal }, { who: "Jen K.", what: lead.title }] },
-      { stage: "Won", items: [{ who: "Alex W.", what: strip(c1) }] },
+      { day: "Today", time: "2:30 PM", name: "Chris Patel", what: lead.title, status: "Booked" },
+      { day: "Tomorrow", time: "9:00 AM", name: "Sarah Mitchell", what: cap(goal), status: "Booked" },
+      { day: "Thursday", time: "11:00 AM", name: "Jen Kowalski", what: cap(strip(c1)), status: "Requested" },
     ],
     customers: [
-      { name: "Sarah M.", phone: "(704) 555-0142", last: "Last night", status: "Booked" },
-      { name: "Mike T.", phone: "(704) 555-0187", last: "Today", status: "New" },
-      { name: "Dana R.", phone: "(980) 555-0116", last: "Today", status: "Needs callback" },
-      { name: "Jen K.", phone: "(704) 555-0164", last: "Today", status: "Booked" },
+      { name: "Sarah Mitchell", phone: "(704) 555-0142", stage: "Appointment booked", note: cap(strip(c1)) },
+      { name: "Mike Torres", phone: "(704) 555-0187", stage: "Qualified", note: cap(strip(c2)) },
+      { name: "Dana Reed", phone: "(980) 555-0116", stage: "New lead", note: "Callback requested" },
+      { name: "Chris Patel", phone: "(704) 555-0164", stage: "Appointment booked", note: lead.title },
+      { name: "Alex Wright", phone: "(704) 555-0129", stage: "Won", note: "Repeat customer" },
     ],
+    convo: {
+      name: "Sarah Mitchell",
+      phone: "(704) 555-0142",
+      summary: `Called after hours: ${said(c1)} Booked ${goal} for tomorrow at 9:00 AM.`,
+      lines: [
+        { ai: true, text: `Thanks for calling ${ind.demo.business}, this is Ava. How can I help?` },
+        { ai: false, text: c1 },
+        { ai: true, text: "I can help with that. Can I get your name and the best number to reach you?" },
+        { ai: false, text: "Sarah Mitchell, 704-555-0142." },
+        { ai: true, text: `Thanks, Sarah. I have tomorrow at 9:00 AM or 2:30 PM for ${goal}. Which works better?` },
+        { ai: false, text: "9 works." },
+        { ai: true, text: "You're all set for tomorrow at 9:00 AM. Is there anything else I can help with?" },
+      ],
+    },
   };
 }
 
