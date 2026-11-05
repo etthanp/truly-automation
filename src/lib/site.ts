@@ -1,5 +1,5 @@
 import { EMAIL, LEGAL_NAME, PHONE_DISPLAY } from "./contact";
-import { CORE } from "./industries/core";
+import { FEATURES } from "./frontdesk";
 
 export const SITE_URL = "https://trulyautomation.com";
 
@@ -8,7 +8,7 @@ export const SITE_URL = "https://trulyautomation.com";
 export const PROFILES: string[] = [];
 
 export const COMPANY_DESCRIPTION =
-  "Truly Automation is a marketing agency for local service businesses. We build websites, run Google and Facebook ads, handle SEO and AI search, run outreach, and set up an AI receptionist that answers every call, qualifies leads and books them onto the calendar. Every plan is personalized, and we work with one business per industry per city.";
+  "Truly Automation builds and runs AI front desks for local businesses. Each one includes an AI receptionist that answers every call 24/7, books appointments on the business's calendar and takes notes on every caller, plus a front desk dashboard and customer list where the owner sees every call, appointment, customer and job.";
 
 /** schema.org Organization for the whole site, read by Google and AI assistants. */
 export function organizationJsonLd() {
@@ -33,20 +33,18 @@ export function organizationJsonLd() {
     email: EMAIL,
     telephone: PHONE_DISPLAY,
     knowsAbout: [
-      "Local SEO",
-      "AI search optimization",
-      "Google Ads",
-      "Facebook and Instagram ads",
       "AI receptionists",
+      "AI front desk software",
+      "Call answering",
+      "Appointment scheduling",
       "Lead qualification",
-      "Website design",
-      "Online reviews",
-      "Marketing for contractors and local service businesses",
+      "CRM dashboards for small businesses",
+      "Local service businesses",
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Marketing services",
-      itemListElement: CORE.map((c) => ({
+      name: "AI Front Desk",
+      itemListElement: FEATURES.map((c) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name: c.title, description: c.text },
       })),

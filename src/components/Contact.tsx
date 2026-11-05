@@ -59,13 +59,13 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <Heading className="text-4xl sm:text-5xl">
-            Get your free marketing checkup
+            Get your free front desk checkup
           </Heading>
           <p className="mt-4 text-lg text-white/70">
-            We&apos;ll look at where you rank on Google, your website, your
-            reviews and how your calls get answered, and send you a one-page
-            report with the three things to fix first. We&apos;ll also tell you
-            if your city is still open. Free, no strings attached. Or reach Ethan directly: call{" "}
+            We&apos;ll look at how your calls get answered today, how many slip
+            through, and what a front desk hire would cost you, then show you
+            exactly what your AI front desk would handle. Free, no strings
+            attached. Or call{" "}
             <a
               href={PHONE_HREF}
               className="whitespace-nowrap text-sky underline underline-offset-2 hover:text-white"
@@ -143,7 +143,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                   id="need"
                   name="need"
                   rows={3}
-                  placeholder="e.g. 'Most of our work is referrals and we want more customers from Google.'"
+                  placeholder="e.g. 'We miss calls while we're on jobs and we're thinking about hiring a receptionist.'"
                   className={inputClass}
                 />
               </div>

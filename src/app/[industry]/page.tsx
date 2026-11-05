@@ -6,6 +6,14 @@ import IndustryPage from "@/components/industry/IndustryPage";
 import { getIndustry, industries } from "@/lib/industries";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
+import { FRONT_DESK_FAQS } from "@/lib/frontdesk";
+import { WHY } from "@/lib/industries/why";
+import type { Industry } from "@/lib/industries/types";
+
+const metaFor = (ind: Industry) => ({
+  title: `AI Receptionist & Front Desk for ${ind.name} | Truly Automation`,
+  description: `An AI front desk for ${ind.who}, built and run by Truly Automation. ${WHY[ind.slug]}`.slice(0, 300),
+});
 
 // Only industries listed in src/lib/industries exist; anything else is a 404.
 export const dynamicParams = false;
@@ -17,14 +25,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const { industry } = await params;
   const ind = getIndustry(industry);
-  return ind
-    ? {
-        title: ind.meta.title,
-        description: ind.meta.description,
-        alternates: { canonical: `/${ind.slug}` },
-        openGraph: { title: ind.meta.title, description: ind.meta.description, url: `/${ind.slug}` },
-      }
-    : {};
+  if (!ind) return {};
+  const meta = metaFor(ind);
+  return {
+    ...meta,
+    alternates: { canonical: `/${ind.slug}` },
+    openGraph: { ...meta, url: `/${ind.slug}` },
+  };
 }
 
 export default async function Page({ params }: { params: Promise<{ industry: string }> }) {
@@ -35,9 +42,9 @@ export default async function Page({ params }: { params: Promise<{ industry: str
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `Marketing for ${ind.who}`,
-    serviceType: "Marketing agency services",
-    description: ind.meta.description,
+    name: `AI front desk for ${ind.who}`,
+    serviceType: "AI receptionist and front desk software",
+    description: WHY[ind.slug],
     url,
     provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: { "@type": "Country", name: "United States" },
@@ -46,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
   const faq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: ind.faqs.map((f) => ({
+    mainEntity: FRONT_DESK_FAQS.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },

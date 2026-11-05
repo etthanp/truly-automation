@@ -3,23 +3,8 @@
 import { useState } from "react";
 import Reveal from "../Reveal";
 
-const COMMON = [
-  {
-    q: "Do I own my website and accounts?",
-    a: "Yes. Your domain, Google Business Profile and social pages are set up in your company's name. If you ever leave, they stay yours and we'll help you move the website.",
-  },
-  {
-    q: "Who pays for ads?",
-    a: "You pay Google or Facebook directly for ad spend, on your own card, so you always see exactly where the money goes. Our monthly fee covers setting up and running everything.",
-  },
-  {
-    q: "Can I change packages later?",
-    a: "Anytime. Most clients start with the first package and move up once they see what it brings in. After the first 3 months, everything is month-to-month.",
-  },
-];
-
 export default function IndustryFAQ({ faqs }: { faqs: { q: string; a: string }[] }) {
-  const all = [...faqs, ...COMMON];
+  const all = faqs;
   const [open, setOpen] = useState<number | null>(0);
 
   return (

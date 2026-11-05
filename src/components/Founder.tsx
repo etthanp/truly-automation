@@ -8,9 +8,9 @@ const PHOTO_URL = "";
 
 const promises = [
   "You talk to me, not a ticket system",
-  "I learn your business, your market and your customers",
-  "Straight answers and a simple monthly report",
-  "If something isn't working, I'll tell you and fix it",
+  "We build your front desk around how your business works",
+  "We test it with you before it takes a real call",
+  "If it gets something wrong, we fix it",
 ];
 
 export default function Founder() {
@@ -18,23 +18,22 @@ export default function Founder() {
     <section id="about" className="bg-navy px-6 py-24 text-white lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_1fr]">
         <Reveal>
-          <span className="eyebrow">A more personal approach</span>
+          <span className="eyebrow">Who builds it</span>
           <h2 className="mt-5 text-5xl sm:text-6xl">
-            A marketing team
+            Built by people
             <br />
-            that <span className="text-[#5b7cff]">knows your name.</span>
+            who <span className="text-[#5b7cff]">know your name.</span>
           </h2>
           <p className="mt-7 max-w-xl text-lg text-white/80">
             Hi, I&apos;m Ethan. I started Truly Automation in North Carolina
-            because the best business owners I know do great work and have
-            zero time for marketing, and most agencies sell all of them the
-            same package and treat them like an account number.
+            because the best business owners I know do great work and still
+            lose customers to a phone nobody had time to answer.
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
-            So we build marketing around how your kind of business actually
-            makes money: the way you price, your busy and slow seasons, the
-            partners who send you work, and the calls you miss while
-            you&apos;re with a customer.
+            So we build AI front desks ourselves: the receptionist that
+            answers your calls, the calendar booking, and the dashboard where
+            you see all of it. We set it up around your business, and we keep
+            running it after it goes live.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
@@ -72,7 +71,7 @@ export default function Founder() {
                   </div>
                   <div>
                     <p className="text-lg font-bold">Ethan</p>
-                    <p className="text-sm text-navy/60">Founder · your direct contact</p>
+                    <p className="text-sm text-navy/60">Founder, your direct contact</p>
                   </div>
                 </div>
                 <p className="mt-6 text-sm font-semibold uppercase tracking-[0.14em] text-navy/50">
