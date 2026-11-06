@@ -1,5 +1,5 @@
 import { EMAIL, LEGAL_NAME, PHONE_DISPLAY } from "./contact";
-import { FEATURES } from "./frontdesk";
+import { FEATURES } from "./offer";
 
 export const SITE_URL = "https://trulyautomation.com";
 
@@ -8,7 +8,7 @@ export const SITE_URL = "https://trulyautomation.com";
 export const PROFILES: string[] = [];
 
 export const COMPANY_DESCRIPTION =
-  "Truly Automation builds and runs AI front desks for local businesses. Each one includes an AI receptionist that answers every call 24/7, books appointments on the business's calendar and takes notes on every caller, plus a front desk dashboard and customer list where the owner sees every call, appointment, customer and job.";
+  "Truly Automation builds and runs real AI systems for local businesses. Each one includes an AI receptionist that answers every call 24/7, books appointments on the business's calendar and takes notes on every caller, automatic follow-ups, and a dashboard and customer list where the owner sees every call, appointment, customer and job.";
 
 /** schema.org Organization for the whole site, read by Google and AI assistants. */
 export function organizationJsonLd() {
@@ -34,7 +34,7 @@ export function organizationJsonLd() {
     telephone: PHONE_DISPLAY,
     knowsAbout: [
       "AI receptionists",
-      "AI front desk software",
+      "AI automation for small businesses",
       "Call answering",
       "Appointment scheduling",
       "Lead qualification",
@@ -43,7 +43,7 @@ export function organizationJsonLd() {
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "AI Front Desk",
+      name: "Truly AI Systems",
       itemListElement: FEATURES.map((c) => ({
         "@type": "Offer",
         itemOffered: { "@type": "Service", name: c.title, description: c.text },

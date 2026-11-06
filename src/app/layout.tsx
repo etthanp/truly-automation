@@ -28,13 +28,13 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
-  title: "Truly Automation | AI Receptionist & Front Desk for Local Businesses",
+  title: "Truly Automation | AI Systems Built for Local Businesses",
   description:
-    "Truly Automation builds and runs AI front desks for local businesses: an AI receptionist that answers every call 24/7, books appointments on your calendar, and a dashboard with every call, customer and job. Built to do the phone work of a $40,000-a-year front desk hire.",
+    "Truly Automation builds and runs real AI systems for local businesses: an AI receptionist that answers every call 24/7 and books appointments, automatic follow-ups, and a dashboard with every call, customer and job. Built to do the work of a $40,000-a-year hire.",
   openGraph: {
-    title: "Your front desk, without the $40,000 salary",
+    title: "Real AI systems. Built by us.",
     description:
-      "An AI receptionist that answers every call and books appointments, plus your own front desk dashboard. Built and run by Truly Automation.",
+      "An AI receptionist that answers every call and books appointments, automatic follow-ups, and your own dashboard. Built and run by Truly Automation.",
     url: "https://trulyautomation.com",
     siteName: "Truly Automation",
     type: "website",

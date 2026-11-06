@@ -8,7 +8,7 @@ const PHOTO_URL = "";
 
 const promises = [
   "You talk to me, not a ticket system",
-  "We build your front desk around how your business works",
+  "We build your AI around how your business works",
   "We test it with you before it takes a real call",
   "If it gets something wrong, we fix it",
 ];
@@ -30,10 +30,10 @@ export default function Founder() {
             lose customers to a phone nobody had time to answer.
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
-            So we build AI front desks ourselves: the receptionist that
-            answers your calls, the calendar booking, and the dashboard where
-            you see all of it. We set it up around your business, and we keep
-            running it after it goes live.
+            So we build real AI systems ourselves: the receptionist that
+            answers your calls, the automations that follow up, and the
+            dashboard where you see all of it. We set it up around your
+            business, and we keep running it after it goes live.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link

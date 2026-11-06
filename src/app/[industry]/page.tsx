@@ -6,13 +6,13 @@ import IndustryPage from "@/components/industry/IndustryPage";
 import { getIndustry, industries } from "@/lib/industries";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
-import { FRONT_DESK_FAQS } from "@/lib/frontdesk";
+import { FAQS } from "@/lib/offer";
 import { WHY } from "@/lib/industries/why";
 import type { Industry } from "@/lib/industries/types";
 
 const metaFor = (ind: Industry) => ({
-  title: `AI Receptionist & Front Desk for ${ind.name} | Truly Automation`,
-  description: `An AI front desk for ${ind.who}, built and run by Truly Automation. ${WHY[ind.slug]}`.slice(0, 300),
+  title: `AI Systems for ${ind.name} | Truly Automation`,
+  description: `AI systems for ${ind.who}, built and run by Truly Automation. ${WHY[ind.slug]}`.slice(0, 300),
 });
 
 // Only industries listed in src/lib/industries exist; anything else is a 404.
@@ -42,8 +42,8 @@ export default async function Page({ params }: { params: Promise<{ industry: str
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `AI front desk for ${ind.who}`,
-    serviceType: "AI receptionist and front desk software",
+    name: `AI systems for ${ind.who}`,
+    serviceType: "AI receptionist and business automation",
     description: WHY[ind.slug],
     url,
     provider: { "@id": `${SITE_URL}/#organization` },
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
   const faq = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: FRONT_DESK_FAQS.map((f) => ({
+    mainEntity: FAQS.map((f) => ({
       "@type": "Question",
       name: f.q,
       acceptedAnswer: { "@type": "Answer", text: f.a },

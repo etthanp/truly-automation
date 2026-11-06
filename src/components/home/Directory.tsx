@@ -48,7 +48,7 @@ export default function Directory({ items, categories }: { items: DirectoryItem[
           <span className="text-sm font-bold uppercase tracking-wide text-ember">Why your business?</span>
           <h2 className="mt-3 text-4xl text-navy sm:text-5xl">See how it works for your business</h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-navy/70">
-            Search for your kind of business to see what your AI front desk would handle, and try it yourself.
+            Search for your kind of business to see what our AI would handle for you, and try it yourself.
           </p>
         </Reveal>
 
@@ -104,7 +104,7 @@ export default function Directory({ items, categories }: { items: DirectoryItem[
           <p className="mt-6 text-center text-navy/70">
             We haven&apos;t built a page for that yet.{" "}
             <Link href={`/contact?business=${encodeURIComponent(q)}`} className="font-semibold text-royal underline underline-offset-4">
-              Get a free front desk checkup
+              Get a free automation checkup
             </Link>{" "}
             and we&apos;ll show you what yours would do.
           </p>
@@ -115,7 +115,7 @@ export default function Directory({ items, categories }: { items: DirectoryItem[
           <Link href="/contact" className="font-semibold text-royal underline underline-offset-4">
             Tell us about your business
           </Link>{" "}
-          and we&apos;ll show you what your front desk would handle.
+          and we&apos;ll show you what our AI would handle.
         </p>
       </div>
     </section>
