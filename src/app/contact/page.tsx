@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import Contact from "@/components/Contact";
 
 export const metadata: Metadata = {
-  title: "Free Marketing Checkup | Truly Automation",
+  title: "Free Front Desk Checkup | Truly Automation",
   description:
-    "Get a free marketing checkup for your business and find out if your city is still open.",
+    "Get a free front desk checkup: see how your calls get answered today and what an AI front desk built by Truly Automation would handle for you.",
 };
 
 export default function ContactPage() {
