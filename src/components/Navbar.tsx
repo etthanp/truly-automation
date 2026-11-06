@@ -7,8 +7,6 @@ import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
-  { href: "/#dashboard", label: "Dashboard" },
-  { href: "/how-it-works", label: "How it works" },
   { href: "/#industries", label: "Why your business?" },
   { href: "/#about", label: "About" },
 ];
@@ -21,7 +19,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
       <div className="bg-navy text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-4 px-6 py-1.5 text-xs sm:justify-between lg:px-8">
           <p className="hidden tracking-[0.14em] text-white/60 uppercase sm:block">
-            AI front desks for local businesses
+            AI systems built for local businesses
           </p>
           <a
             href={PHONE_HREF}
@@ -56,7 +54,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
             className="whitespace-nowrap rounded-md bg-royal px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-royal/30 transition hover:bg-navy lg:px-5 lg:py-2.5"
           >
             <span className="xl:hidden">Free checkup</span>
-            <span className="hidden xl:inline">Free front desk checkup →</span>
+            <span className="hidden xl:inline">Free automation checkup →</span>
           </Link>
 
         <button
@@ -89,7 +87,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
               onClick={() => setOpen(false)}
               className="rounded-md bg-royal px-5 py-2.5 text-center text-sm font-semibold text-white"
             >
-              Free front desk checkup
+              Free automation checkup
             </Link>
             <a
               href={PHONE_HREF}

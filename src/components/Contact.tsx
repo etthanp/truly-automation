@@ -59,12 +59,12 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <Heading className="text-4xl sm:text-5xl">
-            Get your free front desk checkup
+            Get your free automation checkup
           </Heading>
           <p className="mt-4 text-lg text-white/70">
-            We&apos;ll look at how your calls get answered today, how many slip
-            through, and what a front desk hire would cost you, then show you
-            exactly what your AI front desk would handle. Free, no strings
+            We&apos;ll look at how your calls and follow-ups get handled today,
+            how many slip through, and what hiring for it would cost you, then
+            show you exactly what our AI would handle. Free, no strings
             attached. Or call{" "}
             <a
               href={PHONE_HREF}
