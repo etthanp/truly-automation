@@ -37,7 +37,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
         </Link>
 
         <div className="hidden items-center gap-6 lg:flex xl:gap-8">
-          {links.map((link) => (
+          {[...links, {href: "/front-desk", label: "Client login"}].map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -72,7 +72,7 @@ export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {
       {open && (
         <div className="border-t border-navy/5 bg-background px-6 py-4 lg:hidden">
           <div className="flex flex-col gap-4">
-            {links.map((link) => (
+            {[...links, {href: "/front-desk", label: "Client login"}].map((link) => (
               <a
                 key={link.href}
                 href={link.href}

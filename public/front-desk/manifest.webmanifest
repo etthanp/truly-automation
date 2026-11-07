@@ -1,0 +1,42 @@
+{
+  "id": "/front-desk",
+  "name": "Truly Front Desk",
+  "short_name": "Truly",
+  "description": "Your calls, calendar, and next steps. Connected to Truly Automation.",
+  "start_url": "/front-desk?workspace=truly",
+  "scope": "/front-desk",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#254cf0",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/front-desk/icons/truly-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/front-desk/icons/truly-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/front-desk/icons/truly-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Calendar",
+      "url": "/front-desk?workspace=truly&view=calendar"
+    },
+    {
+      "name": "Needs attention",
+      "url": "/front-desk?workspace=truly&view=attention"
+    }
+  ]
+}
