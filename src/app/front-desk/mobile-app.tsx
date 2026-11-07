@@ -1,0 +1,59 @@
+"use client";
+import { useEffect, useState } from 'react';
+import { Bell, Check, Download, Smartphone, ShieldCheck, ArrowUpRight, RefreshCw } from 'lucide-react';
+type InstallEvent = Event & { prompt(): Promise<void>; userChoice: Promise<{outcome:string}> };
+type Device = {id:string;label:string;active:number;last_test_at:string|null;confirmed_at:string|null};
+type Settings = {configured:boolean;publicKey:string|null;devices:Device[];deliveries:{alert_id:string;status:string;detail:string;updated_at:string;label:string}[]};
+export function useTrulyApp() {
+ const [online,setOnline]=useState(true),[installed,setInstalled]=useState(false),[ios,setIos]=useState(false),[supported,setSupported]=useState(false),[install,setInstall]=useState<InstallEvent|null>(null),[workerError,setWorkerError]=useState('');
+ useEffect(()=>{
+   const update=()=>{setOnline(navigator.onLine);setInstalled(matchMedia('(display-mode: standalone)').matches || !!(navigator as Navigator & {standalone?:boolean}).standalone);};
+   update();setIos(/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1));
+   setSupported('serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window);
+   if('serviceWorker' in navigator) navigator.serviceWorker.register('/front-desk/sw.js',{scope:'/front-desk',updateViaCache:'none'}).catch(()=>setWorkerError('App setup could not finish in this browser. Open Truly in Safari or Chrome and try again.'));
+   const prompt=(e:Event)=>{e.preventDefault();setInstall(e as InstallEvent);};
+   const done=()=>{setInstalled(true);setInstall(null);};
+   addEventListener('online',update);addEventListener('offline',update);addEventListener('beforeinstallprompt',prompt);addEventListener('appinstalled',done);
+   return()=>{removeEventListener('online',update);removeEventListener('offline',update);removeEventListener('beforeinstallprompt',prompt);removeEventListener('appinstalled',done);};
+ },[]);
+ return {online,installed,ios,supported,install,workerError};
+}
+function keyBytes(value:string) { const s=atob(value.replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(s,c=>c.charCodeAt(0)); }
+async function activeWorker() {
+ return Promise.race([navigator.serviceWorker.ready,new Promise<never>((_,reject)=>setTimeout(()=>reject(Error('App setup is still loading. Reopen the app and try again.')),12000))]);
+}
+export function MobileApp({app}:{app:ReturnType<typeof useTrulyApp>}) {
+ const [settings,setSettings]=useState<Settings|null>(null),[deviceId,setDeviceId]=useState(''),[permission,setPermission]=useState('default'),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const current=settings?.devices.find(d=>d.id===deviceId && d.active===1);
+ async function load() {
+   const r=await fetch('/api/front-desk/push',{cache:'no-store'});const d=await r.json() as Settings & {error?:string};if(!r.ok)throw Error(d.error || 'Could not load app settings.');setSettings(d);
+   if('Notification' in window)setPermission(Notification.permission);
+   if('serviceWorker' in navigator){const reg=await navigator.serviceWorker.getRegistration('/front-desk');const sub=await reg?.pushManager?.getSubscription();if(sub){const hash=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(sub.endpoint));setDeviceId(btoa(String.fromCharCode(...new Uint8Array(hash))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_'));}else setDeviceId('');}
+ }
+ useEffect(()=>{void load().catch(e=>setError(e.message));},[]);
+ async function post(body:unknown) { const r=await fetch('/api/front-desk/push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json() as {error?:string;message?:string};if(!r.ok)throw Error(d.error || d.message || 'Could not save settings.');return d; }
+ async function action(run:()=>Promise<void>) {setBusy(true);setError('');setMessage('');try{await run();await load();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+ async function enable() {
+   if(!settings?.publicKey)throw Error('Notification setup is not available yet.');
+   // Request permission in the user's click gesture, especially for iOS Home Screen apps.
+   const allowed=await Notification.requestPermission();setPermission(allowed);if(allowed!=='granted')throw Error('Notifications were not enabled. You can change this in your device settings.');
+   const reg=await activeWorker();let sub=await reg.pushManager.getSubscription();
+   if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(settings.publicKey)});
+   await post({action:'subscribe',endpoint:sub.endpoint,label:app.ios?'iPhone / iPad':/Android/.test(navigator.userAgent)?'Android phone':'Desktop browser'});
+   setMessage('This device is enabled. Send a test, then confirm that you received it.');
+ }
+ return <div className="phone-app-page">
+  <section className="app-install-hero"><div className="app-hero-copy"><span className="eyebrow">TRULY, WITH YOU</span><img src="/front-desk/icons/truly-192.png" width="64" height="64" alt="Truly app icon"/><h2>Your front desk.<br/>In your pocket.</h2><p>One place for every call, appointment, and next step. Connected to your existing Truly workspace.</p><div className="app-hero-actions">{app.installed?<span className="app-installed"><Check size={18}/>Opened as an app</span>:app.install?<button className="button white" disabled={busy} onClick={()=>void action(async()=>{await app.install!.prompt();const result=await app.install!.userChoice;setMessage(result.outcome==='accepted'?'App installation requested. Open Truly from your home screen.':'Installation dismissed. You can install later.');})}><Download size={17}/>Install Truly</button>:<a className="button white" href="#install-instructions"><Smartphone size={17}/>How to install</a>}<span>Same account. Same saved records.</span></div></div><div className="phone-preview" aria-hidden="true"><div className="phone-notch"/><span className="phone-wordmark">truly<span>.</span></span><small>YOUR FRONT DESK</small><div className="phone-preview-alert"><Bell size={18}/><div><strong>Stay close to every lead</strong><span>Bookings · Callbacks · Follow-up</span></div></div><div className="phone-preview-tile"><CalendarIcon/><strong>Your schedule, together.</strong><span>Check availability at a glance</span></div><div className="phone-preview-tabs"><span>Home</span><span>Calls</span><span>Calendar</span><span>To do</span></div></div></section>
+  {(error || app.workerError) && <div className="error-box" role="alert">{error || app.workerError}<button className="text-button" onClick={()=>void action(load)}>Try again</button></div>}
+  {message && <p className="app-feedback" role="status">{message}</p>}
+  <div className="app-setup-grid"><section className="panel app-setup-card" id="install-instructions"><span className="section-kicker">01 / ADD TO YOUR PHONE</span><h2>A familiar place to open Truly</h2><ol><li><strong>Open the dashboard on your phone.</strong><p>Use Safari on iPhone or Chrome on Android. Sign in with the same account you use here.</p></li><li><strong>{app.ios?'Tap Share → Add to Home Screen.':'Add Truly to your home screen.'}</strong><p>iPhone: Share → Add to Home Screen → Add. Android: browser menu → Install app or Add to Home screen.</p></li><li><strong>Open the Truly icon.</strong><p>Your calendar and customer activity use the same saved records. An internet connection is required.</p></li></ol><p className="form-help">This is an installable web app. No App Store download is required. This pilot currently uses your private Truly account.</p></section>
+  <section className="panel app-setup-card"><span className="section-kicker">02 / STAY IN THE LOOP</span><h2>Notifications for this device</h2><p>Get an alert for new AI bookings, saved callback requests, and reported call failures in the Truly workspace. Practice activity stays in practice.</p><div className="notification-state"><Bell size={22}/><div><strong>{current?current.confirmed_at?'Test receipt confirmed':'Enabled · test receipt pending':permission==='denied'?'Blocked in device settings':'Not enabled on this device'}</strong><span>{app.ios && !app.installed?'Add Truly to your Home Screen, then open it to enable alerts.':!app.supported?'Open this page in a browser that supports app notifications.':permission==='denied'?'Allow notifications in your browser or phone settings, then return here.':'You choose whether this device receives alerts.'}</span></div></div>
+  {!current?<button className="button primary" disabled={busy || !app.online || !settings?.configured || !app.supported || (app.ios && !app.installed) || permission==='denied' || !!app.workerError} onClick={()=>void action(enable)}><Bell size={16}/>Enable notifications</button>:<div className="app-controls"><button className="button primary" disabled={busy || !app.online} onClick={()=>void action(async()=>{const d=await post({action:'test',id:current.id});setMessage(d.message+' Look for a Truly alert on this device.');})}>Send test notification</button>{current.last_test_at && !current.confirmed_at && <button className="button" disabled={busy || !app.online} onClick={()=>void action(async()=>{await post({action:'confirm',id:current.id});setMessage('Test receipt confirmed by you.');})}><Check size={16}/>I received the test</button>}<button className="text-button" disabled={busy || !app.online} onClick={()=>void action(async()=>{await post({action:'unsubscribe',id:current.id});const reg=await navigator.serviceWorker.getRegistration('/front-desk');await (await reg?.pushManager.getSubscription())?.unsubscribe();setMessage('Notifications are off for this device.');})}>Turn off on this device</button></div>}
+  <p className="form-help">Alerts show no caller details on your lock screen. A push service accepting an alert does not prove it appeared or was read. SMS backup is not connected.</p></section></div>
+  <section className="panel app-setup-card"><div className="panel-head app-delivery-head"><div><span className="section-kicker">CONNECTED DEVICES</span><h2>Your notification connections</h2></div><button className="button" disabled={busy || !app.online} onClick={()=>void action(async()=>{const d=await post({action:'retry'});setMessage(d.message || "Pending alerts checked.");})}><RefreshCw size={15}/>Check pending alerts</button></div>{!settings?.devices.some(d=>d.active===1)?<p className="empty-inline">No devices enabled yet. Start with your own phone.</p>:settings.devices.filter(d=>d.active===1).map(d=><div className="app-device-row" key={d.id}><Smartphone size={20}/><div><strong>{d.label}{d.id===deviceId?' · this device':''}</strong><small>{d.confirmed_at?'Test receipt confirmed by you':'Test receipt not confirmed'}</small></div><button className="text-button" disabled={busy || !app.online} onClick={()=>void action(async()=>{await post({action:'unsubscribe',id:d.id});setMessage('Device disabled.');})}>Disable</button></div>)}
+  {settings && settings.deliveries.length>0 && <div className="push-deliveries">{settings.deliveries.map((d,i)=><div className="app-device-row" key={i}><Bell size={18}/><div><strong>{d.label} · {d.status}</strong><small>{d.detail}</small></div></div>)}</div>}
+  <p className="form-help">Pending alerts retry with incoming call activity or when the app refreshes, up to four attempts. There is no independent retry timer or SMS escalation yet. Review Needs attention regularly.</p></section>
+  <div className="app-privacy"><ShieldCheck size={20}/><p>Private by design. Calls and customer records are fetched after sign-in and are not stored for offline use. <a href="/front-desk/sign-out" target="_top">Sign out</a></p></div>
+ </div>;
+}
+function CalendarIcon(){return <span className="preview-calendar-mark"><span>TRULY</span><Check size={28}/></span>;}

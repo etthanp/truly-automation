@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Page(){return <main className="portal-message"><Link href="/" className="portal-brand">truly<span>.</span></Link><h1>Check your email.</h1><p>Open the sign-in link on this device to enter your front desk. It expires in 10 minutes and works once.</p><p>If it doesn’t arrive, check spam or use your approved email address.</p><Link className="button primary" href="/front-desk/sign-in">Back to sign in</Link></main>;}
