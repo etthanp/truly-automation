@@ -1,4 +1,4 @@
-import {apnsConfigured,sendAPNs} from '@/lib/front-desk/mobile/apns';
+import {apnsConfigured,apnsEnvironment,sendAPNs} from '@/lib/front-desk/mobile/apns';
 import {store,prefix,mobileSession,mobileJSON as json,smallJSON,upstream,digest} from '@/lib/front-desk/mobile/store';
 import {deviceID,bridgeURL,type NativeDevice} from '@/lib/front-desk/mobile/devices';
 export const runtime='nodejs';export const dynamic='force-dynamic';
@@ -27,6 +27,7 @@ export async function POST(req:Request){
  if(body.action==='register'){
   const token=typeof body.deviceToken==='string'?body.deviceToken.toLowerCase():'',environment=body.environment;
   if(!/^[a-f0-9]{32,200}$/.test(token)||!['sandbox','production'].includes(String(environment)))return json({error:'This phone could not be registered.'},400);
+  if(environment!==apnsEnvironment())return json({error:'Phone alerts are configured for the TestFlight and App Store app. This development build needs a separate sandbox key.'},409);
   const id=deviceID(token,String(environment)),existing=await db.get<NativeDevice>(prefix+'device:'+id);
   if(existing&&existing.email!==session.email&&Date.parse(existing.sessionExpiresAt)>Date.now())return json({error:'Sign out of the other Truly account on this phone first.'},409);
   const endpoint=bridgeURL(id),endpointId=Buffer.from(digest(endpoint),'hex').toString('base64url');
