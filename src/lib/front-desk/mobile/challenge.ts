@@ -1,0 +1,3 @@
+// Atomic attempt limit and consumption: concurrent requests cannot reuse a code.
+export const consumeChallenge=`local raw=redis.call('GET',KEYS[1]); if not raw then return '' end; local c=cjson.decode(raw); if c.attempts>=5 then return '' end; if c.proof~=ARGV[1] or c.codeHash~=ARGV[2] then c.attempts=c.attempts+1; local ttl=redis.call('TTL',KEYS[1]); if ttl>0 then redis.call('SET',KEYS[1],cjson.encode(c),'EX',ttl) end; return '' end; redis.call('DEL',KEYS[1]); return c.email`;
+export const mailLimit=`local n=tonumber(redis.call('GET',KEYS[1]) or '0'); if n>=5 or redis.call('EXISTS',KEYS[2])==1 then return 0 end; redis.call('INCR',KEYS[1]); if n==0 then redis.call('EXPIRE',KEYS[1],3600) end; redis.call('SET',KEYS[2],'1','EX',60); return 1`;
