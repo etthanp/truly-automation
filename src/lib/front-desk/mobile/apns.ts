@@ -1,8 +1,9 @@
 import 'server-only';
 import {createPrivateKey,sign} from 'node:crypto';
 import {connect,constants} from 'node:http2';
-export type APNsConfig={APNS_TEAM_ID?:string;APNS_KEY_ID?:string;APNS_PRIVATE_KEY?:string;APNS_BUNDLE_ID?:string};
+export type APNsConfig={APNS_TEAM_ID?:string;APNS_KEY_ID?:string;APNS_PRIVATE_KEY?:string;APNS_BUNDLE_ID?:string;APNS_ENVIRONMENT?:string};
 export const apnsConfigured=(c:APNsConfig=process.env as APNsConfig)=>!!(c.APNS_TEAM_ID&&c.APNS_KEY_ID&&c.APNS_PRIVATE_KEY&&c.APNS_BUNDLE_ID);
+export const apnsEnvironment=(c:APNsConfig=process.env as APNsConfig):'sandbox'|'production'=>c.APNS_ENVIRONMENT==='sandbox'?'sandbox':'production';
 let cached:{identity:string;token:string;expires:number}|undefined;
 export function providerToken(c:APNsConfig,now=Date.now()){
  if(!apnsConfigured(c))throw Error('Apple notifications are not configured.');
@@ -23,6 +24,7 @@ export function classifyAPNs(status:number,reason:string):PushResult{
 export async function sendAPNs(deviceToken:string,environment:'sandbox'|'production',collapseId:string,c:APNsConfig=process.env as APNsConfig):Promise<PushResult>{
  if(!apnsConfigured(c))return {status:'Retry pending',detail:'Apple notifications are waiting for configuration.'};
  if(!/^[a-f0-9]{32,200}$/.test(deviceToken)||!['sandbox','production'].includes(environment))return {status:'Failed',detail:'Invalid device registration.'};
+ if(environment!==apnsEnvironment(c))return {status:'Failed',detail:'This Apple key is configured for a different app environment.'};
  const host=environment==='sandbox'?'https://api.sandbox.push.apple.com':'https://api.push.apple.com';
  try{const authorization='bearer '+providerToken(c);return await new Promise<PushResult>((resolve)=>{
   const client=connect(host);let complete=false;
