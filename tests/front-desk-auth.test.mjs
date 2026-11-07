@@ -7,7 +7,7 @@ import {pathToFileURL} from 'node:url';
 
 // Exercise the real configured Auth.js/adapter/email flow with isolated storage
 // and a captured email transport. No live credentials, emails or records are used.
-test('email confirmation establishes a session once and logout revokes it',async()=>{
+for (const loginEmail of ['owner@example.test','member@example.test']) test(`email confirmation establishes an independent session for ${loginEmail} and logout revokes it`,async()=>{
  const values=new Map();let sends=0,mailLink='',mailSubject='';
  class FakeRedis {
   async get(key){const v=values.get(key);if(typeof v==='string'){try{return JSON.parse(v)}catch{}}return v??null;}
@@ -19,7 +19,7 @@ test('email confirmation establishes a session once and logout revokes it',async
  const redis=new FakeRedis();
  const oldEnv={...process.env};const oldFetch=globalThis.fetch;
  process.env.AUTH_SECRET='isolated-auth-test-secret-not-used-in-production';
- process.env.FRONT_DESK_OWNER_EMAIL='owner@example.test';process.env.RESEND_API_KEY='test-only';
+ process.env.FRONT_DESK_OWNER_EMAIL='owner@example.test';process.env.FRONT_DESK_TEAM_EMAILS='member@example.test';process.env.RESEND_API_KEY='test-only';
  process.env.KV_REST_API_URL='https://redis.invalid';process.env.KV_REST_API_TOKEN='test-only';
  const scratch=await fs.mkdtemp(new URL('../work/auth-test-',import.meta.url));
  const transpile=source=>ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext}}).outputText;
@@ -30,11 +30,11 @@ test('email confirmation establishes a session once and logout revokes it',async
   source=source.replace("import 'server-only';",'').replace("import NextAuth from 'next-auth';",'let factory; const NextAuth=f=>{factory=f;return {}};').replace("import {Redis} from '@upstash/redis';",'const Redis=class{constructor(){return globalThis.trulyTestRedis;}};').replace("'./access'","'./access.mjs'").replace("'./sign-in-email'","'./email.mjs'");
   await fs.writeFile(`${scratch}/auth.mjs`,transpile(source+'\nexport const makeConfig=()=>factory();'));
   globalThis.trulyTestRedis=redis;
-  globalThis.fetch=async(input,init)=>{assert.equal(String(input),'https://api.resend.com/emails');const message=JSON.parse(init.body);assert.equal(message.to,'owner@example.test');sends++;mailLink=message.text.match(/https:\/\/[^\s]+/)[0];mailSubject=message.subject;return Response.json({id:'isolated-test'});};
+  globalThis.fetch=async(input,init)=>{assert.equal(String(input),'https://api.resend.com/emails');const message=JSON.parse(init.body);assert.equal(message.to,loginEmail);sends++;mailLink=message.text.match(/https:\/\/[^\s]+/)[0];mailSubject=message.subject;return Response.json({id:'isolated-test'});};
   const {makeConfig}=await import(pathToFileURL(`${scratch}/auth.mjs`).href);
   const config=makeConfig();config.secret=process.env.AUTH_SECRET;config.skipCSRFCheck=skipCSRFCheck;config.logger={error(){},warn(){},debug(){}};
   const origin='https://trulyautomation.com';
-  const request=()=>Auth(new Request(origin+'/api/front-desk/auth/signin/resend',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({email:'owner@example.test',callbackUrl:origin+'/front-desk'})}),config);
+  const request=()=>Auth(new Request(origin+'/api/front-desk/auth/signin/resend',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({email:loginEmail,callbackUrl:origin+'/front-desk'})}),config);
   assert.equal((await request()).status,302);assert.equal(sends,1);
   assert.match(mailSubject,/Your Truly sign-in .* Eastern/);
   const confirmation=new URL(mailLink);assert.equal(confirmation.pathname,'/front-desk/verify');
@@ -44,7 +44,7 @@ test('email confirmation establishes a session once and logout revokes it',async
   const cookies=login.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
   assert.ok(cookies.includes('session-token'));
   const session=await Auth(new Request(origin+'/api/front-desk/auth/session',{headers:{cookie:cookies}}),config);
-  assert.equal((await session.json()).user.email,'owner@example.test');
+  assert.equal((await session.json()).user.email,loginEmail);
   const replay=await Auth(new Request(callback),config);assert.match(replay.headers.get('location'),/error=Verification/);
   await Auth(new Request(origin+'/api/front-desk/auth/signout',{method:'POST',headers:{cookie:cookies,'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({callbackUrl:origin+'/front-desk/sign-in'})}),config);
   const after=await Auth(new Request(origin+'/api/front-desk/auth/session',{headers:{cookie:cookies}}),config);assert.equal(await after.json(),null);
