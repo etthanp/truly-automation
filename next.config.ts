@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/how-it-works", destination: "/", permanent: true },
       { source: "/samples", destination: "/", permanent: true },
+      // The sales portal for setters lives on its own subdomain.
+      { source: "/portal", destination: "https://portal.trulyautomation.com", permanent: false },
     ];
   },
 };

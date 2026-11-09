@@ -54,6 +54,9 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
             <Link href="/terms" className="transition hover:text-white">
               Terms of Service
             </Link>
+            <a href="https://portal.trulyautomation.com" className="transition hover:text-white">
+              Team login
+            </a>
           </div>
         </div>
       </div>
