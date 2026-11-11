@@ -38,7 +38,7 @@ export default function FrontDesk({viewerName,isOwner}: {viewerName:string;isOwn
   const [selectedContact, setSelectedContact] = useState(""), [modal, setModal] = useState<Modal>(null), [weekOffset, setWeekOffset] = useState(0);
   const [actionTestId, setActionTestId] = useState<string | null>(null);
   const [lastTest, setLastTest] = useState<{ id: string; scenario: Scenario } | null>(null), [lesson, setLesson] = useState(0);
-  const seq = useRef(0), bootstrapStarted = useRef(false);
+  const seq = useRef(0), bootstrapStarted = useRef(false), loadedWorkspace = useRef<string | null>(null);
   const practice = workspace === "practice";
   const contacts = records.filter(r => r.kind === "contact"), calls = records.filter(r => r.kind === "call"), messages = records.filter(r => r.kind === "message");
   const bookingsPaused = records.some(r => r.id === "calendar-control" && r.status === "Paused");
@@ -53,11 +53,12 @@ export default function FrontDesk({viewerName,isOwner}: {viewerName:string;isOwn
 
   async function readWorkspace(id: string) {
     const ticket = ++seq.current;
-    setLoading(true); setError("");
+    if (loadedWorkspace.current !== id) setLoading(true);
+    setError("");
     try {
       const response = await fetch(`/api/front-desk/desk?workspace=${id}`, { cache: "no-store" }); const data = await response.json() as { error?: string; records: Item[]; message?: string; duplicate?: boolean; integrations?: { vapi: VoiceStatus } };
       if (!response.ok) throw new Error(data.error || "Couldn't load the workspace.");
-      if (seq.current === ticket) { setLastSynced(new Date().toISOString()); setRecords(data.records); setVoice(data.integrations?.vapi || emptyVoice); }
+      if (seq.current === ticket) { loadedWorkspace.current = id; setLastSynced(new Date().toISOString()); setRecords(data.records); setVoice(data.integrations?.vapi || emptyVoice); }
     } catch (e) { if (seq.current === ticket) setError((e as Error).message); }
     finally { if (seq.current === ticket) setLoading(false); }
   }
