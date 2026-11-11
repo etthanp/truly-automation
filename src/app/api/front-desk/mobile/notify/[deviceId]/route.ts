@@ -1,4 +1,4 @@
-import {deskRole} from '@/lib/front-desk/access';
+import {deskAccess} from '@/lib/front-desk/access';
 import {sendAPNs} from '@/lib/front-desk/mobile/apns';
 import {store,prefix,secureEqual,mobileJSON as json,digest} from '@/lib/front-desk/mobile/store';
 import type {NativeDevice} from '@/lib/front-desk/mobile/devices';
@@ -10,7 +10,8 @@ export async function POST(req:Request,context:{params:Promise<{deviceId:string}
  if(!/^[a-f0-9]{64}$/.test(deviceId))return json({error:'Not found.'},404);
  try{
  const db=store(),device=await db.get<NativeDevice>(prefix+'device:'+deviceId);
- if(!device||!deskRole(device.email)||await db.exists(prefix+'deleted:'+digest(device.email))||Date.parse(device.sessionExpiresAt)<=Date.now()||!await db.exists(prefix+'session:'+device.sessionHash))return json({status:'Expired',detail:'Sign in and enable alerts on this phone again.'},410);
+ const access=device?deskAccess(device.email):null;
+ if(!device||!access||(device.clientId||null)!==access.clientId||await db.exists(prefix+'deleted:'+digest(device.email))||Date.parse(device.sessionExpiresAt)<=Date.now()||!await db.exists(prefix+'session:'+device.sessionHash))return json({status:'Expired',detail:'Sign in and enable alerts on this phone again.'},410);
  const alert=req.headers.get('x-truly-alert-id')||'test';
  if(alert.length>250)return json({error:'Invalid alert.'},400);
  const dedup=prefix+'accepted:'+deviceId+':'+digest(alert);

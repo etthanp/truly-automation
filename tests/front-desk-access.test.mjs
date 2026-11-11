@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {allowedEmail,sameOrigin,validResource,deskRole,memberRequestAllowed} from '../src/lib/front-desk/access.ts';
+import {deskAccess,allowedEmail,sameOrigin,validResource,deskRole,memberRequestAllowed} from '../src/lib/front-desk/access.ts';
 test('only the configured owner can access the pilot, including existing sessions',()=>{assert.equal(allowedEmail('OWNER@example.com','owner@example.com'),true);for(const email of ['',null,'other@example.com','owner@example.com.evil'])assert.equal(allowedEmail(email,'owner@example.com'),false);assert.equal(allowedEmail('owner@example.com',''),false);});
 test('mutations require the exact request origin',()=>{const req=headers=>new Request('https://trulyautomation.com/api/front-desk/desk',{headers});assert.equal(sameOrigin(req({origin:'https://trulyautomation.com'})),true);for(const headers of [{},{origin:'https://evil.test'},{origin:'https://trulyautomation.com','sec-fetch-site':'cross-site'}])assert.equal(sameOrigin(req(headers)),false);});
 test('gateway cannot proxy arbitrary routes',()=>{for(const name of ['desk','backup','operations','push'])assert.equal(validResource(name),true);for(const name of ['mcp','auth','../desk','integrations/vapi','https://evil.test'])assert.equal(validResource(name),false);});
@@ -19,4 +19,15 @@ test('members manage daily work but cannot use owner routes or administrative ac
  for(const action of ['bootstrap','simulate','vapi.prepare','calendar.pause','actions.test','unknown'])assert.equal(memberRequestAllowed('desk','POST',null,{action,workspace:'truly'}),false);
  for(const body of [null,[],{}, {action:'task.create',workspace:'practice'}])assert.equal(memberRequestAllowed('desk','POST',null,body),false);
  assert.equal(memberRequestAllowed('desk','GET','practice'),false);assert.equal(memberRequestAllowed('desk','POST','practice',{action:'task.create',workspace:'truly'}),false);
+});
+
+test('client membership resolves one exact business and conflicting assignments fail closed',()=>{
+ const id='11111111-1111-4111-8111-111111111111',other='22222222-2222-4222-8222-222222222222';
+ const registry=JSON.stringify([{id,name:'Example',emails:['client@example.test']}]);
+ assert.deepEqual(deskAccess('CLIENT@example.test','owner@example.test','',registry),{role:'member',clientId:id,businessName:'Example'});
+ assert.equal(deskAccess('client@example.test','owner@example.test','client@example.test',registry),null);
+ assert.equal(deskAccess('client@example.test','owner@example.test','',JSON.stringify([{id,name:'One',emails:['client@example.test']},{id:other,name:'Two',emails:['client@example.test']}])) ,null);
+ assert.equal(deskAccess('client@example.test','owner@example.test','','bad-json'),null);
+ assert.equal(deskAccess('client@example.test','owner@example.test','',JSON.stringify([{id,name:'Example',emails:['client@example.test'],owner:true}])) ,null);
+ assert.equal(deskAccess('owner@example.test','owner@example.test','',registry).clientId,null);
 });
