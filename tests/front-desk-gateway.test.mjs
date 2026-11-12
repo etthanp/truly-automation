@@ -33,6 +33,8 @@ test('the real gateway enforces teammate permissions before contacting the share
   assert.equal((await send('desk','GET',undefined,'?workspace=truly&client=22222222-2222-4222-8222-222222222222')).status,404);
   assert.equal((await send('operations')).status,403);assert.equal(requests,before);
   process.env.FRONT_DESK_CLIENTS='[]';assert.equal((await send('desk')).status,401);
+  globalThis.trulyGatewayTestSession={user:{email:'owner@example.test'}};globalThis.fetch=async(url,options)=>{assert.equal(new URL(url).searchParams.get('installation'),clientId);assert.equal(options.headers['X-Truly-Client-Id'],undefined);return Response.json({records:[]});};assert.equal((await send('backup','GET',undefined,'?installation='+clientId)).status,200);
+
 
  }finally{globalThis.fetch=oldFetch;delete globalThis.trulyGatewayTestSession;for(const key of Object.keys(process.env))if(!(key in oldEnv))delete process.env[key];Object.assign(process.env,oldEnv);await fs.rm(scratch,{recursive:true,force:true});}
 });
