@@ -23,6 +23,8 @@ async function forward(req:Request,context:{params:Promise<{resource:string}>}){
  const workspace=new URL(req.url).searchParams.get('workspace');
  if(workspace && !['practice','truly'].includes(workspace))return json('Workspace not found.',404);
  if(workspace)url.searchParams.set('workspace',workspace);
+ const installation=new URL(req.url).searchParams.get('installation');
+ if(installation){if(role!=='owner'||resource!=='backup'||clientId||!/^[0-9a-f-]{36}$/i.test(installation))return json('Client installation not found.',404);url.searchParams.set('installation',installation);}
  const headers:Record<string,string>={'OAI-Sites-Authorization':`Bearer ${token}`,'X-Truly-Portal-Key':key,...(clientId?{'X-Truly-Client-Id':clientId}:{})};
  let body:string|undefined;
  if(req.method==='POST'){
