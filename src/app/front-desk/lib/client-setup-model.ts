@@ -10,7 +10,7 @@ export const CLIENT_CHECKS = [
 export type CheckId=typeof CLIENT_CHECKS[number][0];
 export type ClientConfig={businessName:string;industry:string;timezone:string;appointmentLabel:string;durationMinutes:number;days:number[];opens:string;closes:string;staffName:string;staffEmail:string;transferPhone:string;fallbackPhone:string;facts:string;instructions:string};
 export type ClientEvidence={result:'Passed'|'Failed'|'Not tested';details:string;at:string;revision:number};
-export type ClientSetup={id:string;revision:number;updatedAt:string;config:ClientConfig;evidence:Partial<Record<CheckId,ClientEvidence>>;missing:string[];passed:number;stage:string;deploymentState:'Not connected'};
+export type ClientSetup={id:string;revision:number;updatedAt:string;config:ClientConfig;evidence:Partial<Record<CheckId,ClientEvidence>>;missing:string[];passed:number;stage:string;deploymentState:string;installation?:{status:string;sourceRevision:number;assistantId:string|null;createdAt:string}};
 export const emptyClientConfig:ClientConfig={businessName:'',industry:'',timezone:'America/New_York',appointmentLabel:'',durationMinutes:30,days:[1,2,3,4,5],opens:'09:00',closes:'17:00',staffName:'',staffEmail:'',transferPhone:'',fallbackPhone:'',facts:'',instructions:''};
 export function setupSummary(config:ClientConfig,evidence:ClientSetup['evidence'],revision:number){
  const names:Partial<Record<keyof ClientConfig,string>>={industry:'Business type',appointmentLabel:'Appointment type',staffName:'Responsible person',staffEmail:'Staff sign-in email',transferPhone:'Transfer phone',fallbackPhone:'Outage fallback phone',facts:'Approved business facts',instructions:'Callback and escalation instructions'};

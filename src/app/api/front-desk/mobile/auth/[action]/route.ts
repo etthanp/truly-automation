@@ -1,6 +1,6 @@
 import {randomInt} from 'node:crypto';
 import {authConfigured} from '@/lib/front-desk/auth';
-import {deskRole} from '@/lib/front-desk/access';
+import {deskAccess} from '@/lib/front-desk/access';
 import {consumeChallenge,mailLimit} from '@/lib/front-desk/mobile/challenge';
 import {store,prefix,opaque,proof,digest,codeHash,lifetime,mobileSession,mobileJSON as json,smallJSON,upstream} from '@/lib/front-desk/mobile/store';
 export const runtime='nodejs';export const dynamic='force-dynamic';
@@ -15,13 +15,13 @@ export async function POST(req:Request,context:{params:Promise<{action:string}>}
    const session=await mobileSession(req);if(!session)return json({error:'Sign in again.'},401);
    const identity=digest(session.email),members=await db.smembers<string[]>(prefix+'sessions:'+identity);
    await db.set(prefix+'deleted:'+identity,'1');
-   for(const hash of members){const deviceId=await db.get<string>(prefix+'session-device:'+hash);if(deviceId){const device=await db.get<{email:string;endpointId:string}>(prefix+'device:'+deviceId);if(device?.email===session.email){await db.del(prefix+'device:'+deviceId);try{await upstream('push','POST',{action:'unsubscribe',id:device.endpointId});}catch{}}}await db.del(prefix+'session:'+hash,prefix+'session-device:'+hash);}
+   for(const hash of members){const deviceId=await db.get<string>(prefix+'session-device:'+hash);if(deviceId){const device=await db.get<{email:string;endpointId:string}>(prefix+'device:'+deviceId);if(device?.email===session.email){await db.del(prefix+'device:'+deviceId);try{await upstream('push','POST',{action:'unsubscribe',id:device.endpointId},session.clientId);}catch{}}}await db.del(prefix+'session:'+hash,prefix+'session-device:'+hash);}
    await db.del(prefix+'sessions:'+identity);return json({ok:true});
   }
   if(action==='logout'){
    const session=await mobileSession(req);if(!session)return json({ok:true});
    const deviceId=await db.get<string>(prefix+'session-device:'+session.hash);
-   if(deviceId){const device=await db.get<{sessionHash:string;endpointId:string}>(prefix+'device:'+deviceId);if(device?.sessionHash===session.hash){await db.del(prefix+'device:'+deviceId);try{await upstream('push','POST',{action:'unsubscribe',id:device.endpointId});}catch{/* Receiver denies deleted devices even when upstream is temporarily unavailable. */}}}
+   if(deviceId){const device=await db.get<{sessionHash:string;endpointId:string}>(prefix+'device:'+deviceId);if(device?.sessionHash===session.hash){await db.del(prefix+'device:'+deviceId);try{await upstream('push','POST',{action:'unsubscribe',id:device.endpointId},session.clientId);}catch{/* Receiver denies deleted devices even when upstream is temporarily unavailable. */}}}
    await db.del(prefix+'session:'+session.hash,prefix+'session-device:'+session.hash);return json({ok:true});
   }
   if(action==='request'){
@@ -30,7 +30,7 @@ export async function POST(req:Request,context:{params:Promise<{action:string}>}
    if(email.length>200||!/^\S+@\S+\.\S+$/.test(email)||!/^[A-Za-z0-9_-]{43}$/.test(challenge))return json({error:'Enter a valid email address.'},400);
    const id=opaque();
    // Match website limits; return the same neutral result for unauthorized addresses.
-   if(deskRole(email)&&!await db.exists(prefix+'deleted:'+digest(email))){
+   if(deskAccess(email)&&!await db.exists(prefix+'deleted:'+digest(email))){
     const key='truly:front-desk:auth:mail:'+email;
     if(!await db.eval(mailLimit,[key,key+':cooldown'],[]))return json({error:'Wait a minute before requesting another code. Too many requests may require a longer wait.'},429);
     const code=String(randomInt(0,1000000)).padStart(6,'0');
@@ -44,12 +44,12 @@ export async function POST(req:Request,context:{params:Promise<{action:string}>}
   if(!/^[A-Za-z0-9_-]{43}$/.test(id)||!/^\d{6}$/.test(code)||!/^[A-Za-z0-9_-]{43}$/.test(verifier))return json({error:'Enter the six-digit code from your newest email.'},400);
   const verified=await db.eval(consumeChallenge,[prefix+'challenge:'+id],[proof(verifier),codeHash(id,code)]);
   const email=typeof verified==='string'?verified:'';
-  const role=email&&deskRole(email);
+  const access=email?deskAccess(email):null,role=access?.role;
   if(!email||!role||await db.exists(prefix+'deleted:'+digest(email)))return json({error:'This code is incorrect, expired, or already used. Request a new code if needed.'},401);
   const token=opaque(),now=new Date(),expiresAt=new Date(now.getTime()+lifetime*1000).toISOString();
-  await db.set(prefix+'session:'+digest(token),{email,createdAt:now.toISOString(),expiresAt},{ex:lifetime});
+  await db.set(prefix+'session:'+digest(token),{email,createdAt:now.toISOString(),expiresAt,clientId:access!.clientId},{ex:lifetime});
   await db.sadd(prefix+'sessions:'+digest(email),digest(token));await db.expire(prefix+'sessions:'+digest(email),30*86400);
   const first=email.split('@')[0].split(/[._-]/)[0];
-  return json({token,expiresAt,user:{email,name:first.charAt(0).toUpperCase()+first.slice(1),role},workspace:{id:'truly',name:'Truly Automation'}});
+  return json({token,expiresAt,user:{email,name:first.charAt(0).toUpperCase()+first.slice(1),role},workspace:{id:'truly',name:access!.businessName}});
  }catch{return json({error:'The sign-in service did not respond. Please try again.'},503);}
 }

@@ -27,5 +27,12 @@ test('the real gateway enforces teammate permissions before contacting the share
   process.env.FRONT_DESK_TEAM_EMAILS='';assert.equal((await send('desk')).status,401);assert.equal(requests,2,'Removing an email revokes an existing session');
   globalThis.trulyGatewayTestSession={user:{email:'owner@example.test'}};assert.equal((await send('operations')).status,200);assert.equal(requests,3);
   globalThis.trulyGatewayTestSession=null;assert.equal((await send('desk')).status,401);assert.equal(requests,3);
+  const clientId='11111111-1111-4111-8111-111111111111';process.env.FRONT_DESK_CLIENTS=JSON.stringify([{id:clientId,name:'Example',emails:['client@example.test']}]);globalThis.trulyGatewayTestSession={user:{email:'client@example.test'}};
+  globalThis.fetch=async(url,options)=>{requests++;assert.equal(options.headers['X-Truly-Client-Id'],clientId);return Response.json({records:[]});};
+  assert.equal((await send('desk')).status,200);const before=requests;
+  assert.equal((await send('desk','GET',undefined,'?workspace=truly&client=22222222-2222-4222-8222-222222222222')).status,404);
+  assert.equal((await send('operations')).status,403);assert.equal(requests,before);
+  process.env.FRONT_DESK_CLIENTS='[]';assert.equal((await send('desk')).status,401);
+
  }finally{globalThis.fetch=oldFetch;delete globalThis.trulyGatewayTestSession;for(const key of Object.keys(process.env))if(!(key in oldEnv))delete process.env[key];Object.assign(process.env,oldEnv);await fs.rm(scratch,{recursive:true,force:true});}
 });

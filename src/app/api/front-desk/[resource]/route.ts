@@ -1,5 +1,5 @@
 import {deskSession} from '@/lib/front-desk/auth';
-import {sameOrigin,validResource,deskRole,memberRequestAllowed} from '@/lib/front-desk/access';
+import {sameOrigin,validResource,deskAccess,memberRequestAllowed} from '@/lib/front-desk/access';
 export const dynamic='force-dynamic';
 const upstream='https://truly-front-desk.copperoak14.chatgpt.site';
 const json=(error:string,status:number)=>Response.json({error},{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
@@ -8,17 +8,22 @@ async function forward(req:Request,context:{params:Promise<{resource:string}>}){
  if(!validResource(resource))return json('Not found.',404);
  const session=await deskSession();
  if(!session)return json('Sign in to open your front desk.',401);
- const role=deskRole(session.user?.email);
+ const access=deskAccess(session.user?.email),role=access?.role;
  if(!role)return json('Sign in to open your front desk.',401);
  if(role==='member'&&resource!=='desk')return json('This control is available to the workspace owner.',403);
  if(req.method==='POST'&&!sameOrigin(req))return json('Request origin is not allowed.',403);
  const token=process.env.FRONT_DESK_SITE_TOKEN,key=process.env.FRONT_DESK_PORTAL_KEY;
  if(!token||!key||key.length<64)return json('The front desk connection is not configured.',503);
+ const requestedClient=new URL(req.url).searchParams.get('client');
+ const clientId=role==='owner'?requestedClient:access?.clientId;
+ if(role!=='owner'&&requestedClient&&requestedClient!==access?.clientId)return json('Workspace not found.',404);
+ if(clientId&&!/^[0-9a-f-]{36}$/i.test(clientId))return json('Workspace not found.',404);
+ if(clientId&&resource!=='desk')return json('Use your phone settings to manage notifications.',403);
  const url=new URL(`/api/${resource}`,upstream);
  const workspace=new URL(req.url).searchParams.get('workspace');
  if(workspace && !['practice','truly'].includes(workspace))return json('Workspace not found.',404);
  if(workspace)url.searchParams.set('workspace',workspace);
- const headers:Record<string,string>={'OAI-Sites-Authorization':`Bearer ${token}`,'X-Truly-Portal-Key':key};
+ const headers:Record<string,string>={'OAI-Sites-Authorization':`Bearer ${token}`,'X-Truly-Portal-Key':key,...(clientId?{'X-Truly-Client-Id':clientId}:{})};
  let body:string|undefined;
  if(req.method==='POST'){
    if(!req.headers.get('content-type')?.startsWith('application/json'))return json('Send JSON.',415);
@@ -28,7 +33,7 @@ async function forward(req:Request,context:{params:Promise<{resource:string}>}){
    if(reader){while(true){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>limit){await reader.cancel();return json('Request too large.',413);}chunks.push(part.value);}}
    body=Buffer.concat(chunks).toString('utf8');headers['Content-Type']='application/json';
  }
- if(role==='member'){
+ if(role==='member'||clientId){
    let parsed:unknown;
    if(body){try{parsed=JSON.parse(body);}catch{return json('Invalid request.',400);}}
    if(!memberRequestAllowed(resource,req.method,workspace,parsed))return json('This control is available to the workspace owner.',403);
