@@ -43,6 +43,10 @@ function emailsIn(html: string) {
   return [...found];
 }
 
+const NO_REPLY = /^(no-?reply|do-?not-?reply|donotreply|mailer-daemon|postmaster|webmaster|privacy|abuse)@/i;
+/** Inboxes that never decide on buying anything: billing, hiring, press. Never copied. */
+const NOT_A_BUYER = /^((acct|accounts|accounting|billing|invoice|payable|receivable|payroll|career|recruit|resume|employment)\w*|(ap|ar|hr|jobs|hiring|press|media|warranty)([._-]\w+)?)@/i;
+
 /** Prefer an address on the site's own domain, then a free-mail address the owner uses, then anything else. */
 function pickEmail(emails: string[], siteUrl: string) {
   const host = new URL(siteUrl).hostname.replace(/^www\./, "");
@@ -85,17 +89,23 @@ function siteFacts(html: string, finalUrl: string) {
 export async function researchSite(website: string) {
   const base = normalizeUrl(website);
   const home = await fetchPage(base);
-  if (!home) return { email: null, facts: [] as string[] };
+  if (!home) return { email: null, cc: [] as string[], facts: [] as string[] };
 
-  let emails = emailsIn(home.html);
-  if (emails.length === 0) {
-    for (const path of ["/contact", "/contact-us", "/about"]) {
-      const page = await fetchPage(new URL(path, home.url).toString());
-      if (page) emails = emailsIn(page.html);
-      if (emails.length) break;
-    }
-  }
-  return { email: pickEmail(emails, home.url), facts: siteFacts(home.html, home.url) };
+  // The contact and about pages often list more people (owner, office manager, sales) to copy.
+  const pages = await Promise.all(
+    ["/contact", "/contact-us", "/about"].map((path) => fetchPage(new URL(path, home.url).toString())),
+  );
+  const emails = [...new Set([home, ...pages].flatMap((p) => (p ? emailsIn(p.html) : [])))].filter(
+    (e) => !NO_REPLY.test(e),
+  );
+  const email = pickEmail(emails, home.url);
+  // Copy up to 3 more addresses on the same company domain. Other domains could be a web designer or vendor.
+  const domain = email?.split("@")[1];
+  const host = new URL(home.url).hostname.replace(/^www\./, "");
+  const cc = email
+    ? emails.filter((e) => e !== email && !NOT_A_BUYER.test(e) && (e.endsWith(`@${host}`) || (!FREE_MAIL.test(e) && e.endsWith(`@${domain}`)))).slice(0, 3)
+    : [];
+  return { email, cc, facts: siteFacts(home.html, home.url) };
 }
 
 /** Basic deliverability check: real syntax and a domain that accepts mail. Bounces hurt the sending domain. */

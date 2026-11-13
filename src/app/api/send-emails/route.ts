@@ -87,6 +87,7 @@ export async function GET(req: NextRequest) {
           from: FROM,
           // Leads queued before cleanEmail existed can still have "%20" stuck to the front.
           to: cleanEmail(lead.email),
+          cc: lead.cc?.length ? lead.cc : undefined,
           replyTo: replyToFor(lead.email),
           subject: subjectFor(lead),
           text: body + footer(),
