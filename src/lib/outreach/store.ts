@@ -9,13 +9,13 @@ import { Redis } from "@upstash/redis";
  * out:suppress       emails we must never send to (bounced, complained, unsubscribed)
  * out:stats:<day>    daily counters (sent, bounced, complained, replied, unsubscribed)
  * out:paused         set when sending is paused (by hand or by the bounce brake)
- * contacted_emails   leads emailed by the old sender, skipped so nobody gets a second intro
+ * contacted_emails   addresses emailed by the old sender or copied on an intro, skipped so nobody gets a second one
  */
 
 export type LeadStatus = "active" | "replied" | "unsubscribed" | "bounced" | "complained" | "done";
 
-/** Which intro a lead gets: the agency pitch, or the UNC Pembroke student angle. */
-export type Variant = "standard" | "student";
+/** Which intro a lead gets: the agency pitch, the UNC Pembroke student angle, or the AI front desk pitch. */
+export type Variant = "standard" | "student" | "frontdesk";
 
 export interface Draft {
   subject: string;
@@ -24,6 +24,8 @@ export interface Draft {
 
 export interface OutreachLead {
   email: string;
+  /** Other addresses at the same company, copied on the intro. */
+  cc?: string[];
   business: string;
   owner?: string;
   industry: string;
@@ -77,9 +79,12 @@ export async function isKnown(email: string) {
 /** Queue a new lead so its first email goes out on the next send run. */
 export async function addLead(lead: OutreachLead) {
   await saveLead(lead);
+  const [first, ...more] = lead.cc ?? [];
   await Promise.all([
     redis.zadd("out:due", { score: Date.now(), member: lead.email }),
     redis.sadd("out:status:active", lead.email),
+    // Copied addresses never become a lead of their own.
+    first ? redis.sadd("contacted_emails", first, ...more) : null,
   ]);
 }
 
@@ -88,7 +93,10 @@ export async function stopLead(lead: OutreachLead, status: Exclude<LeadStatus, "
   const prev = lead.status;
   lead.status = status;
   await saveLead(lead);
+  // An opt-out or spam report covers everyone we copied at that company too.
+  const [first, ...more] = status === "unsubscribed" || status === "complained" ? (lead.cc ?? []) : [];
   await Promise.all([
+    first ? redis.sadd("out:suppress", first, ...more) : null,
     redis.zrem("out:due", lead.email),
     redis.srem(`out:status:${prev}`, lead.email),
     redis.sadd(`out:status:${status}`, lead.email),

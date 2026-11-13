@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     variant?: string;
   };
 
-  if (action === "variant" && (variant === "student" || variant === "standard")) {
+  if (action === "variant" && (variant === "student" || variant === "standard" || variant === "frontdesk")) {
     return NextResponse.json({ ok: true, changed: await setQueuedVariant(variant) });
   }
   if (action === "endFollowUps") return NextResponse.json({ ok: true, ended: await endFollowUps() });

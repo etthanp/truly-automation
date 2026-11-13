@@ -16,7 +16,7 @@ interface IncomingLead {
   owner?: string;
 }
 
-type Result = { business: string; result: string; email?: string };
+type Result = { business: string; result: string; email?: string; cc?: string[] };
 
 /**
  * Adds leads to the outreach queue. For each one: find the email on their website if it's missing,
@@ -30,17 +30,28 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
 
   let email = (input.email && cleanEmail(input.email)) || null;
   let facts: string[] = [];
+  let found: string[] = [];
   if (input.website) {
     const site = await researchSite(input.website);
     facts = site.facts;
     email ??= site.email;
+    found = site.cc;
   }
   if (!email) return { business, result: "no email found" };
   if (await isKnown(email)) return { business, email, result: "already contacted or opted out" };
   if (!(await canReceiveMail(email))) return { business, email, result: "email domain can't receive mail" };
 
+  // Copies get the same checks as the main address: never anyone emailed before, opted out or bounced.
+  const checked = await Promise.all(
+    found
+      .filter((e) => e !== email)
+      .map(async (e) => ((await isKnown(e)) || !(await canReceiveMail(e)) ? null : e)),
+  );
+  const cc = checked.filter((e): e is string => !!e);
+
   const lead: OutreachLead = {
     email,
+    cc: cc.length ? cc : undefined,
     business,
     owner: input.owner?.trim() || undefined,
     industry: input.industry.trim(),
@@ -57,7 +68,7 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
   };
   lead.drafts = await writeIntro(lead);
   await addLead(lead);
-  return { business, email, result: "queued" };
+  return { business, email, cc, result: "queued" };
 }
 
 export async function POST(req: NextRequest) {
@@ -70,8 +81,8 @@ export async function POST(req: NextRequest) {
   if (!Array.isArray(leads) || leads.length === 0) {
     return NextResponse.json({ error: "send { leads: [...] }" }, { status: 400 });
   }
-  // New leads get the student intro unless the caller picks the agency one or a 50/50 "split".
-  const pick = body?.variant ?? "student";
+  // New leads get the AI front desk intro unless the caller picks another one or a 50/50 "split".
+  const pick = body?.variant ?? "frontdesk";
   const variantFor = (): Variant => (pick === "split" ? (Math.random() < 0.5 ? "standard" : "student") : pick);
 
   const deadline = Date.now() + 45_000;

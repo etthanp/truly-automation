@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Pushes a lead list into the cold email queue.
 //
-//   OUTREACH_SECRET=... node scripts/outreach-push.mjs leads.csv --industry "concrete contractor" [--variant student|standard]
+//   OUTREACH_SECRET=... node scripts/outreach-push.mjs leads.csv --industry "concrete contractor" [--variant frontdesk|student|standard]
 //
 // Takes a .csv or .json file. Columns it understands (any case): business/name/company,
 // email, website/site/url, city, state, owner/contact, industry/trade. --industry fills in
@@ -99,7 +99,7 @@ while (pending.length) {
   size = 15;
   totals.queued += out.queued;
   totals.skipped += out.skipped;
-  for (const r of out.results) console.log(`${r.result === "queued" ? "✓" : "·"} ${r.business}${r.email ? ` <${r.email}>` : ""}: ${r.result}`);
+  for (const r of out.results) console.log(`${r.result === "queued" ? "✓" : "·"} ${r.business}${r.email ? ` <${r.email}>` : ""}${r.cc?.length ? ` cc ${r.cc.join(", ")}` : ""}: ${r.result}`);
   pending = [...out.notProcessed, ...pending];
 }
 console.log(`\nDone. Queued ${totals.queued}, skipped ${totals.skipped}.`);

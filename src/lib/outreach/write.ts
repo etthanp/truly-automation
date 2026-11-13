@@ -33,9 +33,11 @@ export function openingOf(body: string) {
 
 const STUDENT_SUBJECT = "quick question from a UNC Pembroke student";
 
-/** Subject for a lead's intro. The student version has its own fixed subject line. */
-export function subjectFor(lead: { variant?: Variant; drafts: Draft[] }) {
-  return lead.variant === "student" ? STUDENT_SUBJECT : lead.drafts[0].subject;
+/** Subject for a lead's intro. The student and front desk versions have their own fixed subject lines. */
+export function subjectFor(lead: { business: string; variant?: Variant; drafts: Draft[] }) {
+  if (lead.variant === "student") return STUDENT_SUBJECT;
+  if (lead.variant === "frontdesk") return `missed calls at ${lead.business}`;
+  return lead.drafts[0].subject;
 }
 
 /**
@@ -45,6 +47,7 @@ export function subjectFor(lead: { variant?: Variant; drafts: Draft[] }) {
  */
 export function introEmail(opening: string, lead: { business: string; industry: string; variant?: Variant }): string {
   if (lead.variant === "student") return studentIntro(opening, lead);
+  if (lead.variant === "frontdesk") return frontDeskIntro(opening, lead);
   const { link, who } = pageFor(lead.industry);
   return `${opening.trim()}
 
@@ -100,6 +103,29 @@ Truly Automation: ${link}
 ${PHONE_DISPLAY}`;
 }
 
+/**
+ * The AI front desk pitch: Truly builds and runs its own AI front desk, managed from a desktop
+ * dashboard and its own iPhone app. Short on purpose, with one question at the end.
+ */
+function frontDeskIntro(opening: string, lead: { business: string; industry: string }): string {
+  const { link, who } = pageFor(lead.industry);
+  return `${opening.trim()}
+
+I'm Ethan with Truly Automation. We build, run and support our own AI front desk for ${who}. It answers every call 24/7, books appointments on your calendar, and saves every caller and job so nothing slips through.
+
+You manage it all from one dashboard on your computer, and it comes with its own iPhone app, so you get an alert the moment it books a job or someone needs a callback.
+
+Would a quick 15-minute demo be worth it for ${lead.business}?
+
+Ethan Presley
+Truly Automation
+${link}
+${PHONE_DISPLAY}`;
+}
+
+/** Website facts that tie to answering the phone, the only ones the front desk pitch should open with. */
+const CALL_FACT = /phone|quote form/;
+
 const INTRO_SCHEMA = {
   type: "object",
   properties: {
@@ -132,12 +158,13 @@ export async function writeIntro(lead: {
   variant?: Variant;
 }): Promise<Draft[]> {
   const where = lead.state ? `${lead.city}, ${lead.state}` : lead.city;
+  const facts = lead.variant === "frontdesk" ? lead.facts.filter((f) => CALL_FACT.test(f)) : lead.facts;
   const details = [
     `Business: ${lead.business}`,
     `Type of business: ${lead.industry}`,
     `Location: ${where}`,
     lead.owner ? `Owner's first name: ${lead.owner.split(" ")[0]}` : "Owner's name: unknown",
-    lead.facts.length ? `Facts about their website (true, use at most one):\n- ${lead.facts.join("\n- ")}` : "Facts about their website: none",
+    facts.length ? `Facts about their website (true, use at most one):\n- ${facts.join("\n- ")}` : "Facts about their website: none",
   ].join("\n");
 
   const response = await anthropic.messages.create({
