@@ -8,15 +8,15 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 // Only extraction happens here; the safety checks run as plain rules on the page.
 const SYSTEM = `You turn a medical clinic staff member's shorthand order request into JSON.
 
-Patients on file (id: name):
-${PATIENTS.map((p) => `${p.id}: ${p.name}`).join("\n")}
+Patients on file (id: name, current medication):
+${PATIENTS.map((p) => `${p.id}: ${p.name}, ${p.lastFill ? p.lastFill.productId : "none yet"}`).join("\n")}
 
 Products (id: name, default quantity, unit):
 ${PRODUCTS.map((p) => `${p.id}: ${p.name}, ${p.defaultQty} ${p.unit}`).join("\n")}
 
 Reply with ONLY one JSON object, no other text:
 {"patientId":"","productId":"","quantity":0,"refills":0,"shipTo":"patient","note":""}
-- patientId and productId must be ids from the lists. Match first names, last names and nicknames. If you can't tell, use "".
+- patientId and productId must be ids from the lists. Match first names, last names and nicknames. Staff use loose words (T or TRT for testosterone, lozenge for troche, shot, GLP-1). If they only say "again", "refill" or "her usual", use the patient's current medication. If you can't tell, use "".
 - quantity is the number of units asked for, else the product's default quantity.
 - refills defaults to 0. shipTo is "clinic" if they say clinic or office, else "patient".
 - note is a short note for the prescriber if the request says something worth flagging (rush, dose change), else "".`;
