@@ -19,20 +19,14 @@ const sections: LegalSection[] = [
   {
     title: "Our services and your agreement",
     body: [
-      "This site describes the marketing services we offer. The exact services, prices and terms for each client are set out in a separate written Marketing Services Agreement signed by both sides. If that agreement and these terms ever conflict, the signed agreement controls.",
+      "This site describes Truly Front Desk, the AI front desk service we build and run for businesses. The exact services, prices and terms for each client are set out in a separate written service agreement signed by both sides. If that agreement and these terms ever conflict, the signed agreement controls.",
       "Prices and package details on this site can change at any time. Nothing on the site is an offer until we both sign an agreement.",
-    ],
-  },
-  {
-    title: "Free marketing checkup",
-    body: [
-      "Our free marketing checkup is general information about your online presence, based on what we can see publicly. There is no cost and no obligation to buy anything. It is not legal, financial or tax advice.",
     ],
   },
   {
     title: "No guaranteed results",
     body: [
-      "We work hard for every client, but search rankings, ad performance, reviews, calls and sales depend on many things we don't control, including search engines, ad platforms, competition and how leads are handled. We do not guarantee any particular ranking, number of leads or amount of revenue.",
+      "We work hard for every client, but calls, bookings and sales depend on many things we don't control, including phone carriers, calendar and AI providers, and how callers and leads are handled. We do not guarantee any particular number of calls, bookings, leads or amount of revenue.",
     ],
   },
   {
@@ -43,8 +37,7 @@ const sections: LegalSection[] = [
           "Payments are processed by Stripe. By paying, you also agree to Stripe's terms.",
           "When you sign up for a monthly plan, you authorize us to charge your card or bank account (ACH) automatically each month on your billing date until the plan is canceled under your agreement.",
           "If you pay by bank account, you authorize the debit and agree that a payment returned by your bank may be charged again.",
-          "Setup fees and cancellation terms are set out in your Marketing Services Agreement.",
-          "Advertising spend is paid by you directly to the ad platforms and is not part of our fees unless your agreement says otherwise.",
+          "Setup fees and cancellation terms are set out in your service agreement.",
         ],
       },
       `Questions about a charge? Contact us at ${EMAIL} or ${PHONE_DISPLAY} before disputing it with your bank, and we will work it out with you.`,
@@ -53,14 +46,7 @@ const sections: LegalSection[] = [
   {
     title: "Text messaging (SMS) terms",
     body: [
-      `${LEGAL_NAME} sends text messages only to people who opt in. Our free checkup form has two separate, optional checkboxes, and neither is ever pre-checked:`,
-      {
-        list: [
-          "Checkup texts: messages about your checkup request, such as your report link and appointment reminders. Message frequency varies.",
-          "Marketing texts: messages about our marketing services, special offers and updates. Up to 4 messages per month. We only send marketing texts if you check the marketing box.",
-        ],
-      },
-      "You can choose either, both or neither. Agreeing to texts is not a condition of any purchase and is not required to get a checkup.",
+      `${LEGAL_NAME} sends text messages only to people who opt in. Our website forms do not sign anyone up for text messages, and agreeing to texts is never a condition of any purchase.`,
       {
         list: [
           "You must be 18 or older to opt in to text messages.",
@@ -107,7 +93,7 @@ const sections: LegalSection[] = [
   {
     title: "Limitation of liability",
     body: [
-      "To the extent the law allows, Truly Automation is not liable for indirect, incidental or consequential damages, including lost profits, arising from your use of this site. For use of the site itself, our total liability will not exceed $100. Liability for paid services is governed by your Marketing Services Agreement.",
+      "To the extent the law allows, Truly Automation is not liable for indirect, incidental or consequential damages, including lost profits, arising from your use of this site. For use of the site itself, our total liability will not exceed $100. Liability for paid services is governed by your service agreement.",
     ],
   },
   {

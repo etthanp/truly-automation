@@ -8,7 +8,7 @@ export const SITE_URL = "https://trulyautomation.com";
 export const PROFILES: string[] = [];
 
 export const COMPANY_DESCRIPTION =
-  "Truly Automation builds and runs real AI systems for local businesses. Each one includes an AI receptionist that answers every call 24/7, books appointments on the business's calendar and takes notes on every caller, automatic follow-ups, and a dashboard and customer list where the owner sees every call, appointment, customer and job.";
+  "Truly Automation builds and runs Truly Front Desk, an AI front desk for local businesses. An AI receptionist answers every call 24/7 in the business's name, books appointments on its calendar and hands off to a person when needed, and every call, customer and follow-up shows up in the Truly Front Desk dashboard and iPhone app.";
 
 /** schema.org Organization for the whole site, read by Google and AI assistants. */
 export function organizationJsonLd() {

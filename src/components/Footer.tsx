@@ -1,10 +1,13 @@
-import { EMAIL, MAILING_ADDRESS, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
+import { APP_STORE_URL, EMAIL, MAILING_ADDRESS, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 import Link from "next/link";
 type FooterLink = { href: string; label: string };
 
 const homeLinks: FooterLink[] = [
-  { href: "/#industries", label: "Industries" },
-  { href: "/contact", label: "Contact" },
+  { href: "/#built", label: "What we built" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: APP_STORE_URL, label: "Get the app" },
+  { href: "/contact", label: "Book a demo" },
+  { href: "/front-desk", label: "Client login" },
 ];
 
 export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) {
@@ -14,8 +17,9 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
         <div className="flex flex-col items-center justify-between gap-8 border-b border-white/10 pb-10 sm:flex-row">
           <Link href="/" className="flex items-center gap-3">
             <img src="/logo.svg" alt="Truly Automation" className="h-9 w-auto brightness-0 invert" />
-            <span className="text-lg font-bold text-white">
-              Truly Automation
+            <span className="leading-tight">
+              <span className="block text-lg font-bold text-white">Truly Automation</span>
+              <span className="block text-xs text-white/60">Makers of Truly Front Desk</span>
             </span>
           </Link>
 

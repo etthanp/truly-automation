@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
-
-const noSubscribe = () => () => {};
+import { useState } from "react";
 import Link from "next/link";
 import Reveal from "./Reveal";
 import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
@@ -15,18 +13,6 @@ const labelClass = "block text-sm font-medium text-white/80";
 
 export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
   const Heading = asPage ? "h1" : "h2";
-  // Industry pages link here with ?business=Roofing so the form starts filled in.
-  const businessType = useSyncExternalStore(
-    noSubscribe,
-    () => new URLSearchParams(window.location.search).get("business") ?? "",
-    () => ""
-  );
-  // The city checker on industry pages adds ?city=Charlotte%2C%20NC.
-  const city = useSyncExternalStore(
-    noSubscribe,
-    () => new URLSearchParams(window.location.search).get("city") ?? "",
-    () => ""
-  );
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -59,13 +45,12 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
       <div className="mx-auto max-w-3xl">
         <Reveal className="text-center">
           <Heading className="text-4xl sm:text-5xl">
-            Get your free automation checkup
+            Book a demo of Truly Front Desk
           </Heading>
           <p className="mt-4 text-lg text-white/70">
-            We&apos;ll look at how your calls and follow-ups get handled today,
-            how many slip through, and what hiring for it would cost you, then
-            show you exactly what our AI would handle. Free, no strings
-            attached. Or call{" "}
+            Tell us about your business and we&apos;ll set up a short call to walk
+            you through Riley, the dashboard and the app, and how we&apos;d set it up
+            for you. Want to hear it first? Call Riley at{" "}
             <a
               href={PHONE_HREF}
               className="whitespace-nowrap text-sky underline underline-offset-2 hover:text-white"
@@ -87,9 +72,9 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
           {status === "success" ? (
             <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
               <p className="text-2xl">🎉</p>
-              <h3 className="mt-3 text-xl font-bold">Got it — your checkup is on the way!</h3>
+              <h3 className="mt-3 text-xl font-bold">Got it, thanks!</h3>
               <p className="mt-2 text-white/70">
-                We&apos;ll reach out within one business day with your report.
+                We&apos;ll reach out within one business day to set up your demo.
               </p>
             </div>
           ) : (
@@ -100,7 +85,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
               <input
                 type="hidden"
                 name="_subject"
-                value="New checkup request — trulyautomation.com"
+                value="New demo request: trulyautomation.com"
               />
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -127,11 +112,11 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label htmlFor="business_type" className={labelClass}>Type of business</label>
-                  <input key={businessType} id="business_type" name="business_type" type="text" required defaultValue={businessType} placeholder="e.g. roofing, plumbing, concrete" className={inputClass} />
+                  <input id="business_type" name="business_type" type="text" required placeholder="e.g. dental office, law firm, roofing" className={inputClass} />
                 </div>
                 <div>
                   <label htmlFor="area" className={labelClass}>City / area</label>
-                  <input key={city} id="area" name="area" type="text" required defaultValue={city} placeholder="Fayetteville & Hope Mills" className={inputClass} />
+                  <input id="area" name="area" type="text" required placeholder="Charlotte, NC" className={inputClass} />
                 </div>
               </div>
 
@@ -149,37 +134,6 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
               </div>
 
               <div className="grid gap-3">
-                <label htmlFor="sms_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
-                  <input
-                    id="sms_consent"
-                    name="sms_consent"
-                    type="checkbox"
-                    value="yes"
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
-                  />
-                  <span>
-                    Text me about my checkup. I agree to receive text messages from Truly Automation LLC about my
-                    checkup request, such as my report link and appointment reminders. Message frequency varies.
-                    Message and data rates may apply. Reply STOP to opt out or HELP for help. Optional.
-                  </span>
-                </label>
-
-                <label htmlFor="sms_marketing_consent" className="flex items-start gap-3 text-xs leading-relaxed text-white/60">
-                  <input
-                    id="sms_marketing_consent"
-                    name="sms_marketing_consent"
-                    type="checkbox"
-                    value="yes"
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-ember"
-                  />
-                  <span>
-                    Send me marketing texts. I agree to receive marketing text messages from Truly Automation LLC
-                    about our marketing services, special offers and updates. Up to 4 messages per month. Message
-                    and data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of
-                    purchase and is not required to get a checkup. Optional.
-                  </span>
-                </label>
-
                 <p className="text-xs leading-relaxed text-white/60">
                   See our{" "}
                   <Link href="/privacy" className="text-sky underline underline-offset-2 hover:text-white">Privacy Policy</Link>{" "}
@@ -200,7 +154,7 @@ export default function Contact({ asPage = false }: { asPage?: boolean } = {}) {
                 disabled={status === "submitting"}
                 className="mt-2 rounded-full bg-ember px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-ember/30 transition hover:scale-[1.02] disabled:opacity-50"
               >
-                {status === "submitting" ? "Sending…" : "Get my free checkup"}
+                {status === "submitting" ? "Sending…" : "Book my demo"}
               </button>
             </form>
           )}

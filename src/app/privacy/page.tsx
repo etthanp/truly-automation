@@ -13,7 +13,7 @@ const sections: LegalSection[] = [
   {
     title: "Who we are",
     body: [
-      `${LEGAL_NAME} ("Truly Automation," "we," "us") is a North Carolina limited liability company that provides marketing services to small businesses. This policy covers trulyautomation.com, our forms, and the calls, texts and emails you exchange with us.`,
+      `${LEGAL_NAME} ("Truly Automation," "we," "us") is a North Carolina limited liability company that builds and runs Truly Front Desk, an AI front desk service for businesses. This policy covers trulyautomation.com, our forms, and the calls, texts and emails you exchange with us.`,
     ],
   },
   {
@@ -22,7 +22,7 @@ const sections: LegalSection[] = [
       "Information you give us:",
       {
         list: [
-          "Free checkup and contact requests: your name, phone number, email, business name, type of business, service area and anything you choose to tell us.",
+          "Demo and contact requests: your name, phone number, email, business name, type of business, service area and anything you choose to tell us.",
           "Client onboarding: business details, service information, photos and logos you share, account access you grant us, and a billing contact.",
           "Calls, texts and emails you send us.",
         ],
@@ -37,8 +37,8 @@ const sections: LegalSection[] = [
     body: [
       {
         list: [
-          "To reply to you and prepare the free marketing checkup you asked for.",
-          "To provide the services in a client's agreement, including websites, Google Business Profile management, review requests, social media, advertising and AI receptionist services.",
+          "To reply to you and set up the demo you asked for.",
+          "To provide the services in a client's agreement, including the Truly Front Desk AI receptionist, call logging, booking, and the dashboard and iPhone app.",
           "To send invoices, receipts and messages about your account.",
           "To keep our website and services secure and working properly.",
           "To meet legal, tax and accounting requirements.",
@@ -49,13 +49,13 @@ const sections: LegalSection[] = [
   {
     title: "Information we handle for our clients",
     body: [
-      "When we run marketing or an AI receptionist for a client, we may handle information about that client's customers, such as a caller's name, phone number and message, or a customer's email for a review request. We use that information only to provide services to that client, following the client's instructions. If you are a customer of one of our clients, you can also contact that business directly about your information.",
+      "When we run Truly Front Desk for a client, we may handle information about that client's customers, such as a caller's name, phone number, message, call recording or transcript, and appointment details. We use that information only to provide services to that client, following the client's instructions. If you are a customer of one of our clients, you can also contact that business directly about your information.",
     ],
   },
   {
     title: "Text messaging",
     body: [
-      "Our free checkup form has two separate, optional text-message checkboxes. If you check the checkup box, we use your mobile number to text you about your checkup request, such as your report link and appointment reminders. If you check the marketing box, we also text you marketing messages about our services, special offers and updates (up to 4 per month). We never send marketing texts without the marketing box checked. If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
+      "Our website forms do not sign anyone up for text messages, and we never send marketing texts without your permission. If you text us, or text with an AI receptionist we operate for one of our clients, we use your phone number to respond to you and continue that conversation.",
       {
         list: [
           "Message frequency varies. Message and data rates may apply.",

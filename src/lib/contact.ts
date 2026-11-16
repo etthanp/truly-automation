@@ -1,7 +1,10 @@
-// Business phone (GoHighLevel number answered by the Riley AI receptionist) and email, shared across the site.
-export const PHONE_DISPLAY = "(980) 990-3722";
-export const PHONE_HREF = "tel:+19809903722";
+// Business phone (Truly's own line, answered by Riley, our Truly Front Desk AI on Vapi) and email, shared across the site.
+export const PHONE_DISPLAY = "(551) 299-1024";
+export const PHONE_HREF = "tel:+15512991024";
 export const EMAIL = "ethan@trulyautomation.com";
+
+// The Truly Front Desk iPhone app on the App Store.
+export const APP_STORE_URL = "https://apps.apple.com/us/app/truly-front-desk/id6832025004";
 
 // Legal entity and its address on record (registered office), used on the legal pages.
 export const LEGAL_NAME = "Truly Automation LLC";

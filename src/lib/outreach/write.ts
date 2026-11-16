@@ -1,34 +1,17 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { PHONE_DISPLAY } from "@/lib/contact";
-import { industries } from "@/lib/industries";
-import type { Industry } from "@/lib/industries/types";
 import { SITE_URL } from "@/lib/site";
 import type { Draft, Variant } from "./store";
 
 const anthropic = new Anthropic();
 
-const VIDEO_URL = "https://www.youtube.com/shorts/m_Qd10L5ORo";
-const SERVICES_MARKER = "\n\nWe're Truly Automation";
-
-/** The industry page that matches a lead's free-text industry, e.g. "concrete contractor" -> /concrete. */
-function industryFor(text: string): Industry | undefined {
-  const t = text.toLowerCase();
-  return (
-    industries.find((i) => t.includes(i.slug.replace(/-/g, " "))) ??
-    industries.find((i) => t.includes(i.name.toLowerCase())) ??
-    industries.find((i) => i.who.toLowerCase().split(" and ").some((w) => t.includes(w.replace(/s$/, ""))))
-  );
-}
-
-function pageFor(industry: string) {
-  const ind = industryFor(industry);
-  return { link: ind ? `${SITE_URL}/${ind.slug}` : SITE_URL, who: ind?.who ?? "local service businesses" };
-}
+// Where the fixed text starts in a stored email: the old marketing pitch, then the front desk pitch.
+const SERVICES_MARKERS = ["\n\nWe're Truly Automation", "\n\nI'm Ethan with Truly Automation"];
 
 /** The AI-written opening of a stored intro email (everything before the fixed services section). */
 export function openingOf(body: string) {
-  const i = body.indexOf(SERVICES_MARKER);
-  return (i >= 0 ? body.slice(0, i) : body).trim();
+  const at = SERVICES_MARKERS.map((m) => body.indexOf(m)).filter((i) => i >= 0);
+  return (at.length ? body.slice(0, Math.min(...at)) : body).trim();
 }
 
 const STUDENT_SUBJECT = "quick question from a UNC Pembroke student";
@@ -47,79 +30,50 @@ export function subjectFor(lead: { business: string; variant?: Variant; drafts: 
  */
 export function introEmail(opening: string, lead: { business: string; industry: string; variant?: Variant }): string {
   if (lead.variant === "student") return studentIntro(opening, lead);
-  if (lead.variant === "frontdesk") return frontDeskIntro(opening, lead);
-  const { link, who } = pageFor(lead.industry);
-  return `${opening.trim()}
-
-We're Truly Automation, a marketing team for ${who}. Here's a quick video on what we do: ${VIDEO_URL}
-
-What we offer:
-- An AI receptionist that answers every call 24/7 and books the job
-- An AI chatbot on your website that answers questions and captures leads
-- A website checkup to find what's costing you calls
-- Facebook posts and Google Business Profile posts, done for you automatically
-- An automatic review system for your past and future customers
-- Cold outreach on the phone to bring in steady work
-- Meta (Facebook and Instagram) and Google ads
-- Alerts when someone posts in a local Facebook group looking for the work you do
-
-Get your free marketing checkup today, and work with a real team that values real, personal relationships.
-
-See everything here: ${link}
-Or call us: ${PHONE_DISPLAY}
-
-Want me to put together a free marketing checkup for ${lead.business}?
-
-Ethan`;
+  return frontDeskIntro(opening, lead);
 }
 
 /**
  * The student angle: Ethan introduces himself as the student lead of the AI program at UNC Pembroke
- * before the AI's observation about their site, then a shorter offer list.
+ * before the AI's observation about their site, then the Truly Front Desk pitch.
  */
-function studentIntro(opening: string, lead: { business: string; industry: string }): string {
-  const { link, who } = pageFor(lead.industry);
+function studentIntro(opening: string, lead: { business: string }): string {
   const [first, ...rest] = opening.trim().split("\n");
   const hasGreeting = /^(hi|hey|hello)\b.*,$/i.test(first.trim());
   const greeting = hasGreeting ? first.trim() : "Hi there,";
   const observation = (hasGreeting ? rest.join("\n") : opening).trim();
   return `${greeting}
 
-I'm Ethan, a student at UNC Pembroke studying business and AI, and I'm the student lead of the AI program there. This semester I'm working with a small number of ${who} to help them get more calls and jobs using AI and better marketing.
+I'm Ethan, a student at UNC Pembroke studying business and AI, and I'm the student lead of the AI program there. I also built Truly Front Desk, an AI front desk for local businesses.
 
 ${observation}
 
-A few things I can help with:
-- An AI receptionist that answers every call 24/7 and books the job
-- Automatic Google and Facebook posts so you stay visible
-- An automatic review system for past and future customers
-- A free marketing checkup that shows what's costing you calls
+Riley, the AI receptionist, answers every call 24/7, books appointments on your calendar and gets you when a call needs a person. Everything shows up in a dashboard and our iPhone app. You can hear it yourself by calling ${PHONE_DISPLAY}.
 
-I'm keeping this to a handful of businesses so I can give each one real attention. Would you be open to a free checkup for ${lead.business}?
+Would a quick 15-minute demo be worth it for ${lead.business}?
 
 Ethan Presley
 UNC Pembroke, Business & AI
-Truly Automation: ${link}
+Truly Automation: ${SITE_URL}
 ${PHONE_DISPLAY}`;
 }
 
 /**
- * The AI front desk pitch: Truly builds and runs its own AI front desk, managed from a desktop
+ * The Truly Front Desk pitch: Truly builds and runs its own AI front desk, managed from a desktop
  * dashboard and its own iPhone app. Short on purpose, with one question at the end.
  */
-function frontDeskIntro(opening: string, lead: { business: string; industry: string }): string {
-  const { link, who } = pageFor(lead.industry);
+function frontDeskIntro(opening: string, lead: { business: string }): string {
   return `${opening.trim()}
 
-I'm Ethan with Truly Automation. We build, run and support our own AI front desk for ${who}. It answers every call 24/7, books appointments on your calendar, and saves every caller and job so nothing slips through.
+I'm Ethan with Truly Automation. We built Truly Front Desk, an AI front desk we set up and run for local businesses. Riley, the AI receptionist, answers every call 24/7, books appointments on your calendar and saves every caller and job so nothing slips through.
 
-You manage it all from one dashboard on your computer, and it comes with its own iPhone app, so you get an alert the moment it books a job or someone needs a callback.
+You see it all in one dashboard on your computer and in the Truly Front Desk iPhone app, with an alert the moment it books a job or someone needs a callback. Call ${PHONE_DISPLAY} to hear it yourself.
 
 Would a quick 15-minute demo be worth it for ${lead.business}?
 
 Ethan Presley
 Truly Automation
-${link}
+${SITE_URL}
 ${PHONE_DISPLAY}`;
 }
 
@@ -136,9 +90,9 @@ const INTRO_SCHEMA = {
   additionalProperties: false,
 };
 
-const SYSTEM = `You write cold emails for Ethan Presley at Truly Automation, a small marketing agency for local service businesses. Sound like a real person typing a quick note, not a marketer.
+const SYSTEM = `You write cold emails for Ethan Presley at Truly Automation, which builds and runs Truly Front Desk, an AI front desk for local businesses. Sound like a real person typing a quick note, not a marketer.
 
-You write the "opening" of one email to a business owner: a greeting line, then 1 to 2 short sentences, under 45 words total. If you are given facts about their website, mention exactly one of them, plainly and briefly. If there are no facts, make one short, honest observation about their kind of business (missed calls while on a job, slow seasons, leads going to whoever answers first). Do not list services, do not sign off, do not ask a question: the services list and the closing are added after your text.
+You write the "opening" of one email to a business owner: a greeting line, then 1 to 2 short sentences, under 45 words total. If you are given facts about their website, mention exactly one of them, plainly and briefly. If there are no facts, make one short, honest observation about their kind of business (calls missed while busy with customers, after-hours calls going to voicemail, callers going to whoever answers first). Do not list services, do not sign off, do not ask a question: the services list and the closing are added after your text.
 
 Rules:
 - Never invent facts, numbers, results, clients, or anything about their business you weren't given.
@@ -158,7 +112,8 @@ export async function writeIntro(lead: {
   variant?: Variant;
 }): Promise<Draft[]> {
   const where = lead.state ? `${lead.city}, ${lead.state}` : lead.city;
-  const facts = lead.variant === "frontdesk" ? lead.facts.filter((f) => CALL_FACT.test(f)) : lead.facts;
+  // Every email pitches the front desk, so only open with website facts about answering the phone.
+  const facts = lead.facts.filter((f) => CALL_FACT.test(f));
   const details = [
     `Business: ${lead.business}`,
     `Type of business: ${lead.industry}`,
