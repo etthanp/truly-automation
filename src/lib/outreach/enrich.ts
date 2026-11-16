@@ -108,9 +108,17 @@ export async function researchSite(website: string) {
   return { email, cc, facts: siteFacts(home.html, home.url) };
 }
 
+/**
+ * An address Resend will accept. The local part can't start or end with a dot or have two in a row
+ * ("name.@gmail.com" shows up on real sites), and one bad address makes Resend reject a whole batch.
+ */
+export function isValidEmail(email: string) {
+  return /^[a-z0-9%+_-]+(\.[a-z0-9%+_-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(email);
+}
+
 /** Basic deliverability check: real syntax and a domain that accepts mail. Bounces hurt the sending domain. */
 export async function canReceiveMail(email: string) {
-  if (!/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(email)) return false;
+  if (!isValidEmail(email)) return false;
   try {
     const mx = await resolveMx(email.split("@")[1]);
     return mx.length > 0;

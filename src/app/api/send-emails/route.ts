@@ -12,7 +12,7 @@ import {
   today,
   type OutreachLead,
 } from "@/lib/outreach/store";
-import { cleanEmail } from "@/lib/outreach/enrich";
+import { cleanEmail, isValidEmail } from "@/lib/outreach/enrich";
 import { introEmail, openingOf, subjectFor } from "@/lib/outreach/write";
 
 export const maxDuration = 60;
@@ -71,7 +71,13 @@ export async function GET(req: NextRequest) {
     await Promise.all(
       found.map((l) => (l && l.status === "active" && l.step > 0 ? stopLead(l, "done") : null)),
     );
-    const leads = found.filter((l): l is OutreachLead => !!l && l.status === "active" && l.step === 0 && !!l.drafts[0]);
+    // An address Resend won't take would fail the whole batch, so those leads end here as bounced.
+    const invalid = found.filter((l): l is OutreachLead => !!l && l.status === "active" && !isValidEmail(cleanEmail(l.email)));
+    await Promise.all(invalid.map((l) => stopLead(l, "bounced")));
+    const leads = found.filter(
+      (l): l is OutreachLead => !!l && l.status === "active" && l.step === 0 && !!l.drafts[0] && !invalid.includes(l),
+    );
+    for (const lead of leads) lead.cc = lead.cc?.filter(isValidEmail);
     const stale = due.filter((e) => !leads.some((l) => l.email === e));
     if (stale.length) await redis.zrem("out:due", ...stale);
     if (leads.length === 0) continue;
