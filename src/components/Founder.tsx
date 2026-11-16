@@ -30,17 +30,17 @@ export default function Founder() {
             lose customers to a phone nobody had time to answer.
           </p>
           <p className="mt-4 max-w-xl text-lg text-white/80">
-            So we build real AI systems ourselves: the receptionist that
-            answers your calls, the automations that follow up, and the
-            dashboard where you see all of it. We set it up around your
-            business, and we keep running it after it goes live.
+            So we built Truly Front Desk ourselves: Riley, the AI receptionist
+            that answers your calls, the dashboard where you see every call and
+            customer, and the iPhone app that keeps it in your pocket. We set it
+            up around your business, and we keep running it after it goes live.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-md bg-royal px-6 py-3.5 text-base font-semibold text-white transition hover:bg-white hover:text-navy"
             >
-              Let&apos;s talk about your business <span aria-hidden>→</span>
+              Book a demo <span aria-hidden>→</span>
             </Link>
             {LINKEDIN_URL && (
               <a

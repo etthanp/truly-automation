@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import Contact from "@/components/Contact";
 
 export const metadata: Metadata = {
-  title: "Free Automation Checkup | Truly Automation",
+  title: "Book a Demo | Truly Front Desk",
   description:
-    "Get a free automation checkup: see how your calls and follow-ups get handled today and what an AI system built by Truly Automation would handle for you.",
+    "Book a demo of Truly Front Desk, the AI front desk built and run by Truly Automation: an AI receptionist that answers every call 24/7 and books appointments, with a dashboard and iPhone app.",
 };
 
 export default function ContactPage() {

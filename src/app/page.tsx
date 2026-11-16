@@ -1,32 +1,27 @@
 import Navbar from "@/components/Navbar";
-import ChatWidget from "@/components/ChatWidget";
 import HomeHero from "@/components/home/HomeHero";
-import IndustryTicker from "@/components/home/IndustryTicker";
-import WhatWeDo from "@/components/home/WhatWeDo";
-import HomeReviews from "@/components/home/HomeReviews";
-import Directory from "@/components/home/Directory";
+import WhatWeBuilt from "@/components/home/WhatWeBuilt";
+import HowItWorks from "@/components/home/HowItWorks";
+import Pricing from "@/components/home/Pricing";
+import Faq from "@/components/home/Faq";
 import Founder from "@/components/Founder";
 import HomeCta from "@/components/home/HomeCta";
 import Footer from "@/components/Footer";
-import { categories, industries } from "@/lib/industries";
 
 export default function Home() {
-  const items = industries.map(({ slug, name, icon, tagline, category }) => ({ slug, name, icon, tagline, category }));
   return (
     <>
       <Navbar />
       <main className="flex-1">
         <HomeHero />
-        <IndustryTicker items={items} />
-        <HomeReviews />
-        <WhatWeDo />
-        <Directory items={items} categories={categories} />
+        <WhatWeBuilt />
+        <HowItWorks />
+        <Pricing />
+        <Faq />
         <Founder />
         <HomeCta />
       </main>
       <Footer />
-      {/* GoHighLevel chat widget: the only SMS opt-in form on this page (A2P requirement) */}
-      <ChatWidget />
     </>
   );
 }
