@@ -1,5 +1,4 @@
 import Reveal from "../Reveal";
-import { APP_STORE_URL } from "@/lib/contact";
 
 const rows = [
   {
@@ -12,8 +11,7 @@ const rows = [
   },
   {
     big: "The Truly Front Desk iPhone app.",
-    text: "The same front desk in your pocket, with an alert when Riley books a job or needs a callback. It's live on the App Store.",
-    link: { href: APP_STORE_URL, label: "Get it on the App Store" },
+    text: "Once your front desk is live, you and your team sign in to the app and see every call, booking and follow-up from your phone, with an alert when Riley books a job or needs a callback.",
   },
   {
     big: "Built and run by us.",
@@ -35,19 +33,6 @@ export default function WhatWeBuilt() {
                 <p className="font-[family-name:var(--font-anton)] text-xl leading-tight text-navy sm:text-2xl">{r.big}</p>
                 <div>
                   <p className="text-[0.95rem] text-navy/70">{r.text}</p>
-                  {r.link && (
-                    <a
-                      href={r.link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-2 rounded-md bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-royal"
-                    >
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
-                        <path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.15.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66ZM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.58.68-1.1 1.77-.96 2.81 1.02.08 2.06-.52 2.69-1.28Z" />
-                      </svg>
-                      {r.link.label}
-                    </a>
-                  )}
                 </div>
               </div>
             </Reveal>

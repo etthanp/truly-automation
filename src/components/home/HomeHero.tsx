@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Reveal from "../Reveal";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
-import { PRICE } from "@/lib/offer";
 
 // Example activity for the app mockup. Not real client data.
 const feed = [
@@ -36,7 +35,7 @@ export default function HomeHero() {
               Truly Front Desk is the AI front desk we built and run for your business. Riley, your AI
               receptionist, answers every call 24/7 in your business&apos;s name, books appointments on your
               calendar and gets you when a call needs a person. Every call, customer and follow-up lands in
-              your dashboard and on your iPhone.
+              your own dashboard and app.
             </p>
           </Reveal>
           <Reveal delay={300}>
@@ -54,9 +53,7 @@ export default function HomeHero() {
                 Book a demo <span aria-hidden>→</span>
               </Link>
             </div>
-            <p className="mt-5 text-sm text-navy/55">
-              {PRICE.setup} setup, then {PRICE.monthly} a month. Hear exactly what your callers would hear.
-            </p>
+            <p className="mt-5 text-sm text-navy/55">Call Riley to hear exactly what your callers would hear.</p>
           </Reveal>
         </div>
 
@@ -98,7 +95,7 @@ export default function HomeHero() {
               </div>
             </div>
             <p className="mt-4 text-center font-[family-name:var(--font-caveat)] text-2xl text-navy/60">
-              the Truly Front Desk app (example day)
+              what clients see in their app (example day)
             </p>
           </div>
         </Reveal>

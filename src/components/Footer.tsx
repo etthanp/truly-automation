@@ -4,10 +4,10 @@ type FooterLink = { href: string; label: string };
 
 const homeLinks: FooterLink[] = [
   { href: "/#built", label: "What we built" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: APP_STORE_URL, label: "Get the app" },
+  { href: "/#how", label: "How it works" },
   { href: "/contact", label: "Book a demo" },
   { href: "/front-desk", label: "Client login" },
+  { href: APP_STORE_URL, label: "Client app" },
 ];
 
 export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) {

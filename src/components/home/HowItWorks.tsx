@@ -9,7 +9,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="px-6 py-14 lg:px-8">
+    <section id="how" className="scroll-mt-28 px-6 py-14 lg:px-8">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2 className="text-3xl text-navy sm:text-4xl">How it works.</h2>

@@ -1,19 +1,11 @@
-/** The one package we sell: Truly Front Desk. */
-export const PRICE = {
-  setup: "$2,000",
-  monthly: "$1,000",
-  setupLine: "$2,000 to build and set up",
-  monthlyLine: "$1,000 a month, starting your second month",
-};
-
-/** What every Truly Front Desk includes, for the pricing section, structured data and llms.txt. */
+/** What every Truly Front Desk includes, for the homepage, structured data and llms.txt. */
 export const FEATURES = [
   { title: "Your own AI receptionist", text: "Answers every call 24/7 in your business's name, from information you approve." },
   { title: "Booking on your calendar", text: "Books, moves and cancels appointments in your real open times." },
   { title: "Handoff to you", text: "Transfers the calls you want to take and saves a callback for anything that needs a person." },
   { title: "Every call saved", text: "Each call is logged with the caller's details, a summary and the full transcript." },
   { title: "The Truly Front Desk dashboard", text: "Calls, customers, calendar and follow-ups in one place on your computer." },
-  { title: "The Truly Front Desk iPhone app", text: "The same front desk on your phone, with alerts when it books a job or needs you." },
+  { title: "The Truly Front Desk iPhone app", text: "Once you're live, you and your team sign in to see it all from your phone, with alerts when it books a job or needs you." },
   { title: "Built and run by us", text: "We build it around your business, test it with you before it takes a real call, and keep it running." },
 ];
 
@@ -21,7 +13,7 @@ export const FEATURES = [
 export const FAQS = [
   {
     q: "What does it cost?",
-    a: `${PRICE.setup} to build and set up your front desk, then ${PRICE.monthly} a month starting your second month. That's one price for everything on this page, less than a part-time receptionist.`,
+    a: "Far less than hiring someone to answer your phone. Every business is a little different, so we go over pricing on a short demo once we know how your calls and bookings work.",
   },
   {
     q: "Do I keep my phone number?",

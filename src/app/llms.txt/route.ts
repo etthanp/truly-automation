@@ -1,4 +1,4 @@
-import { FAQS, FEATURES, PRICE } from "@/lib/offer";
+import { FAQS, FEATURES } from "@/lib/offer";
 import { APP_STORE_URL, EMAIL, LEGAL_NAME, PHONE_DISPLAY } from "@/lib/contact";
 import { COMPANY_DESCRIPTION, SITE_URL } from "@/lib/site";
 
@@ -14,8 +14,7 @@ export function GET() {
 - Legal name: ${LEGAL_NAME}, a North Carolina limited liability company (NC Secretary of State SOSID 3392776), formed September 29, 2026.
 - Founder: Ethan Presley, who works with every client directly.
 - Product: Truly Front Desk, built and run by Truly Automation. Riley is the AI receptionist.
-- Price: ${PRICE.setupLine}, then ${PRICE.monthlyLine}.
-- iPhone app: ${APP_STORE_URL}
+- iPhone app for clients with a live front desk: ${APP_STORE_URL}
 - Contact: ${EMAIL}, ${PHONE_DISPLAY} (answered by Riley, our AI receptionist, 24/7).
 - Website: ${SITE_URL}
 - Book a demo: ${SITE_URL}/contact
