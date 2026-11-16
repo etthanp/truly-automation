@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
   EXAMPLES,
+  PATIENTS,
+  PATIENT_TEXTS,
   PRESCRIBERS,
   patientById,
   pharmacyById,
@@ -12,9 +14,10 @@ import {
   type ParsedOrder,
 } from "@/lib/order-desk";
 
-// Infused Wellness order desk demo. Staff type an order the way they'd text it, the AI preps
-// it, rules check it, the AI fills the pharmacy portal draft, and the prescriber signs on
-// their phone. The signature step stays the prescriber's: Truly never signs.
+// Infused Wellness order desk demo. Orders come in from staff shorthand, a patient's text, or
+// refills that come due on their own. The AI preps them, rules check them, the AI fills the
+// pharmacy portal draft, and the prescriber signs on their phone. The signature always stays
+// the prescriber's: Truly never signs.
 
 type Status = "needs_fix" | "waiting" | "submitted" | "compounding" | "shipped" | "labs_requested";
 
@@ -28,6 +31,7 @@ type Order = ParsedOrder & {
 };
 
 type Text = { id: string; to: string; body: string };
+type LogEntry = { id: number; time: string; who: string; what: string };
 
 const STATUS_LABEL: Record<Status, string> = {
   needs_fix: "Needs a fix",
@@ -68,26 +72,70 @@ const SEED: Order[] = [
   seed({ patientId: "p1", productId: "nad", quantity: 1, refills: 0, shipTo: "clinic", note: "" }, "IW-1035", "vega", "shipped", "1Z 84W 2F0 03 1182 7740"),
 ];
 
+const SEED_LOG: LogEntry[] = [
+  { id: 3, time: "9:14 AM", who: "Maria, front desk", what: "Prepped IW-1041 for Carla Mendez. All checks passed" },
+  { id: 2, time: "Yesterday", who: "Andrea Vega, APRN", what: "Signed IW-1038 for Jessica Perez" },
+  { id: 1, time: "Mon", who: "Palm Peptide Pharmacy", what: "IW-1035 shipped, tracking 1Z 84W 2F0 03 1182 7740" },
+];
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const firstName = (patientId: string) => patientById(patientId)!.name.split(" ")[0];
+const prescriberName = (id: string) => PRESCRIBERS.find((p) => p.id === id)!.name;
+const now = () => new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+const isControlled = (o: Order) => productById(o.productId)!.schedule === "CIII";
 
 export default function OrderDeskDemo() {
   const [orders, setOrders] = useState<Order[]>(SEED);
   const [texts, setTexts] = useState<Text[]>([]);
+  const [log, setLog] = useState<LogEntry[]>(SEED_LOG);
+  const [source, setSource] = useState<"staff" | "patient">("staff");
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [draft, setDraft] = useState<Order | null>(null);
   const [portal, setPortal] = useState<{ orderId: string; filled: number } | null>(null);
   const nextId = useRef(1042);
+  const logId = useRef(10);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   const update = (id: string, patch: Partial<Order>) =>
     setOrders((all) => all.map((o) => (o.id === id ? { ...o, ...patch } : o)));
+  const addLog = (who: string, what: string) =>
+    setLog((l) => [{ id: logId.current++, time: now(), who, what }, ...l]);
+  const addText = (id: string, patientId: string, body: string) =>
+    setTexts((t) => [{ id, to: patientById(patientId)!.name, body }, ...t]);
 
-  async function prep(text: string) {
+  function buildOrder(parsed: ParsedOrder): Order {
+    const order: Order = {
+      ...parsed,
+      id: `IW-${nextId.current++}`,
+      prescriberId: productById(parsed.productId)!.schedule === "CIII" ? "ruiz" : "vega",
+      checks: runChecks(parsed),
+      status: "waiting",
+      isNew: true,
+    };
+    const open = orders.find(
+      (o) => o.patientId === parsed.patientId && o.productId === parsed.productId && o.status !== "shipped",
+    );
+    if (open) {
+      order.checks.push({
+        label: "Duplicate order",
+        status: "warn",
+        detail: `${open.id} for the same medication is already ${STATUS_LABEL[open.status].toLowerCase()}`,
+      });
+    }
+    if (order.checks.some((c) => c.status === "block")) order.status = "needs_fix";
+    return order;
+  }
+
+  const checkSummary = (o: Order) => {
+    const block = o.checks.find((c) => c.status === "block");
+    return block ? `Blocked: ${block.detail.toLowerCase()}` : "All checks passed";
+  };
+
+  async function prep(text: string, from: "staff" | "patient") {
     if (!text.trim() || busy) return;
     setBusy(true);
     setError("");
@@ -101,17 +149,20 @@ export default function OrderDeskDemo() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Something went wrong");
-      const parsed: ParsedOrder = data.order;
-      const product = productById(parsed.productId)!;
-      const order: Order = {
-        ...parsed,
-        id: `IW-${nextId.current++}`,
-        prescriberId: product.schedule === "CIII" ? "ruiz" : "vega",
-        checks: runChecks(parsed),
-        status: "waiting",
-        isNew: true,
-      };
-      if (order.checks.some((c) => c.status === "block")) order.status = "needs_fix";
+      const order = buildOrder(data.order);
+      const product = productById(order.productId)!;
+      if (from === "patient") {
+        addLog("AI, from patient text", `Turned ${firstName(order.patientId)}'s text into ${order.id}. ${checkSummary(order)}`);
+        if (order.status !== "needs_fix") {
+          addText(
+            `${order.id}-ack`,
+            order.patientId,
+            `Got it ${firstName(order.patientId)}! Your ${product.short} refill is with ${prescriberName(order.prescriberId)} for approval. We'll text you tracking when it ships.`,
+          );
+        }
+      } else {
+        addLog("Maria, front desk", `Prepped ${order.id} for ${patientById(order.patientId)!.name}. ${checkSummary(order)}`);
+      }
       setDraft(order);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
@@ -122,6 +173,7 @@ export default function OrderDeskDemo() {
 
   // The AI fills the pharmacy's portal as a draft, then the order lands in the prescriber's queue.
   async function sendToPrescriber(order: Order) {
+    const pharmacy = pharmacyById(productById(order.productId)!.pharmacyId)!;
     setPortal({ orderId: order.id, filled: 0 });
     for (let i = 1; i <= PORTAL_FIELDS; i++) {
       await sleep(320);
@@ -129,46 +181,85 @@ export default function OrderDeskDemo() {
     }
     await sleep(500);
     setOrders((all) => [{ ...order, status: "waiting" }, ...all]);
+    addLog("AI", `Filled the ${pharmacy.portal} draft for ${order.id}, sent to ${prescriberName(order.prescriberId)}`);
   }
 
   function requestLabs(order: Order) {
     setOrders((all) => [{ ...order, status: "labs_requested" }, ...all]);
-    setTexts((t) => [
-      {
-        id: `${order.id}-labs`,
-        to: patientById(order.patientId)!.name,
-        body: `Hi ${firstName(order.patientId)}, it's Infused Wellness. Your refill is ready to go as soon as we get updated labs. Book your draw here: infusedwellness.link/labs`,
-      },
-      ...t,
-    ]);
+    labsText(order);
     setDraft(null);
+  }
+
+  function labsText(order: Order) {
+    addText(
+      `${order.id}-labs`,
+      order.patientId,
+      `Hi ${firstName(order.patientId)}, it's Infused Wellness. Your refill is ready to go as soon as we get updated labs. Book your draw here: infusedwellness.link/labs`,
+    );
+    addLog("AI", `Held ${order.id} and texted ${firstName(order.patientId)} a link to book labs`);
+  }
+
+  // Refills that run out within two weeks and don't already have an open order.
+  const due = PATIENTS.flatMap((p) => {
+    if (!p.lastFill) return [];
+    const product = productById(p.lastFill.productId)!;
+    const daysLeft = product.daysSupply * p.lastFill.qty - p.lastFill.daysAgo;
+    const open = orders.some((o) => o.patientId === p.id && o.productId === product.id);
+    return daysLeft <= 14 && !open ? [{ patient: p, product, daysLeft, qty: p.lastFill.qty }] : [];
+  }).sort((a, b) => a.daysLeft - b.daysLeft);
+
+  function prepRefills() {
+    const made = due.map((d) =>
+      buildOrder({
+        patientId: d.patient.id,
+        productId: d.product.id,
+        quantity: d.qty,
+        refills: 0,
+        shipTo: "patient",
+        note: "Auto-prepped refill",
+      }),
+    );
+    const ready = made.map((o) => (o.status === "needs_fix" ? { ...o, status: "labs_requested" as Status } : o));
+    setOrders((all) => [...ready, ...all]);
+    ready.forEach((o) => {
+      if (o.status === "labs_requested") labsText(o);
+      else
+        addLog(
+          "AI, refill autopilot",
+          `Prepped ${o.id} for ${patientById(o.patientId)!.name}, filled the ${pharmacyById(productById(o.productId)!.pharmacyId)!.portal} draft`,
+        );
+    });
   }
 
   function signed(order: Order) {
     update(order.id, { status: "submitted" });
+    addLog(
+      prescriberName(order.prescriberId),
+      isControlled(order)
+        ? `Signed ${order.id} with two-factor. E-FORCSE check confirmed`
+        : `Approved and signed ${order.id}`,
+    );
     timers.current.push(
       setTimeout(() => update(order.id, { status: "compounding" }), 3500),
       setTimeout(() => {
         const tracking = `1Z 84W 2F0 03 ${Math.floor(1000 + Math.random() * 8999)} ${Math.floor(1000 + Math.random() * 8999)}`;
         update(order.id, { status: "shipped", tracking });
         const product = productById(order.productId)!;
-        setTexts((t) => [
-          {
-            id: `${order.id}-ship`,
-            to: patientById(order.patientId)!.name,
-            body:
-              order.shipTo === "clinic"
-                ? `Hi ${firstName(order.patientId)}, your ${product.short} arrives at the clinic this week. We'll text you when it's ready.`
-                : `Hi ${firstName(order.patientId)}, your ${product.short} from Infused Wellness shipped. Tracking: ${tracking}`,
-          },
-          ...t,
-        ]);
+        addLog(pharmacyById(product.pharmacyId)!.name, `${order.id} shipped, tracking ${tracking}`);
+        addText(
+          `${order.id}-ship`,
+          order.patientId,
+          order.shipTo === "clinic"
+            ? `Hi ${firstName(order.patientId)}, your ${product.short} arrives at the clinic this week. We'll text you when it's ready.`
+            : `Hi ${firstName(order.patientId)}, your ${product.short} from Infused Wellness shipped. Tracking: ${tracking}`,
+        );
       }, 8000),
     );
   }
 
   const waiting = orders.filter((o) => o.status === "waiting");
   const done = orders.filter((o) => ["submitted", "compounding", "shipped"].includes(o.status)).length;
+  const chips = source === "staff" ? EXAMPLES : PATIENT_TEXTS;
 
   return (
     <div className="space-y-6">
@@ -182,20 +273,40 @@ export default function OrderDeskDemo() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_330px]">
         <div className="min-w-0 space-y-6">
-          {/* 1. Staff types the order */}
+          {/* 1. Orders come in */}
           <section className="rounded-2xl border border-navy/10 bg-white p-5 shadow-sm">
-            <StepLabel n="1" text="Staff types the order the way they'd text it" />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <StepLabel n="1" text="An order comes in" />
+              <div className="flex rounded-full bg-[#f1eee7] p-1 text-[13px] font-semibold">
+                {(["staff", "patient"] as const).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => {
+                      setSource(s);
+                      setInput("");
+                    }}
+                    className={`rounded-full px-3 py-1.5 transition ${source === s ? "bg-white text-navy shadow-sm" : "text-navy/55"}`}
+                  >
+                    {s === "staff" ? "Staff types it" : "Patient texts in"}
+                  </button>
+                ))}
+              </div>
+            </div>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                prep(input);
+                prep(input, source);
               }}
               className="mt-3 flex flex-col gap-2 sm:flex-row"
             >
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="e.g. Refill test cyp for Marco Rivera, ship to his house"
+                placeholder={
+                  source === "staff"
+                    ? "e.g. Refill test cyp for Marco Rivera, ship to his house"
+                    : "e.g. Hey it's Marco, I need my refill"
+                }
                 className="min-w-0 flex-1 rounded-xl border border-navy/15 bg-[#fbfaf7] px-4 py-3 text-[15px] outline-none focus:border-royal"
               />
               <button
@@ -205,22 +316,65 @@ export default function OrderDeskDemo() {
                 {busy ? "Prepping..." : "Prep order"}
               </button>
             </form>
+            {source === "patient" && (
+              <p className="mt-2 text-[13px] text-navy/55">
+                Patients text your clinic number. Riley answers, and the request becomes an order.
+              </p>
+            )}
             <div className="mt-3 flex flex-wrap gap-2">
-              {EXAMPLES.map((ex) => (
+              {chips.map((ex) => (
                 <button
                   key={ex}
                   onClick={() => {
                     setInput(ex);
-                    prep(ex);
+                    prep(ex, source);
                   }}
                   disabled={busy}
-                  className="rounded-full border border-navy/10 bg-[#f8f5ef] px-3 py-1.5 text-left text-[13px] text-navy/75 transition hover:border-royal hover:text-royal disabled:opacity-40"
+                  className={`px-3 py-1.5 text-left text-[13px] transition disabled:opacity-40 ${
+                    source === "staff"
+                      ? "rounded-full border border-navy/10 bg-[#f8f5ef] text-navy/75 hover:border-royal hover:text-royal"
+                      : "rounded-2xl rounded-bl-md bg-[#e9e9eb] text-navy/85 hover:bg-[#dcdce0]"
+                  }`}
                 >
                   {ex}
                 </button>
               ))}
             </div>
             {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
+          </section>
+
+          {/* Refill autopilot */}
+          <section className="rounded-2xl border border-navy/10 bg-white p-5 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm font-semibold">
+                Refills running out in the next 14 days
+                <span className="ml-2 font-hand text-lg font-normal text-ember">nobody has to remember these</span>
+              </p>
+              {due.length > 0 && (
+                <button
+                  onClick={prepRefills}
+                  className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-royal"
+                >
+                  Prep all {due.length}
+                </button>
+              )}
+            </div>
+            {due.length === 0 ? (
+              <p className="mt-3 text-sm text-navy/55">Every refill due soon already has an order.</p>
+            ) : (
+              <ul className="mt-3 divide-y divide-navy/5 text-sm">
+                {due.map((d) => (
+                  <li key={d.patient.id} className="flex flex-wrap items-baseline justify-between gap-x-4 py-2">
+                    <span>
+                      <b>{d.patient.name}</b> <span className="text-navy/60">{d.product.short}</span>
+                    </span>
+                    <span className={d.daysLeft <= 5 ? "font-semibold text-red-700" : "text-navy/60"}>
+                      {d.daysLeft <= 1 ? "Runs out tomorrow" : `Runs out in ${d.daysLeft} days`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
 
           {/* 2. The prepped, checked order */}
@@ -262,7 +416,7 @@ export default function OrderDeskDemo() {
                   className="mt-4 w-full rounded-xl bg-navy px-5 py-3 font-semibold text-white transition hover:bg-royal sm:w-auto"
                 >
                   Fill the {pharmacyById(productById(draft.productId)!.pharmacyId)!.name} portal and send to{" "}
-                  {PRESCRIBERS.find((p) => p.id === draft.prescriberId)!.name}
+                  {prescriberName(draft.prescriberId)}
                 </button>
               )}
             </section>
@@ -324,6 +478,30 @@ export default function OrderDeskDemo() {
                 </div>
               </div>
             )}
+
+            <details className="group mt-5 border-t border-navy/10 pt-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
+                <span>
+                  Audit trail <span className="font-normal text-navy/50">({log.length} entries)</span>
+                </span>
+                <span className="text-navy/40 transition group-open:rotate-90">›</span>
+              </summary>
+              <p className="mt-1 text-[13px] text-navy/55">
+                Who prepped, checked, signed and shipped every order, with the time. Ready if a board or the
+                DEA ever asks.
+              </p>
+              <ol className="mt-3 space-y-2 font-mono text-[12px]">
+                {log.map((l) => (
+                  <li key={l.id} className="grid grid-cols-[70px_1fr] gap-2">
+                    <span className="text-navy/45">{l.time}</span>
+                    <span>
+                      <b className="font-semibold">{l.who}</b>
+                      <span className="text-navy/65">: {l.what}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </details>
           </section>
         </div>
 
@@ -364,8 +542,8 @@ function OrderSummary({ order }: { order: Order }) {
     ["Medication", `${product.name}${allergySwap ? " (grapeseed oil)" : ""}${product.schedule === "CIII" ? ", Schedule III" : ""}`],
     ["Quantity", `${order.quantity} x ${product.unit}, ${order.refills} refill${order.refills === 1 ? "" : "s"}`],
     ["Directions", product.sig],
-    ["Pharmacy", `${pharmacyById(product.pharmacyId)!.name} (picked for this medication)`],
-    ["Prescriber", PRESCRIBERS.find((p) => p.id === order.prescriberId)!.name],
+    ["Pharmacy", `${pharmacyById(product.pharmacyId)!.name} (where you order this medication)`],
+    ["Prescriber", prescriberName(order.prescriberId)],
     ["Ship to", order.shipTo === "clinic" ? "Infused Wellness clinic" : `Patient, ${patient.city}, FL`],
   ];
   if (order.note) rows.push(["Note", order.note]);
@@ -435,6 +613,7 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
   const [stage, setStage] = useState<"review" | "code">("review");
   const [code, setCode] = useState("");
   const open = orders.find((o) => o.id === openId) ?? null;
+  const plain = orders.filter((o) => !isControlled(o));
 
   const close = () => {
     setOpenId(null);
@@ -444,7 +623,7 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
   };
 
   function approve(o: Order) {
-    if (productById(o.productId)!.schedule === "CIII") setStage("code");
+    if (isControlled(o)) setStage("code");
     else {
       onSigned(o);
       close();
@@ -461,9 +640,17 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
         </div>
 
         {!open ? (
-          <div className="space-y-2 px-3">
+          <div className="h-[500px] space-y-2 overflow-y-auto px-3 pb-4">
             {orders.length === 0 && (
               <p className="px-2 pt-10 text-center text-sm text-navy/50">All caught up. Nothing to sign.</p>
+            )}
+            {plain.length > 1 && (
+              <button
+                onClick={() => plain.forEach(onSigned)}
+                className="block w-full rounded-2xl bg-royal py-2.5 text-sm font-semibold text-white"
+              >
+                Approve all {plain.length} non-controlled
+              </button>
             )}
             {orders.map((o) => {
               const product = productById(o.productId)!;
@@ -479,13 +666,18 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
                     <span className="text-xs text-navy/40">{o.id}</span>
                   </div>
                   <div className="text-sm text-navy/65">
-                    {product.short}, {PRESCRIBERS.find((p) => p.id === o.prescriberId)!.name}
+                    {product.short}, {prescriberName(o.prescriberId)}
                   </div>
-                  {flags > 0 && (
-                    <div className="mt-1.5 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
-                      {flags} flag{flags > 1 ? "s" : ""} to look at
-                    </div>
-                  )}
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {product.schedule === "CIII" && (
+                      <span className="rounded-full bg-navy/5 px-2 py-0.5 text-[11px] font-semibold">C-III</span>
+                    )}
+                    {flags > 0 && (
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+                        {flags} flag{flags > 1 ? "s" : ""} to look at
+                      </span>
+                    )}
+                  </div>
                 </button>
               );
             })}
@@ -515,7 +707,7 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
                   ))}
               </ul>
             </div>
-            {productById(open.productId)!.schedule === "CIII" && (
+            {isControlled(open) && (
               <label className="mt-2 flex items-start gap-2 rounded-xl bg-white p-3 text-[13px] shadow-sm">
                 <input type="checkbox" checked={pdmp} onChange={(e) => setPdmp(e.target.checked)} className="mt-0.5" />
                 I checked E-FORCSE for this patient today
@@ -523,7 +715,7 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
             )}
             <button
               onClick={() => approve(open)}
-              disabled={productById(open.productId)!.schedule === "CIII" && !pdmp}
+              disabled={isControlled(open) && !pdmp}
               className="mt-2 mb-3 rounded-xl bg-royal py-3 font-semibold text-white disabled:opacity-40"
             >
               Approve and sign
@@ -534,7 +726,8 @@ function PrescriberPhone({ orders, onSigned }: { orders: Order[]; onSigned: (o: 
             <div className="rounded-2xl bg-white p-4 text-sm shadow-sm">
               <p className="font-semibold">Two-factor signature</p>
               <p className="mt-1 text-[13px] text-navy/65">
-                Controlled substance. Enter the code from your own authenticator. Only you can sign this.
+                Controlled substance. This signs through a DEA-certified e-prescribing service, with the code
+                from your own authenticator. Nobody else can sign for you.
               </p>
               <input
                 value={code}

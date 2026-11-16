@@ -127,7 +127,14 @@ export const EXAMPLES = [
   "Jessica sema refill, 2 vials, ship to patient",
 ];
 
-export const productById = (id: string) => PRODUCTS.find((p) => p.id === id);
+// Refill requests patients text to the clinic's number.
+export const PATIENT_TEXTS = [
+  "Hey it's Marco Rivera, running low on my test. Can I get a refill?",
+  "Hi this is Jessica Perez, I need my sema again, can you ship it to my house",
+  "Carla Mendez here, can I get more of the troches? Almost out",
+];
+
+export const productById =(id: string) => PRODUCTS.find((p) => p.id === id);
 export const patientById = (id: string) => PATIENTS.find((p) => p.id === id);
 export const pharmacyById = (id: string) => PHARMACIES.find((p) => p.id === id);
 
