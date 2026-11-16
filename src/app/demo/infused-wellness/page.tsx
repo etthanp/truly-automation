@@ -11,23 +11,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const points = [
-  {
-    t: "Your staff stop retyping orders",
-    d: "One line in, a complete order out, routed to the right pharmacy for that medication. No more logging into three portals and filling the same fields.",
-  },
-  {
-    t: "Problems get caught before a signature",
-    d: "Old labs, a missed exam, an early refill or an allergy gets flagged first. A blocked order never reaches your prescriber.",
-  },
-  {
-    t: "Your prescribers sign in seconds",
-    d: "They review and sign from their phone with their own two-factor code. They never have to hunt through portals or wait at a desk.",
-  },
-  {
-    t: "You see everything",
-    d: "Every order, who it's waiting on and where it is, from your phone. Patients get a text when it ships.",
-  },
+// One refill, the way it usually goes vs. with the order desk. Times are rough guesses until we
+// time his team's real orders, and the page says so.
+const today: [string, string][] = [
+  ["Log into the right pharmacy's portal", "2 min"],
+  ["Retype the patient, product, directions and shipping", "4 min"],
+  ["Text the prescriber and wait for them to get to a computer", "hours"],
+  ["Prescriber logs in, finds the order, signs", "3 min"],
+  ["Check back on it and answer “where's my order?”", "5 min"],
+];
+
+const withDesk: [string, string][] = [
+  ["Type one line, or the refill preps itself", "20 sec"],
+  ["Prescriber signs from their phone", "20 sec"],
+  ["Patient gets the tracking text", "auto"],
+];
+
+const needs = [
+  "Which pharmacies you order from, and their portals",
+  "Your medications and protocols: labs, exam windows, refill timing",
+  "Your prescribers and how they sign today",
+  "Where your patient charts live",
 ];
 
 export default function InfusedWellnessDemo() {
@@ -67,53 +71,81 @@ export default function InfusedWellnessDemo() {
           </div>
         </section>
 
-        <section className="px-4 pt-20 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1.4fr]">
+        {/* One refill, before and after */}
+        <section className="px-4 pt-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="flex flex-wrap items-end gap-x-6 gap-y-1">
+              <h2 className="text-5xl text-navy sm:text-6xl">One refill, start to finish.</h2>
+              <p className="-rotate-2 pb-1 font-hand text-2xl text-ember">rough times, we&apos;ll clock yours</p>
+            </div>
+
+            <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <p className="text-xs font-bold tracking-[0.2em] text-navy/45 uppercase">The way it goes now</p>
+                <ol className="mt-4 border-t-2 border-navy/15">
+                  {today.map(([step, time]) => (
+                    <li key={step} className="flex items-baseline gap-3 border-b border-navy/10 py-3.5 text-navy/55">
+                      <span className="flex-1">{step}</span>
+                      <span className="shrink-0 font-mono text-sm">{time}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-3 font-mono text-sm text-navy/45">Per order, every order, in every portal you use.</p>
+              </div>
+
+              <div className="relative">
+                <p className="text-xs font-bold tracking-[0.2em] text-royal uppercase">With the order desk</p>
+                <ol className="mt-4 border-t-2 border-royal">
+                  {withDesk.map(([step, time]) => (
+                    <li key={step} className="flex items-baseline gap-3 border-b border-navy/10 py-3.5 text-lg font-semibold text-navy">
+                      <span className="flex-1">{step}</span>
+                      <span className="shrink-0 font-mono text-sm font-normal text-royal">{time}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-6 max-w-md rotate-1 font-hand text-[26px] leading-tight text-navy">
+                  The signature never moves. Only your prescriber can sign a controlled prescription, with their
+                  own two-factor code. Not us, not the AI.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What the real build needs */}
+        <section className="px-4 pt-24 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-6xl gap-8 border-t border-navy/15 pt-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <h2 className="text-4xl text-navy">To build your real one</h2>
             <div>
-              <h2 className="text-4xl text-navy">What changes for you</h2>
-              <p className="mt-4 text-navy/70">
-                The AI does the busywork. The legal part stays with your prescribers: only they can sign a
-                controlled-substance prescription, with their own two-factor code, exactly as DEA rules
-                require. Nobody, including us, signs for them.
+              <ul className="space-y-2.5 text-navy/75">
+                {needs.map((n) => (
+                  <li key={n} className="flex gap-3">
+                    <span className="mt-2.5 h-px w-4 shrink-0 bg-ember" />
+                    {n}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm text-navy/55">
+                Patient data only runs through HIPAA-covered services we have signed agreements with.
+                Controlled prescriptions are signed through a DEA-certified e-prescribing service or your
+                pharmacy&apos;s own portal.
               </p>
             </div>
-            <div className="divide-y divide-navy/10 border-y border-navy/10">
-              {points.map((p) => (
-                <div key={p.t} className="py-5">
-                  <h3 className="font-bold text-navy">{p.t}</h3>
-                  <p className="mt-1 text-sm text-navy/70">{p.d}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
-        <section className="px-4 pt-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl rounded-2xl border border-navy/10 bg-white p-6 text-sm text-navy/70 shadow-sm">
-            <p className="font-semibold text-navy">To build the real one, we&apos;d set it up around how you work:</p>
-            <p className="mt-2">
-              your pharmacies and their portals, your medications and protocols (labs, exam windows, refill
-              timing), your prescribers and how they sign today, and where your patient charts live. Patient
-              data stays on HIPAA-covered services with signed agreements.
-            </p>
-          </div>
-        </section>
-
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl rounded-3xl bg-navy px-6 py-10 text-white sm:px-8">
-            <h2 className="text-3xl">Questions about the demo?</h2>
-            <p className="mt-3 text-white/70">
-              Call{" "}
-              <a href={PHONE_HREF} className="font-semibold text-sky hover:underline">
-                {PHONE_DISPLAY}
-              </a>{" "}
-              or email{" "}
-              <a href={`mailto:${EMAIL}`} className="font-semibold text-sky hover:underline">
-                {EMAIL}
-              </a>
-              .
-            </p>
-          </div>
+        <section className="px-4 py-20 sm:px-6 lg:px-8">
+          <p className="mx-auto max-w-6xl text-lg text-navy/70">
+            Questions? Call{" "}
+            <a href={PHONE_HREF} className="font-semibold text-navy underline decoration-ember underline-offset-4">
+              {PHONE_DISPLAY}
+            </a>{" "}
+            or email{" "}
+            <a href={`mailto:${EMAIL}`} className="font-semibold text-navy underline decoration-ember underline-offset-4">
+              {EMAIL}
+            </a>
+            .
+          </p>
         </section>
       </main>
       <Footer />
