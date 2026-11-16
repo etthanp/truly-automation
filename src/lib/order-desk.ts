@@ -75,7 +75,7 @@ export const PRODUCTS: Product[] = [
     sig: "Dissolve 1 troche under tongue as directed, max 1 per day",
     daysSupply: 1,
     examDays: 180,
-    keywords: ["ket", "ketamine", "troche"],
+    keywords: ["ket", "ketamine", "troche", "lozenge"],
   },
   {
     id: "sema",
@@ -138,7 +138,10 @@ export function ruleParse(text: string): ParsedOrder | null {
     const [first, last] = p.name.toLowerCase().split(" ");
     return t.includes(last) || new RegExp(`\\b${first}\\b`).test(t);
   });
-  const product = PRODUCTS.find((p) => p.keywords.some((k) => t.includes(k)));
+  // "Her usual" or "again" with no medication named: use what the patient is already on.
+  const product =
+    PRODUCTS.find((p) => p.keywords.some((k) => t.includes(k))) ??
+    (patient?.lastFill ? productById(patient.lastFill.productId) : undefined);
   if (!patient || !product) return null;
   const qtyMatch =
     t.match(/#\s*(\d+)/) ?? t.match(/(\d+)\s*(vials?|troches?|bottles?)/) ?? t.match(/\bx\s*(\d+)/);
