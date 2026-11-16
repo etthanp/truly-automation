@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { APP_STORE_URL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/contact";
 
 type NavLink = { href: string; label: string };
 
 const homeLinks: NavLink[] = [
   { href: "/#built", label: "What we built" },
-  { href: "/#pricing", label: "Pricing" },
-  { href: APP_STORE_URL, label: "Get the app" },
+  { href: "/#how", label: "How it works" },
 ];
 
 export default function Navbar({ links = homeLinks }: { links?: NavLink[] }) {

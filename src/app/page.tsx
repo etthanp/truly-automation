@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import HomeHero from "@/components/home/HomeHero";
 import WhatWeBuilt from "@/components/home/WhatWeBuilt";
 import HowItWorks from "@/components/home/HowItWorks";
-import Pricing from "@/components/home/Pricing";
+import WhatYouGet from "@/components/home/WhatYouGet";
 import Faq from "@/components/home/Faq";
 import Founder from "@/components/Founder";
 import HomeCta from "@/components/home/HomeCta";
@@ -16,7 +16,7 @@ export default function Home() {
         <HomeHero />
         <WhatWeBuilt />
         <HowItWorks />
-        <Pricing />
+        <WhatYouGet />
         <Faq />
         <Founder />
         <HomeCta />

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: "Truly Front Desk | The AI front desk by Truly Automation",
   description:
-    "Truly Front Desk is the AI front desk we build and run for local businesses. It answers every call 24/7, books appointments on your calendar, and puts every call, customer and follow-up in one dashboard and iPhone app. $2,000 setup, then $1,000 a month.",
+    "Truly Front Desk is the AI front desk we build and run for local businesses. It answers every call 24/7, books appointments on your calendar, and puts every call, customer and follow-up in one dashboard and iPhone app.",
   openGraph: {
     title: "Truly Front Desk: every call answered, every appointment booked",
     description:
