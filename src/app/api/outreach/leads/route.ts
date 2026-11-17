@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authorized } from "@/lib/outreach/compliance";
-import { canReceiveMail, cleanEmail, researchSite } from "@/lib/outreach/enrich";
+import { canReceiveMail, cleanEmail, researchSite, verifyMailbox } from "@/lib/outreach/enrich";
 import { addLead, isKnown, type OutreachLead, type Variant } from "@/lib/outreach/store";
 import { writeIntro } from "@/lib/outreach/write";
 
@@ -40,12 +40,14 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
   if (!email) return { business, result: "no email found" };
   if (await isKnown(email)) return { business, email, result: "already contacted or opted out" };
   if (!(await canReceiveMail(email))) return { business, email, result: "email domain can't receive mail" };
+  const verified = await verifyMailbox(email);
+  if (!verified.ok) return { business, email, result: `mailbox failed verification (${verified.result})` };
 
   // Copies get the same checks as the main address: never anyone emailed before, opted out or bounced.
   const checked = await Promise.all(
     found
       .filter((e) => e !== email)
-      .map(async (e) => ((await isKnown(e)) || !(await canReceiveMail(e)) ? null : e)),
+      .map(async (e) => ((await isKnown(e)) || !(await canReceiveMail(e)) || !(await verifyMailbox(e)).ok ? null : e)),
   );
   const cc = checked.filter((e): e is string => !!e);
 
