@@ -126,3 +126,23 @@ export async function canReceiveMail(email: string) {
     return false;
   }
 }
+
+/**
+ * Asks MillionVerifier whether the mailbox really exists, when MILLIONVERIFIER_API_KEY is set.
+ * "ok" and "catch_all" (the domain takes everything, common for small businesses) pass; invalid,
+ * disposable, unknown and any lookup failure don't, so a bad answer never turns into a bounce.
+ */
+export async function verifyMailbox(email: string): Promise<{ ok: boolean; result: string }> {
+  const key = process.env.MILLIONVERIFIER_API_KEY;
+  if (!key) return { ok: true, result: "not checked" };
+  try {
+    const url = `https://api.millionverifier.com/api/v3/?api=${encodeURIComponent(key)}&email=${encodeURIComponent(email)}&timeout=10`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
+    const data = (await res.json()) as { result?: string; error?: string };
+    if (data.error) return { ok: false, result: `verify error: ${data.error}` };
+    const result = data.result || "unknown";
+    return { ok: result === "ok" || result === "catch_all", result };
+  } catch {
+    return { ok: false, result: "verify failed" };
+  }
+}
