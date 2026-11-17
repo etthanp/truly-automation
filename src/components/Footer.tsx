@@ -49,7 +49,7 @@ export default function Footer({ links = homeLinks }: { links?: FooterLink[] }) 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-sm sm:flex-row">
           <div className="text-center sm:text-left">
             <p>&copy; {new Date().getFullYear()} Truly Automation LLC. All rights reserved.</p>
-            <p className="mt-1 text-white/50">A North Carolina company, founded by Ethan Presley.</p>
+            <p className="mt-1 text-white/50">A North Carolina company, founded by Ethan.</p>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="transition hover:text-white">

@@ -52,7 +52,7 @@ Riley, the AI receptionist, answers every call 24/7, books appointments on your 
 
 Would a quick 15-minute demo be worth it for ${lead.business}?
 
-Ethan Presley
+Ethan
 UNC Pembroke, Business & AI
 Truly Automation: ${SITE_URL}
 ${PHONE_DISPLAY}`;
@@ -71,7 +71,7 @@ You see it all in one dashboard on your computer and in the Truly Front Desk iPh
 
 Would a quick 15-minute demo be worth it for ${lead.business}?
 
-Ethan Presley
+Ethan
 Truly Automation
 ${SITE_URL}
 ${PHONE_DISPLAY}`;
@@ -90,7 +90,7 @@ const INTRO_SCHEMA = {
   additionalProperties: false,
 };
 
-const SYSTEM = `You write cold emails for Ethan Presley at Truly Automation, which builds and runs Truly Front Desk, an AI front desk for local businesses. Sound like a real person typing a quick note, not a marketer.
+const SYSTEM = `You write cold emails for Ethan at Truly Automation, which builds and runs Truly Front Desk, an AI front desk for local businesses. Sound like a real person typing a quick note, not a marketer.
 
 You write the "opening" of one email to a business owner: a greeting line, then 1 to 2 short sentences, under 45 words total. If you are given facts about their website, mention exactly one of them, plainly and briefly. If there are no facts, make one short, honest observation about their kind of business (calls missed while busy with customers, after-hours calls going to voicemail, callers going to whoever answers first). Do not list services, do not sign off, do not ask a question: the services list and the closing are added after your text.
 
