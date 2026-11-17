@@ -34,6 +34,8 @@ export interface OutreachLead {
   website?: string;
   /** True things we found on their website, used to personalize the first email. */
   facts: string[];
+  /** Why this lead was picked, e.g. "2 of their recent Google reviews mention calls going unanswered". The opening leads with it. */
+  signal?: string;
   /** The intro, written when the lead is added. Leads added before follow-ups were dropped also hold two follow-ups, never sent. */
   drafts: Draft[];
   /** Missing on leads added before the student version existed; they're "standard". */

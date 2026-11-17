@@ -62,6 +62,8 @@ const leads = raw
     // Our call lists put "Owner" in Contact Name when the real name is unknown.
     owner: [pick(r, "owner", "contact", "owner name", "contact name")].find((o) => o && !/^(owner|manager|office)$/i.test(o)),
     industry: pick(r, "industry", "trade") ?? flag("industry"),
+    // Why we're reaching out, e.g. their reviews mention unanswered calls (phone-complaint-leads/find.py).
+    signal: pick(r, "signal"),
   }))
   .filter((l) => l.business && (l.email || l.website));
 
