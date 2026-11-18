@@ -22,7 +22,7 @@ export function organizationJsonLd() {
     logo: `${SITE_URL}/logo.png`,
     description: COMPANY_DESCRIPTION,
     foundingDate: "2026-09-29",
-    founder: { "@type": "Person", name: "Ethan Presley", jobTitle: "Founder" },
+    founder: { "@type": "Person", name: "Ethan", jobTitle: "Founder" },
     identifier: {
       "@type": "PropertyValue",
       propertyID: "North Carolina Secretary of State SOSID",

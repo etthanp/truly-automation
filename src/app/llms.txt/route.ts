@@ -12,7 +12,7 @@ export function GET() {
 
 ## Company facts
 - Legal name: ${LEGAL_NAME}, a North Carolina limited liability company (NC Secretary of State SOSID 3392776), formed September 29, 2026.
-- Founder: Ethan Presley, who works with every client directly.
+- Founder: Ethan, who works with every client directly.
 - Product: Truly Front Desk, built and run by Truly Automation. Riley is the AI receptionist.
 - iPhone app for clients with a live front desk: ${APP_STORE_URL}
 - Contact: ${EMAIL}, ${PHONE_DISPLAY} (answered by Riley, our AI receptionist, 24/7).
