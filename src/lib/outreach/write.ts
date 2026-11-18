@@ -28,34 +28,37 @@ export function subjectFor(lead: { business: string; variant?: Variant; drafts: 
  * email never claims a service we don't run. It's built at send time, so queued leads always get
  * the current version.
  */
-export function introEmail(opening: string, lead: { business: string; industry: string; variant?: Variant }): string {
+export function introEmail(opening: string, lead: { business: string; industry: string; state?: string; variant?: Variant }): string {
   if (lead.variant === "student") return studentIntro(opening, lead);
   return frontDeskIntro(opening, lead);
 }
 
+/** Ethan's own cell, the only number in the student email. */
+const ETHAN_CELL = "704-740-9976";
+
 /**
- * The student angle: Ethan introduces himself as the student lead of the AI program at UNC Pembroke
- * before the AI's observation about their site, then the Truly Front Desk pitch.
+ * The student angle: Ethan is a college student at UNC Pembroke and head of its AI program, helping
+ * local businesses put AI to work. "Local" only for North Carolina leads; everyone else hears where he is.
  */
-function studentIntro(opening: string, lead: { business: string }): string {
+function studentIntro(opening: string, lead: { business: string; state?: string }): string {
   const [first, ...rest] = opening.trim().split("\n");
   const hasGreeting = /^(hi|hey|hello)\b.*,$/i.test(first.trim());
   const greeting = hasGreeting ? first.trim() : "Hi there,";
   const observation = (hasGreeting ? rest.join("\n") : opening).trim();
+  const who = /^(nc|north carolina)$/i.test(lead.state?.trim() ?? "")
+    ? "a local college student at UNC Pembroke"
+    : "a college student at UNC Pembroke in North Carolina";
   return `${greeting}
 
-I'm Ethan, a student at UNC Pembroke studying business and AI, and I'm the student lead of the AI program there. I also built Truly Front Desk, an AI front desk for local businesses.
+I'm Ethan, ${who} and head of the AI program there. I help local businesses bring AI into their day-to-day work, like answering calls around the clock, booking appointments and following up with customers.
 
 ${observation}
 
-Riley, the AI receptionist, answers every call 24/7, books appointments on your calendar and gets you when a call needs a person. Everything shows up in a dashboard and our iPhone app. You can hear it yourself by calling ${PHONE_DISPLAY}.
+Would you be open to a quick 15-minute call to see if it could help ${lead.business}?
 
-Would a quick 15-minute demo be worth it for ${lead.business}?
-
-Ethan
-UNC Pembroke, Business & AI
-Truly Automation: ${SITE_URL}
-${PHONE_DISPLAY}`;
+Ethan Presley
+UNC Pembroke, AI Program
+${ETHAN_CELL}`;
 }
 
 /**
@@ -135,5 +138,6 @@ export async function writeIntro(lead: {
   if (!text || text.type !== "text") throw new Error("No email text returned");
   const out = JSON.parse(text.text) as { subject: string; opening: string };
 
-  return [{ subject: out.subject.trim(), body: introEmail(out.opening, lead) }];
+  // Stored in the front desk form so openingOf can always find the opening; the send rebuilds it for the lead's version.
+  return [{ subject: out.subject.trim(), body: introEmail(out.opening, { ...lead, variant: "frontdesk" }) }];
 }

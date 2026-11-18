@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "send { leads: [...] }" }, { status: 400 });
   }
   // New leads get the AI front desk intro unless the caller picks another one or a 50/50 "split".
-  const pick = body?.variant ?? "frontdesk";
+  const pick = body?.variant ?? "student";
   const variantFor = (): Variant => (pick === "split" ? (Math.random() < 0.5 ? "standard" : "student") : pick);
 
   const deadline = Date.now() + 45_000;
