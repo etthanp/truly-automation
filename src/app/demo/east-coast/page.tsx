@@ -27,13 +27,6 @@ const withAssistant: [string, string][] = [
   ["You step in when they're ready to buy", "your call"],
 ];
 
-const needs = [
-  "Your playbook package (we have it): openers, questions, recommendations, videos, handoff rules",
-  "Whether you're on iPhone or Android",
-  "A quick look at how each lead source reaches your phone today",
-  "One week of you checking its texts before it runs on its own",
-];
-
 export default function EastCoastDemo() {
   return (
     <>
@@ -76,7 +69,12 @@ export default function EastCoastDemo() {
         <section className="px-4 pt-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="flex flex-wrap items-end gap-x-6 gap-y-1">
-              <h2 className="text-5xl text-navy sm:text-6xl">One lead, start to finish.</h2>
+              <h2
+                className="text-4xl font-semibold tracking-tight text-navy sm:text-5xl"
+                style={{ fontFamily: "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif" }}
+              >
+                One lead, start to finish.
+              </h2>
               <p className="-rotate-2 pb-1 font-hand text-2xl text-ember">rough times, we&apos;ll clock yours</p>
             </div>
 
@@ -107,27 +105,6 @@ export default function EastCoastDemo() {
                   Customers are texting your cell, so they know it&apos;s you. The second you text them yourself, it backs off.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* What the real build needs */}
-        <section className="px-4 pt-24 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 border-t border-navy/15 pt-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <h2 className="text-4xl text-navy">To build your real one</h2>
-            <div>
-              <ul className="space-y-2.5 text-navy/75">
-                {needs.map((n) => (
-                  <li key={n} className="flex gap-3">
-                    <span className="mt-2.5 h-px w-4 shrink-0 bg-ember" />
-                    {n}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-5 text-sm text-navy/55">
-                Phase one is just the texting. Once it&apos;s running, we can add follow-ups for leads who go
-                quiet, review requests after installs, and an AI receptionist for missed calls.
-              </p>
             </div>
           </div>
         </section>
