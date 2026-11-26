@@ -102,7 +102,9 @@ Rules:
 - No "I hope this finds you well", no buzzwords, no exclamation points, no emojis.
 - Plain text only. Don't use em dashes; use commas or periods.
 - Greet the owner by first name if given, otherwise "Hi there,".
-- No links or web addresses anywhere (they're added separately). No unsubscribe line.`;
+- No links or web addresses anywhere (they're added separately). No unsubscribe line.
+
+If you are given something we noticed about their Google reviews, open with that instead of a website fact. Say it plainly and kindly, the way a helpful neighbor would ("I noticed a couple of your Google reviews mention calls going to voicemail"), then one short line that it's an easy thing to fix, not their fault. Never quote a review, name a reviewer, give star ratings, or sound like you're scolding them.`;
 
 /** Writes the intro for one lead with the fast, low-cost model. There are no follow-ups. */
 export async function writeIntro(lead: {
@@ -112,6 +114,7 @@ export async function writeIntro(lead: {
   city: string;
   state?: string;
   facts: string[];
+  signal?: string;
   variant?: Variant;
 }): Promise<Draft[]> {
   const where = lead.state ? `${lead.city}, ${lead.state}` : lead.city;
@@ -123,6 +126,7 @@ export async function writeIntro(lead: {
     `Location: ${where}`,
     lead.owner ? `Owner's first name: ${lead.owner.split(" ")[0]}` : "Owner's name: unknown",
     facts.length ? `Facts about their website (true, use at most one):\n- ${facts.join("\n- ")}` : "Facts about their website: none",
+    ...(lead.signal ? [`What we noticed about their Google reviews (true, open with this): ${lead.signal}`] : []),
   ].join("\n");
 
   const response = await anthropic.messages.create({

@@ -14,6 +14,7 @@ interface IncomingLead {
   email?: string;
   website?: string;
   owner?: string;
+  signal?: string;
 }
 
 type Result = { business: string; result: string; email?: string; cc?: string[] };
@@ -61,6 +62,7 @@ async function processLead(input: IncomingLead, variant: Variant): Promise<Resul
     state: input.state?.trim() || undefined,
     website: input.website?.trim() || undefined,
     facts,
+    signal: input.signal?.trim() || undefined,
     drafts: [],
     variant,
     status: "active",
